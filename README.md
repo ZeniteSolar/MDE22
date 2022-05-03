@@ -30,10 +30,24 @@ O sistema eletrônico atual foi danificado após a competição em março de 202
 
 Pensando em um sistema de direção, a escolha de utilizar uma direção elétrica pode trazer maior responsividade mesmo tendo uma fração do peso de um sistema mecânico.[referência]. Além disso, sistemas mecânicos pouco desenvolvidos podem precisar de esforço do motorista, o que é indesejado para um alto desempenho.
 
+Abaixo está o diagrama representando um sistema de direção elétrica e suas partes. 
+![Diagrama concepção](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/4bd646044cc3c0f56f176853dbc235b8130db225/Imagens/Diagrama%20de%20blocos%20da%20dire%C3%A7%C3%A3o%20el%C3%A9trica.PNG)
 
-Abaixo está o diagrama representando o sistema e suas partes. 
-![Diagrama concepção](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/ac1c5d4bc2fc4c6b2abb9806ac0f973cf5f17df0/Imagens/Diagrama%20de%20blocos%20da%20dire%C3%A7%C3%A3o%20el%C3%A9trica.PNG)
+Levando em contas os elementos acima, os seguintes problemas devem ser confrontados:
+- Sistemas eletrônicos em veículos devem possuir alta robustez devido às vibrações ao qual são expostos. No caso da embarcação em alta velocidade, especialmente para operações marítimas, os impactos são um grande problema (além da oxidação dos circuitos).
+- Como o veículo alvo é utilizado em competições cujo foco, e portanto o desafio, está na geração e consumo de energia, a solução deve ser tão eficiente quando possível para garantir o sucesso da equipe.
+- Um ambiente competitivo entre veículos requer alta performance dessa direção, não apenas para alcançar a vitória mas garantir a segurança de todos. Portanto, a funcionalidade deve ser atendida tão bem quanto os outros parâmetros.
 
+Para implementar o todo é preciso definir os requisitos das partes, feito em seguida.
+
+* ### Sensores
+Precisão. Robustez. 
+
+* ### Controlador
+Capacidade de processamento. Tempo de resposta. Consumo. Portas disponíveis. Protocolos disponíveis (CAN seria interessante). Robustez.
+
+* ### Potência
+Eficiência, parâmetros elétricos de operação (driver do mosfet?) [parâmetros do motor, alimentação do circuito]. Robustez.
 
 
 ## Design
