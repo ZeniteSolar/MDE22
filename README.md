@@ -48,6 +48,12 @@ Capacidade de processamento. Tempo de resposta. Consumo. Portas disponíveis. Pr
 
 * ### Potência
 Eficiência, parâmetros elétricos de operação (driver do mosfet?) [parâmetros do motor, alimentação do circuito]. Robustez.
+ 
+ 
+ Fazer isso em tabela?
+|| Sensores | Controlador | Potência |
+|---|---|---|---|
+| Requisitos | x | x | x |
 
 
 ## Design
