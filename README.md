@@ -30,7 +30,10 @@ O sistema eletrônico atual foi danificado após a competição em março de 202
 
 Pensando em um sistema de direção, a escolha de utilizar uma direção elétrica pode trazer maior responsividade mesmo tendo uma fração do peso de um sistema mecânico.[referência]. Além disso, sistemas mecânicos pouco desenvolvidos podem precisar de esforço do motorista, o que é indesejado para um alto desempenho.
 
+
+Abaixo está o diagrama representando o sistema e suas partes. 
 ![Diagrama concepção](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/ac1c5d4bc2fc4c6b2abb9806ac0f973cf5f17df0/Imagens/Diagrama%20de%20blocos%20da%20dire%C3%A7%C3%A3o%20el%C3%A9trica.PNG)
+
 
 
 ## Design
