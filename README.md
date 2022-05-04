@@ -68,6 +68,7 @@ Eficiência, parâmetros elétricos de operação (driver do mosfet?) [parâmetr
 
 # Operação
 
+# Considerações
 
 # Bibliografia
 
