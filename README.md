@@ -12,7 +12,7 @@ Aluno:
 
 ## Sumário
 
-[Introdução](##intro)
+[Introdução](#intro)
 
 2. Concepção
 3. Design
