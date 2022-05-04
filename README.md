@@ -24,7 +24,7 @@ Aluno:
 
 Esse módulo tem como objetivo controlar a direção da rabeta da embarcação Guarapuvu II, da equipe Zênite Solar do IFSC.
 
-É inspirado no sistema atualmente implementado, desenvolvido por Cesar Dias Parente. Os arquivos do projeto inicial podem ser encontrados no seguinte link https://github.com/ZeniteSolar/MDE18/tree/main.
+É inspirado no sistema atualmente implementado, desenvolvido por Cesar Dias Parente. Os arquivos do projeto inicial podem ser encontrados [aqui](https://github.com/ZeniteSolar/MDE18/tree/main).
 
 A embarcação da equipe Zênite é operada em competições de barcos solares, onde são exigidas a melhor performance e grande robustez. Nossa equipe obteve êxito em diversos anos de competição, a direção elétrica contribuindo para isso especialmente em provas de manobras como o Slalom.
 
