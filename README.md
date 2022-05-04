@@ -10,9 +10,9 @@ Aluno:
 
 * Gabriel Ayres Rodrigues
 
-## Sumário
+# Sumário
 
-1. [Introdução](##intro)
+1. [Introdução](#introdução)
 2. [Concepção](#intro)
 3. [Design](#intro)
 4. [Implementação](#intro)
@@ -20,7 +20,7 @@ Aluno:
 6. [Considerações Finais](#intro)
 7. [Bibliografia](#intro)
 
-## Intro
+# Introdução
 
 Esse módulo tem como objetivo controlar a direção da rabeta da embarcação Guarapuvu II, da equipe Zênite Solar do IFSC.
 
@@ -30,7 +30,7 @@ A embarcação da equipe Zênite é operada em competições de barcos solares, 
 
 O sistema eletrônico atual foi danificado após a competição em março de 2022, o que é um motivador para sua atualização. 
 
-## Concepção
+# Concepção
 
 Pensando em um sistema de direção, a escolha de utilizar uma direção elétrica pode trazer maior responsividade mesmo tendo uma fração do peso de um sistema mecânico.[referência]. Além disso, sistemas mecânicos pouco desenvolvidos podem precisar de esforço do motorista, o que é indesejado para um alto desempenho.
 
@@ -60,16 +60,16 @@ Eficiência, parâmetros elétricos de operação (driver do mosfet?) [parâmetr
 | Requisitos | x | x | x |
 
 
-## Design
+# Design
 
 
-## Implementação
+# Implementação
 
 
-## Operação
+# Operação
 
 
-## Bibliografia
+# Bibliografia
 
 
 
