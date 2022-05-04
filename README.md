@@ -12,16 +12,15 @@ Aluno:
 
 ## Sumário
 
-[Introdução](#intro)
+1. [Introdução](##intro)
+2. [Concepção](#intro)
+3. [Design](#intro)
+4. [Implementação](#intro)
+5. [Operação](#intro)
+6. [Considerações Finais](#intro)
+7. [Bibliografia](#intro)
 
-2. Concepção
-3. Design
-4. Implementação
-5. Operação
-6. Considerações Finais
-7. Bibliografia
-
-# Intro
+## Intro
 
 Esse módulo tem como objetivo controlar a direção da rabeta da embarcação Guarapuvu II, da equipe Zênite Solar do IFSC.
 
