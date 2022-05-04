@@ -13,7 +13,7 @@ Aluno:
 ## Sumário
 
 tseete
-[Intro](##-Intro)
+[Intro](###-Intro)
 
 2. Concepção
 3. Design
@@ -22,8 +22,8 @@ tseete
 6. Considerações Finais
 7. Bibliografia
 
-# Intro
-[Intro](##-Intro)
+## Intro
+[Intro](###-Intro)
 Esse módulo tem como objetivo controlar a direção da rabeta da embarcação Guarapuvu II, da equipe Zênite Solar do IFSC.
 
 É inspirado no sistema atualmente implementado, desenvolvido por Cesar Dias Parente. Os arquivos do projeto inicial podem ser encontrados no seguinte link https://github.com/ZeniteSolar/MDE18/tree/main.
