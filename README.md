@@ -44,20 +44,28 @@ Levando em contas os elementos acima, os seguintes problemas devem ser confronta
 
 Para implementar o todo é preciso definir os requisitos das partes, feito em seguida.
 
-* ### Sensores
-Precisão. Robustez. 
+* ## Sensores
+Precisão. Robustez.
 
-* ### Controlador
+*vantagens de sensor sem contato: Menos desgaste por envelhecimento, menos histerese, menos problemas com dislocamento do eixo
+Levando em conta o preço reduzido da alternativa e sua confiabilidade... 
+
+Potênciometro comum: equacionamento e precisão. (vale lembrar que a rabeta não gira 360)
+opções de potênciometro?
+
+* ## Controlador
 Capacidade de processamento. Tempo de resposta. Consumo. Portas disponíveis. Protocolos disponíveis (CAN seria interessante). Robustez.
 
-* ### Potência
-Eficiência, parâmetros elétricos de operação (driver do mosfet?) [parâmetros do motor, alimentação do circuito]. Robustez.
+* ## Potência
+PONTE H
+Eficiência, parâmetros elétricos de operação (tecnologia do mosfet; driver?) [parâmetros do motor, alimentação do circuito]. Robustez.
+
+
  
- 
- Fazer isso em tabela?
+* ## Requisitos
 || Sensores | Controlador | Potência |
-|---|---|---|---|
-| Requisitos | x | x | x |
+|-----------|-----------|-----------|-----------|
+| X | x | x | x |
 
 
 # Design
