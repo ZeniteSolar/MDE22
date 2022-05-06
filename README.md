@@ -66,12 +66,10 @@ O controlador que não está em foco é necessário, no entanto, não há necess
 PONTE H
 Eficiência, parâmetros elétricos de operação (tecnologia do mosfet; driver?) [parâmetros do motor, alimentação do circuito]. Robustez.
 
-
- 
-* ## Requisitos
-|| Sensores | Controlador | Potência |
+<!-- 
+|| Sensor | Controlador | Potência |
 |-----------|-----------|-----------|-----------|
-| x | x | x | x |
+| x | x | x | x | -->
 
 # Design
 
