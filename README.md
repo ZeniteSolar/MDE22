@@ -65,7 +65,9 @@ Eficiência, parâmetros elétricos de operação (tecnologia do mosfet; driver?
 * ## Requisitos
 || Sensores | Controlador | Potência |
 |-----------|-----------|-----------|-----------|
-| X | x | x | x |
+| x | x | x | x |
+
+A rede CAN implementada elimina a necessidade de cabeamento entre popa e proa, além disso, a comunicação pela rede possibilita o controle da direção utilizando mensagens de outros módulos. 
 
 
 # Design
