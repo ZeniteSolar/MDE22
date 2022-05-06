@@ -45,6 +45,9 @@ Levando em contas os elementos acima, os seguintes problemas devem ser confronta
 Para implementar o todo é preciso definir os requisitos das partes, feito em seguida.
 
 * ## Sensores
+
+Existem algumas opções para os sensors de rotação como: magnético, óptico, resistivos (como potenciômetro). 
+
 Precisão. Robustez.
 
 *vantagens de sensor sem contato: Menos desgaste por envelhecimento, menos histerese, menos problemas com dislocamento do eixo
@@ -55,7 +58,8 @@ opções de potênciometro?
 
 * ## Controlador
 
-A rede CAN implementada elimina a necessidade de cabeamento entre popa e proa, reduzindo ruído na leitura dos sensores e eliminando problemas mecânicos com cabeamento. Além disso, a comunicação pela rede possibilita o envio de dados pelo módulo e o controle da direção utilizando mensagens de outros módulos.  
+A rede CAN implementada elimina a necessidade de cabeamento entre popa e proa, reduzindo ruído na leitura dos sensores e eliminando problemas mecânicos com cabeamento. Além disso, a comunicação pela rede possibilita o envio de dados pelo módulo e o controle da direção utilizando mensagens de outros módulos.
+
 O controlador que não está em foco é necessário, no entanto, não há necessidade de criar um módulo CAN cujo único propósito é a leitura de um valor analógico. Essa função pode ser desempenhada por outro módulo já presente na proa.
 
 <!-- Microcontrolador de linha comercial serão o suficiente para garantir a execução das tarefas e tempo de resposta desejados. Além de portas PWM e entradas do ADC, seria interessante um microcontrolador com interface CAN. -->
