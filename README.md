@@ -54,7 +54,13 @@ Potênciometro comum: equacionamento e precisão. (vale lembrar que a rabeta nã
 opções de potênciometro?
 
 * ## Controlador
-Capacidade de processamento. Tempo de resposta. Consumo. Portas disponíveis. Protocolos disponíveis (CAN seria interessante). Robustez.
+
+A rede CAN implementada elimina a necessidade de cabeamento entre popa e proa, reduzindo ruído na leitura dos sensores e eliminando problemas mecânicos com cabeamento. Além disso, a comunicação pela rede possibilita o envio de dados pelo módulo e o controle da direção utilizando mensagens de outros módulos.  
+O controlador que não está em foco é necessário, no entanto, não há necessidade de criar um módulo CAN cujo único propósito é a leitura de um valor analógico. Essa função pode ser desempenhada por outro módulo já presente na proa.
+
+<!-- Microcontrolador de linha comercial serão o suficiente para garantir a execução das tarefas e tempo de resposta desejados. Além de portas PWM e entradas do ADC, seria interessante um microcontrolador com interface CAN. -->
+
+<!-- A escolha do stm32 é viável considerando o preço e a dificuldade de programação -->
 
 * ## Potência
 PONTE H
@@ -66,9 +72,6 @@ Eficiência, parâmetros elétricos de operação (tecnologia do mosfet; driver?
 || Sensores | Controlador | Potência |
 |-----------|-----------|-----------|-----------|
 | x | x | x | x |
-
-A rede CAN implementada elimina a necessidade de cabeamento entre popa e proa, além disso, a comunicação pela rede possibilita o controle da direção utilizando mensagens de outros módulos. 
-
 
 # Design
 
