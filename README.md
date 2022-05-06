@@ -60,6 +60,8 @@ O controlador que não está em foco é necessário, no entanto, não há necess
 
 <!-- Microcontrolador de linha comercial serão o suficiente para garantir a execução das tarefas e tempo de resposta desejados. Além de portas PWM e entradas do ADC, seria interessante um microcontrolador com interface CAN. -->
 
+Mesmo com interface CAN implementada, é necessário um transceiver CAN. O CI mais comum e de preço acessível é o [MCP2551](https://br.mouser.com/datasheet/2/268/20001667G-1115479.pdf).
+
 <!-- A escolha do stm32 é viável considerando o preço e a dificuldade de programação -->
 
 * ## Potência
