@@ -35,7 +35,7 @@ O sistema eletrônico atual foi danificado após a competição em março de 202
 Pensando em um sistema de direção, a escolha de utilizar uma direção elétrica pode trazer maior responsividade mesmo tendo uma fração do peso de um sistema mecânico.[referência]. Além disso, sistemas mecânicos podem pedir esforço físco do motorista e uma necessidade maior de manutenção. Por essas razões
 
 Abaixo está o diagrama representando um sistema de direção elétrica e suas partes. 
-![Diagrama concepção](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/4bd646044cc3c0f56f176853dbc235b8130db225/Imagens/Diagrama%20de%20blocos%20da%20dire%C3%A7%C3%A3o%20el%C3%A9trica.PNG)
+![Diagrama concepção](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/cb3b7e7deb8563f8dec3147824b006344d2aa883/Imagens/Diagrama%20de%20blocos%20da%20dire%C3%A7%C3%A3o%20el%C3%A9trica.PNG)
 
 Levando em contas os elementos acima, os seguintes problemas devem ser confrontados:
 - Sistemas eletrônicos em veículos devem possuir alta robustez devido às vibrações ao qual são expostos. No caso da embarcação em alta velocidade, especialmente para operações marítimas, os impactos são um grande problema (além da oxidação dos circuitos).
