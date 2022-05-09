@@ -42,31 +42,30 @@ Levando em contas os elementos acima, os seguintes problemas devem ser confronta
 - Como o veículo alvo é utilizado em competições cujo foco, e portanto o desafio, está na geração e consumo de energia, a solução deve ser tão eficiente quando possível para garantir o sucesso da equipe.
 - Um ambiente competitivo entre veículos requer alta performance dessa direção, não apenas para alcançar a vitória mas garantir a segurança de todos. Portanto, a funcionalidade deve ser atendida tão bem quanto os outros parâmetros.
 
-Para implementar o todo é preciso definir os requisitos das partes, feito em seguida.
+Para implementar o todo é preciso definir os requisitos das partes, e as possíveis propostas para satisfazê-los.
 
 * ## Sensores
 
-Existem algumas opções para os sensors de rotação como: magnético, óptico, resistivos (como potenciômetro). 
-
-Precisão. Robustez.
-
-*vantagens de sensor sem contato: Menos desgaste por envelhecimento, menos histerese, menos problemas com dislocamento do eixo
-Levando em conta o preço reduzido da alternativa e sua confiabilidade... 
-
-Potênciometro comum: equacionamento e precisão. (vale lembrar que a rabeta não gira 360)
-opções de potênciometro?
+Existem algumas opções para os sensors de rotação como: magnético, óptico, resistivos (como potenciômetro). Considerando a precisão e robustez necessária para o trabalho, e o preço das alternativas, é recomendado um potenciômetro linear comum.
+<!-- Dúvida sobre instrumentação. Como definir (de maneira teórica) que o potenciômetro comum é o suficiente em termos de precisão? Sendo um componente passivo, trabalhando com uma grandeza contínua, o trabalho é mais do circuito de amostragem do que do Sensor? -->
 
 * ## Controlador
 
 A rede CAN implementada elimina a necessidade de cabeamento entre popa e proa, reduzindo ruído na leitura dos sensores e eliminando problemas mecânicos com cabeamento. Além disso, a comunicação pela rede possibilita o envio de dados pelo módulo e o controle da direção utilizando mensagens de outros módulos.
 
+Um microcontrolador de linha comercial será o suficiente para garantir a execução das tarefas e tempo de resposta desejados. Além de portas PWM e entradas do ADC, seria interessante um microcontrolador com interface CAN como o STM32F103xx ou equivalentes. No entanto, essa alternativa supera o preço de CI's transceiver e interface CAN, além disso é trabalhoso de gravar e regravar (sendo que a última opção é um grande diferencial para corrigir erros, durante uma competição por exemplo.
+
+Pela facilidade de programação e preço, é proposto o ATmega328P. Para a conexão com a rede can, os CI's mais comum e de preço acessível são o transceiver 
+[MCP2551](https://br.mouser.com/datasheet/2/268/20001667G-1115479.pdf) e o circuito de interface CAN/SPI [MCP2515](https://br.mouser.com/datasheet/2/268/MCP2515_Family_Data_Sheet_DS20001801K-2303489.pdf).
+<!-- 
+| ATmega328P | MCP2515 | MCP2551 |
+|--------|--------|--------|
+|![ATmega328P](permalink atmega)|![MCP2515](permalink MCP2515)|![MCP2551](permalink MCP2551)|  -->
+
+
+
+
 O controlador que não está em foco é necessário, no entanto, não há necessidade de criar um módulo CAN cujo único propósito é a leitura de um valor analógico. Essa função pode ser desempenhada por outro módulo já presente na proa.
-
-<!-- Microcontrolador de linha comercial serão o suficiente para garantir a execução das tarefas e tempo de resposta desejados. Além de portas PWM e entradas do ADC, seria interessante um microcontrolador com interface CAN. -->
-
-Mesmo com interface CAN implementada, é necessário um transceiver CAN. O CI mais comum e de preço acessível é o [MCP2551](https://br.mouser.com/datasheet/2/268/20001667G-1115479.pdf).
-
-<!-- A escolha do stm32 é viável considerando o preço e a dificuldade de programação -->
 
 * ## Potência
 PONTE H
