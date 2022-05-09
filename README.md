@@ -58,18 +58,25 @@ Um microcontrolador de linha comercial será o suficiente para garantir a execu�
 Pela facilidade de programação e preço, é proposto o [ATmega328P](https://br.mouser.com/ProductDetail/Microchip-Technology-Atmel/ATMEGA328P-PU?qs=K8BHR703ZXguOQv3sKbWcg%3D%3D). Para a conexão com a rede can, os CI's mais comum e de preço acessível são o transceiver 
 [MCP2551](https://br.mouser.com/datasheet/2/268/20001667G-1115479.pdf) e o circuito de interface CAN/SPI [MCP2515](https://br.mouser.com/datasheet/2/268/MCP2515_Family_Data_Sheet_DS20001801K-2303489.pdf).
 
-| ATmega328P | MCP2515 | MCP2551 |
+<!-- Aqui ou na etapa de Design? -->
+<!-- | ATmega328P | MCP2515 | MCP2551 |
 |--------|--------|--------|
-|![ATmega328P](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/ce93888b1ef8f3adbeb4987ba464b1fd88e084a3/Imagens/ATmega328P-PU.PNG)|![MCP2515](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/ce93888b1ef8f3adbeb4987ba464b1fd88e084a3/Imagens/MCP2515.PNG)|![MCP2551](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/ce93888b1ef8f3adbeb4987ba464b1fd88e084a3/Imagens/MCP2551.PNG)|
-
-
-
+|![ATmega328P](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/ce93888b1ef8f3adbeb4987ba464b1fd88e084a3/Imagens/ATmega328P-PU.PNG)|![MCP2515](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/ce93888b1ef8f3adbeb4987ba464b1fd88e084a3/Imagens/MCP2515.PNG)|![MCP2551](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/ce93888b1ef8f3adbeb4987ba464b1fd88e084a3/Imagens/MCP2551.PNG)| -->
 
 O controlador que não está em foco é necessário, no entanto, não há necessidade de criar um módulo CAN cujo único propósito é a leitura de um valor analógico. Essa função pode ser desempenhada por outro módulo já presente na proa.
 
 * ## Potência
 PONTE H
-Eficiência, parâmetros elétricos de operação (tecnologia do mosfet; driver?) [parâmetros do motor, alimentação do circuito]. Robustez.
+Sistema mecânico atual, parâmetros do motor, 
+
+alimentação do circuito
+<!-- surge a dúvida sobre o futuro banco de baterias -->
+
+parâmetros elétricos de operação (tecnologia do mosfet; driver?) 
+
+Rendimento,
+
+Robustez.
 
 <!-- 
 || Sensor | Controlador | Potência |
