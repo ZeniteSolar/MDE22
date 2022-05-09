@@ -57,10 +57,10 @@ Um microcontrolador de linha comercial será o suficiente para garantir a execu�
 
 Pela facilidade de programação e preço, é proposto o ATmega328P. Para a conexão com a rede can, os CI's mais comum e de preço acessível são o transceiver 
 [MCP2551](https://br.mouser.com/datasheet/2/268/20001667G-1115479.pdf) e o circuito de interface CAN/SPI [MCP2515](https://br.mouser.com/datasheet/2/268/MCP2515_Family_Data_Sheet_DS20001801K-2303489.pdf).
-<!-- 
+
 | ATmega328P | MCP2515 | MCP2551 |
 |--------|--------|--------|
-|![ATmega328P](permalink atmega)|![MCP2515](permalink MCP2515)|![MCP2551](permalink MCP2551)|  -->
+|![ATmega328P](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/ce93888b1ef8f3adbeb4987ba464b1fd88e084a3/Imagens/ATmega328P-PU.PNG)|![MCP2515](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/ce93888b1ef8f3adbeb4987ba464b1fd88e084a3/Imagens/MCP2515.PNG)|![MCP2551](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/ce93888b1ef8f3adbeb4987ba464b1fd88e084a3/Imagens/MCP2551.PNG)|
 
 
 
