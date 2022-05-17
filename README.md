@@ -46,8 +46,9 @@ Para implementar o todo é preciso definir os requisitos das partes, e as possí
 
 * ## Sensores
 
-Existem algumas opções para os sensors de rotação como: magnético, óptico, resistivos (como potenciômetro). Considerando a precisão e robustez necessária para o trabalho, e o preço das alternativas, é recomendado um potenciômetro linear comum.
-<!-- Dúvida sobre instrumentação. Como definir (de maneira teórica) que o potenciômetro comum é o suficiente em termos de precisão? Sendo um componente passivo, trabalhando com uma grandeza contínua, o trabalho é mais do circuito de amostragem do que do Sensor? -->
+Existem algumas opções para os sensors de rotação como: magnético, óptico, sensor de efeito Hall, potênciometro de rotação. A alternativa mais econômica e de simples implementação é o um potênciometro linear comum, atualmente utilizados no sistema da equipe Zênite. As desvantagens dessa escolha são o desgaste e o possível mal funcionamento devido à sujeira nos contatos. 
+
+As características não são ideais, mas a alternativa se prova robusta o suficiente em comparação com o custo e a facilidade de implementação.
 
 * ## Controlador
 
