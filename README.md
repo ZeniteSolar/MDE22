@@ -46,10 +46,13 @@ Para implementar o todo é preciso definir os requisitos das partes, e as possí
 
 * ## Sensores
 
-Existem algumas opções para os sensors de rotação como: magnético, óptico, sensor de efeito Hall, potênciometro de rotação. A alternativa mais econômica e de simples implementação é o um potênciometro linear comum, atualmente utilizados no sistema da equipe Zênite. As desvantagens dessa escolha são o desgaste e o possível mal funcionamento devido à sujeira nos contatos. 
+Existem algumas opções para os sensors de rotação como: indutivo, óptico, sensor de efeito Hall, potênciometro de rotação, encoder. A alternativa mais econômica e de simples implementação é um potênciometro linear comum, atualmente utilizados no sistema da equipe Zênite.
 
-As características não são ideais, mas a alternativa se prova robusta o suficiente em comparação com o custo e a facilidade de implementação.
+Os tipos mais utilizados para sensores de direção (steering) no mercado ([Bosch](https://www.bosch-motorsport.com/content/downloads/Raceparts/en-GB/120530059.html), [CUI Inc](https://www.cuidevices.com/catalog/motion/rotary-encoders), [TT Electronics](https://www.ttelectronics.com/products/categories/steering-sensors/search-results/), são os resistivos, encoders, e os de tecnologia GMR ([Giant magnetoresistance])(https://en.wikipedia.org/wiki/Giant_magnetoresistance).
 
+<!-- Buscando o equilíbrio entre robustez, implementação, funcionalidade no ambiente em questão e preço, o potenciômetro se destaca.
+ -->
+ 
 * ## Controlador
 
 A rede CAN implementada elimina a necessidade de cabeamento entre popa e proa, reduzindo ruído na leitura dos sensores e eliminando problemas mecânicos com cabeamento. Além disso, a comunicação pela rede possibilita o envio de dados pelo módulo e o controle da direção utilizando mensagens de outros módulos.
