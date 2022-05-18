@@ -48,10 +48,14 @@ Para implementar o todo é preciso definir os requisitos das partes, e as possí
 
 Existem algumas opções para os sensors de rotação como: indutivo, óptico, sensor de efeito Hall, potênciometro de rotação, encoder. A alternativa mais econômica e de simples implementação é um potênciometro linear comum, atualmente utilizados no sistema da equipe Zênite.
 
-Os tipos mais utilizados para sensores de direção (steering) no mercado ([Bosch](https://www.bosch-motorsport.com/content/downloads/Raceparts/en-GB/120530059.html), [CUI Inc](https://www.cuidevices.com/catalog/motion/rotary-encoders), [TT Electronics](https://www.ttelectronics.com/products/categories/steering-sensors/search-results/), são os resistivos, encoders, e os de tecnologia GMR ([Giant magnetoresistance])(https://en.wikipedia.org/wiki/Giant_magnetoresistance).
+Os tipos mais utilizados para sensores de direção (steering) no mercado ([Bosch](https://www.bosch-motorsport.com/content/downloads/Raceparts/en-GB/120530059.html), [CUI Inc](https://www.cuidevices.com/catalog/motion/rotary-encoders), [TT Electronics](https://www.ttelectronics.com/products/categories/steering-sensors/search-results/)), são os resistivos, encoders, e os de tecnologia GMR ([Giant magnetoresistance](https://en.wikipedia.org/wiki/Giant_magnetoresistance)).
 
-<!-- Buscando o equilíbrio entre robustez, implementação, funcionalidade no ambiente em questão e preço, o potenciômetro se destaca.
- -->
+<!-- Explicar encoders e GMR?  -->
+Sensores desse nível são tecnologia de ponta portanto estão fora de questão, no entanto, vale observar que o sensor resistivo permanece sendo utilizado (até mesmo em veículos comuns [link]()). 
+
+Para um contraste entre os líderes: sensores resistivos têm desvantagem pelo desgaste e possível mal contato, os GMR podem sofrer interferência em ambientes com forte campo magnético, e os encoders (por serem digitais) apresentam um desafio na troca Precisão X Complexidade (preço). 
+
+Buscando o equilíbrio entre robustez, facilidade de implementação, operação no ambiente em pauta e preço, o sensor resistivo se destaca.
  
 * ## Controlador
 
