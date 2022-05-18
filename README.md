@@ -55,43 +55,45 @@ Sensores desse nível são tecnologia de ponta portanto estão fora de questão,
 
 Para um contraste entre os líderes: sensores resistivos têm desvantagem pelo desgaste e possível mal contato, os GMR podem sofrer interferência em ambientes com forte campo magnético, e os encoders (por serem digitais) apresentam um desafio na troca Precisão X Complexidade (preço). 
 
-Buscando o equilíbrio entre robustez, facilidade de implementação, operação no ambiente em pauta e preço, o sensor resistivo se destaca.
+Buscando o equilíbrio entre robustez, facilidade de implementação e preço, o sensor resistivo se destaca. 
  
 * ## Controlador
 
 A rede CAN implementada elimina a necessidade de cabeamento entre popa e proa, reduzindo ruído na leitura dos sensores e eliminando problemas mecânicos com cabeamento. Além disso, a comunicação pela rede possibilita o envio de dados pelo módulo e o controle da direção utilizando mensagens de outros módulos.
 
-Um microcontrolador de linha comercial será o suficiente para garantir a execução das tarefas e tempo de resposta desejados. Além de portas PWM e entradas do ADC, seria interessante um microcontrolador com interface CAN como o STM32F103xx ou equivalentes. No entanto, essa alternativa supera o preço de CI's transceiver e interface CAN, além disso é trabalhoso de gravar e regravar (sendo que a última opção é um grande diferencial para corrigir erros, durante uma competição por exemplo.
+Um microcontrolador de linha comercial será o suficiente para garantir a execução das tarefas e tempo de resposta desejados. Além de portas PWM e entradas do ADC, seria interessante um microcontrolador com interface CAN como o STM32F103xx ou equivalentes. No entanto, essa alternativa supera o preço de CI's transceiver e interface CAN, além disso é trabalhoso de gravar e regravar (sendo que a última opção é um grande diferencial para corrigir erros, durante uma competição por exemplo).
 
 Pela facilidade de programação e preço, é proposto o [ATmega328P](https://br.mouser.com/ProductDetail/Microchip-Technology-Atmel/ATMEGA328P-PU?qs=K8BHR703ZXguOQv3sKbWcg%3D%3D). Para a conexão com a rede can, os CI's mais comum e de preço acessível são o transceiver 
 [MCP2551](https://br.mouser.com/datasheet/2/268/20001667G-1115479.pdf) e o circuito de interface CAN/SPI [MCP2515](https://br.mouser.com/datasheet/2/268/MCP2515_Family_Data_Sheet_DS20001801K-2303489.pdf).
 
-<!-- Aqui ou na etapa de Design? -->
-<!-- | ATmega328P | MCP2515 | MCP2551 |
-|--------|--------|--------|
-|![ATmega328P](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/ce93888b1ef8f3adbeb4987ba464b1fd88e084a3/Imagens/ATmega328P-PU.PNG)|![MCP2515](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/ce93888b1ef8f3adbeb4987ba464b1fd88e084a3/Imagens/MCP2515.PNG)|![MCP2551](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/ce93888b1ef8f3adbeb4987ba464b1fd88e084a3/Imagens/MCP2551.PNG)| -->
-
 O controlador que não está em foco é necessário, no entanto, não há necessidade de criar um módulo CAN cujo único propósito é a leitura de um valor analógico. Essa função pode ser desempenhada por outro módulo já presente na proa.
 
 * ## Potência
-PONTE H
+
 Sistema mecânico atual, parâmetros do motor, 
 
-alimentação do circuito
-<!-- surge a dúvida sobre o futuro banco de baterias -->
+Alimentação do circuito: tensão 12V(?), corrente 19A nominal, 30 máx? 
 
-parâmetros elétricos de operação (tecnologia do mosfet; driver?) 
-
-Rendimento,
-
-Robustez.
 
 <!-- 
 || Sensor | Controlador | Potência |
 |-----------|-----------|-----------|-----------|
 | x | x | x | x | -->
 
+* ## Medidas e Feedback
+
+É interessante fornecer à rede CAN dados sobre o consumo do sistema, portanto é proposto um sensor de corrente para cada braço da ponte H. O [INA240](https://www.ti.com/lit/ds/symlink/ina240.pdf?ts=1649772128538) é um exemplo de sensor de corrente bidirecional com rejeição de PWM, mas existem alternativas com o resistor shunt integrado.
+
+Essa medida deve constribuir para o feedback, que também terá o dado de posição da rabeta. Levar esses dados à um display garante que o piloto tenha conhecimento sobre o estado do sistema e sobre o consumo que sua pilotagem está provocando.
+
 # Design
+
+
+<!-- Aqui ou na etapa de Design? -->
+<!-- | ATmega328P | MCP2515 | MCP2551 |
+|--------|--------|--------|
+|![ATmega328P](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/ce93888b1ef8f3adbeb4987ba464b1fd88e084a3/Imagens/ATmega328P-PU.PNG)|![MCP2515](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/ce93888b1ef8f3adbeb4987ba464b1fd88e084a3/Imagens/MCP2515.PNG)|![MCP2551](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/ce93888b1ef8f3adbeb4987ba464b1fd88e084a3/Imagens/MCP2551.PNG)| -->
+
 
 
 # Implementação
