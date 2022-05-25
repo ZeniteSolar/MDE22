@@ -80,7 +80,7 @@ Para corrigir isso o circuito será dimensionado para a tensão do banco de bate
 | Baterias | 3 série | 21 série |
 | Vmax Banco | 46,8V | 58,8V |
 
-Testes de rotor travado indicaram o motor operando a um máximo de 50A com 12V, assim, os limites da ponte H são 60V e 50A.
+Testes de rotor travado indicaram o motor operando a um máximo de 50A com 12V, assim, os limites da ponte H são 60V e 50A. A implementação pode ser feita com Circuito Integrado ou com semicondutores, sendo que a disponibilidade é um 
 
 * ## Medidas e Feedback
 
