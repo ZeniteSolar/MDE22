@@ -32,7 +32,7 @@ O sistema eletrônico atual foi danificado após a competição em março de 202
 
 # Concepção
 
-Pensando em um sistema de direção, a escolha de utilizar uma direção elétrica pode trazer maior responsividade mesmo tendo uma fração do peso de um sistema mecânico.[referência]. Além disso, sistemas mecânicos podem pedir esforço físco do motorista e uma necessidade maior de manutenção. Por essas razões
+Pensando em um sistema de direção, a escolha de utilizar uma direção elétrica pode trazer maior responsividade mesmo tendo uma fração do peso de um sistema mecânico [referência]. Além disso, sistemas mecânicos podem pedir esforço físco do motorista e uma necessidade maior de manutenção. Por essas razões a direção elétrica é vantajosa no sistema da embarcação.
 
 Abaixo está o diagrama representando um sistema de direção elétrica e suas partes. 
 ![Diagrama concepção](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/cb3b7e7deb8563f8dec3147824b006344d2aa883/Imagens/Diagrama%20de%20blocos%20da%20dire%C3%A7%C3%A3o%20el%C3%A9trica.PNG)
@@ -55,7 +55,7 @@ Sensores desse nível são tecnologia de ponta portanto estão fora de questão,
 
 Para um contraste entre os líderes: sensores resistivos têm desvantagem pelo desgaste e possível mal contato, os GMR podem sofrer interferência em ambientes com forte campo magnético, e os encoders (por serem digitais) apresentam um desafio na troca Precisão X Complexidade (preço). 
 
-Buscando o equilíbrio entre robustez, facilidade de implementação e preço, o sensor resistivo se destaca. 
+Buscando o equilíbrio entre robustez, facilidade de implementação e preço, o sensor resistivo se destaca. 1
  
 * ## Controlador
 
@@ -80,7 +80,7 @@ Para corrigir isso o circuito será dimensionado para a tensão do banco de bate
 | Baterias | 3 série | 21 série |
 | Vmax Banco | 46,8V | 58,8V |
 
-Testes de rotor travado indicaram o motor operando a um máximo de 50A com 12V, assim, os limites da ponte H são 60V e 50A. A implementação pode ser feita com Circuito Integrado ou com semicondutores, sendo que a disponibilidade é um 
+Testes de rotor travado indicaram o motor operando a um máximo de 50A com 12V de alimentação, assim, os limites da ponte H são 60V e 50A. A implementação pode ser feita com Circuito Integrado ou com semicondutore
 
 * ## Medidas e Feedback
 
