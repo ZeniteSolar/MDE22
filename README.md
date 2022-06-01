@@ -70,17 +70,8 @@ O controlador que não está em foco é necessário, no entanto, não há necess
 
 * ## Potência
 
-O motor DC brushed é acionado por uma ponte H, atualmente alimentada por uma bateria de 12V, essa bateria é exlusivamente utilizada para o sistema da direção. Comparado com a alternativa, de usar a tensão do banco de baterias, esse sistema tem desvantagem pelo peso da bateria adicional e pela necessidade de um módulo para carregar a mesma.
+O motor DC brushed é acionado por uma ponte H, atualmente alimentada por uma bateria de 12V, 
 
-Para corrigir isso o circuito será dimensionado para a tensão do banco de baterias. Considernado uma troca iminente nesse sistema, será projetada para o sistema futuro do barco:
-
-|| Banco Atual | Banco futuro |
-|-----------|-----------|-----------|
-| Vmax Célula | 15,6V | 2,8V |
-| Baterias | 3 série | 21 série |
-| Vmax Banco | 46,8V | 58,8V |
-
-Testes de rotor travado indicaram o motor operando a um máximo de 50A com 12V de alimentação, assim, os limites da ponte H são 60V e 50A. A implementação pode ser feita com Circuito Integrado ou com semicondutore
 
 * ## Medidas e Feedback
 
