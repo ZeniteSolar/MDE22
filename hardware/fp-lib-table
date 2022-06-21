@@ -1,3 +1,4 @@
 (fp_lib_table
   (lib (name "BTS7960B")(type "KiCad")(uri "${KICAD6_FOOTPRINT_DIR}/BTS7960B.pretty")(options "")(descr ""))
+  (lib (name "KicadZeniteSolarLibrary18")(type "KiCad")(uri "${KIPRJMOD}/Bibliotecas/KicadZeniteSolarLibrary18.pretty")(options "")(descr ""))
 )

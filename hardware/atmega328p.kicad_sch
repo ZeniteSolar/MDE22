@@ -620,11 +620,10 @@
     (uuid e76ec524-408a-4daa-89f6-0edfdbcfb621)
   )
 
-  (no_connect (at 128.27 95.25) (uuid 113d39c2-2cd3-4f6d-9c58-5fe3b7c34d50))
-  (no_connect (at 128.27 105.41) (uuid 65b570b1-f509-46c6-84e1-3b842d6376b2))
   (no_connect (at 128.27 92.71) (uuid 6880fd00-4765-46c1-8d27-490f99e79949))
+  (no_connect (at 128.27 105.41) (uuid 69a0e70c-c679-4ec4-bb6b-405c656b0d02))
+  (no_connect (at 128.27 102.87) (uuid baddcd95-6854-4f5e-948f-2e1387d01660))
   (no_connect (at 128.27 130.81) (uuid c134d5aa-4ec7-4304-b49e-47a970647040))
-  (no_connect (at 128.27 102.87) (uuid d2b7a5bc-8cf9-469c-b5f8-92c2185a445f))
   (no_connect (at 128.27 123.19) (uuid fca27a61-6481-416a-aea1-a5cf6fc1e9bb))
 
   (wire (pts (xy 146.05 99.06) (xy 146.05 97.79))
@@ -1003,6 +1002,10 @@
     (uuid ee29d712-3378-4507-a00b-003526b29bb1)
   )
 
+  (hierarchical_label "VBAT" (shape input) (at 128.27 95.25 0)
+    (effects (font (size 1.524 1.524)) (justify left))
+    (uuid 0e8685e6-bf29-4bba-9b64-d3d3b3db4eec)
+  )
   (hierarchical_label "PWM2" (shape input) (at 128.27 128.27 0)
     (effects (font (size 1.524 1.524)) (justify left))
     (uuid 10be0283-468c-4173-8ac6-78fbd5c72d3a)
