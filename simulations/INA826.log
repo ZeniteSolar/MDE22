@@ -1,0 +1,140 @@
+Circuit: * C:\users\alejopm\Favorites\alejopm\zenite\MSC22\simulations\INA826.asc
+
+WARNING: Less than two connections to node VBAT1.  This node is used by V4.
+WARNING: Less than two connections to node VCC-.  This node is used by V6.
+u1:input1:vi3b: Missing value, assumed 0V @ DC
+u1:input1:vi8b: Missing value, assumed 0V @ DC
+u1:output:vi3b: Missing value, assumed 0V @ DC
+u1:output:vi8b: Missing value, assumed 0V @ DC
+u1:u1:vi3b: Missing value, assumed 0V @ DC
+u1:u1:vi8b: Missing value, assumed 0V @ DC
+u1:bias:vib1: Missing value, assumed 0V @ DC
+Direct Newton iteration failed to find .op point.  (Use ".option noopiter" to skip.)
+Starting Gmin stepping
+Gmin = 10
+Gmin = 1.07374
+Gmin = 0.115292
+Gmin = 0.0123794
+Gmin = 0.00132923
+vernier = 0.5
+vernier = 0.25
+vernier = 0.125
+vernier = 0.0625
+Gmin = 0.00100083
+vernier = 0.03125
+vernier = 0.015625
+vernier = 0.0078125
+vernier = 0.00390625
+vernier = 0.00195313
+Gmin = 0.00100083
+vernier = 0.000976563
+vernier = 0.000488281
+Gmin = 0
+Gmin stepping failed
+
+Starting source stepping with srcstepmethod=0
+Source Step = 3.0303%
+Source Step = 33.3333%
+vernier = 0.25
+Source Step = 34.0939%
+Source Step = 34.1235%
+Source Step = 34.1531%
+Source Step = 34.1826%
+Source Step = 34.2122%
+Source Step = 34.2418%
+vernier = 0.00146484
+Source Step = 34.2847%
+Source Step = 34.3291%
+Source Step = 34.3735%
+Source Step = 34.4179%
+Source Step = 34.4623%
+vernier = 0.00219727
+Source Step = 34.5244%
+Source Step = 34.591%
+Source Step = 34.6576%
+Source Step = 34.7242%
+Source Step = 34.7908%
+vernier = 0.0032959
+Source Step = 34.8807%
+Source Step = 34.9805%
+Source Step = 35.0804%
+Source Step = 35.1803%
+Source Step = 35.2802%
+vernier = 0.00494385
+Source Step = 35.41%
+Source Step = 35.5598%
+Source Step = 35.7096%
+Source Step = 35.8594%
+Source Step = 36.0093%
+vernier = 0.00741577
+Source Step = 36.1965%
+Source Step = 36.4212%
+Source Step = 36.646%
+Source Step = 36.8707%
+Source Step = 37.0954%
+vernier = 0.0111237
+Source Step = 37.3651%
+Source Step = 37.7022%
+Source Step = 38.0392%
+Source Step = 38.3763%
+Source Step = 38.7134%
+vernier = 0.0166855
+Source Step = 39.101%
+Source Step = 39.6067%
+Source Step = 40.1123%
+Source Step = 40.6179%
+Source Step = 41.1235%
+vernier = 0.0250282
+Source Step = 41.6797%
+Source Step = 42.4381%
+Source Step = 43.1966%
+Source Step = 43.955%
+Source Step = 44.7134%
+vernier = 0.0375423
+Source Step = 45.5098%
+Source Step = 46.6474%
+Source Step = 47.7851%
+Source Step = 48.9227%
+Source Step = 50.0604%
+Source Step = 51.198%
+vernier = 0.0563135
+Source Step = 52.9045%
+Source Step = 54.611%
+Source Step = 56.3174%
+Source Step = 58.0239%
+Source Step = 59.7304%
+vernier = 0.0844703
+Source Step = 62.2047%
+Source Step = 64.7645%
+Source Step = 67.3242%
+Source Step = 69.8839%
+Source Step = 72.4436%
+vernier = 0.126705
+Source Step = 76.0272%
+Source Step = 79.8667%
+Source Step = 83.7063%
+Source Step = 87.5458%
+Source Step = 91.3854%
+vernier = 0.190058
+Source Step = 96.5688%
+Source stepping succeeded in finding the operating point.
+
+
+Date: Tue Jun 21 15:16:44 2022
+Total elapsed time: 1.500 seconds.
+
+tnom = 27
+temp = 27
+method = trap
+totiter = 7050
+traniter = 2525
+tranpoints = 1218
+accept = 1167
+rejected = 51
+matrix size = 231
+fillins = 247
+solver = Normal
+Thread vector: 23.1/13.7[4] 10.8/7.6[4] 8.8/7.1[4] 2.7/5.4[1]  2592/500
+Matrix Compiler1: 24.17 KB object code size  10.5/5.9/[4.7]
+Matrix Compiler2: 23.82 KB object code size  6.8/7.3/[4.9]
+

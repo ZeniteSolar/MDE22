@@ -1,3 +1,4 @@
 (sym_lib_table
   (lib (name "BTS7960B")(type "Legacy")(uri "${KICAD6_SYMBOL_DIR}/BTS7960B.lib")(options "")(descr ""))
+  (lib (name "INA826AIDR")(type "Legacy")(uri "${KIPRJMOD}/Bibliotecas/INA826AIDR.lib")(options "")(descr ""))
 )
