@@ -587,7 +587,7 @@
 
   (footprint "KicadZeniteSolarLibrary18:RJ45_YH59_01" (layer "F.Cu")
     (tedit 5BE61FF6) (tstamp 556e4a5f-40c3-4d72-9410-714bde1dc9bd)
-    (at 77 78 -90)
+    (at 76.999998 77.999996 -90)
     (tags "RJ45")
     (property "Sheetfile" "canbus_connector.kicad_sch")
     (property "Sheetname" "CANBUS CONN")
@@ -633,7 +633,7 @@
       (net 2 "GND") (pinfunction "SH") (pintype "passive") (tstamp 9033e468-747c-4fd7-a324-da6d7dae4974))
     (pad "9" thru_hole circle locked (at 12.2 3.296 270) (size 2.5 2.5) (drill 1.5) (layers *.Cu *.Mask)
       (net 2 "GND") (pinfunction "SH") (pintype "passive") (tstamp a6699854-5ed5-4428-b502-2118f14a251c))
-    (model "${KIPRJMOD}/rj45.wrl"
+    (model "${KIPRJMOD}/shapes3D/rj45.wrl"
       (offset (xyz 4.444999933 -6.527799902 6.476999903))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
@@ -768,7 +768,7 @@
 
   (footprint "KicadZeniteSolarLibrary18:RJ45_YH59_01" (layer "F.Cu")
     (tedit 5BE61FF6) (tstamp b93f1ee5-1009-4425-b467-e96a933e1fd3)
-    (at 76.981887 98.5 -90)
+    (at 76.981888 98.500006 -90)
     (tags "RJ45")
     (property "Sheetfile" "canbus_connector.kicad_sch")
     (property "Sheetname" "CANBUS CONN")
@@ -814,7 +814,7 @@
       (net 2 "GND") (pinfunction "SH") (pintype "passive") (tstamp a680d5ae-7f2e-4f40-b24c-29fe80b4e429))
     (pad "9" thru_hole circle locked (at 12.2 3.296 270) (size 2.5 2.5) (drill 1.5) (layers *.Cu *.Mask)
       (net 2 "GND") (pinfunction "SH") (pintype "passive") (tstamp f482a64b-9552-4179-a4cb-afcf9c133e8e))
-    (model "${KIPRJMOD}/rj45.wrl"
+    (model "${KIPRJMOD}/shapes3D/rj45.wrl"
       (offset (xyz 4.444999933 -6.527799902 6.476999903))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
@@ -1213,7 +1213,7 @@
 
   (footprint "KicadZeniteSolarLibrary18:TO-220-3_Horizontal_TabDown_SMD" (layer "B.Cu")
     (tedit 5CD980B5) (tstamp 100e7cb3-3c7a-4b8c-8361-55ffea7e5ba8)
-    (at 100.0223 114.8334 90)
+    (at 100.022304 114.8334 90)
     (descr "TO-220-3, Horizontal, RM 2.54mm, see https://www.vishay.com/docs/66542/to-220-1.pdf")
     (tags "TO-220-3 Horizontal RM 2.54mm")
     (property "Sheetfile" "supplies.kicad_sch")
@@ -1263,7 +1263,7 @@
       (net 2 "GND") (pinfunction "GND") (pintype "power_in") (tstamp 999f4fd3-80c7-406b-94a7-57404c95b40d))
     (pad "3" smd rect locked (at 5.08 -1.27 90) (size 1.905 4) (layers "B.Cu" "B.Paste" "B.Mask")
       (net 3 "+5V") (pinfunction "VO") (pintype "power_out") (tstamp 85899ff8-1d80-4af7-8c2b-d17fffa74f2f))
-    (model "${KISYS3DMOD}/Package_TO_SOT_THT.3dshapes/TO-220-3_Horizontal_TabDown.wrl"
+    (model "${KIPRJMOD}/shapes3D/TO-220-3_Horizontal_TabDown.wrl"
       (offset (xyz 0 0 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
@@ -4607,8 +4607,8 @@
   (segment (start 144.6116 94.8944) (end 146.8788 94.8944) (width 0.508) (layer "B.Cu") (net 60) (tstamp ba51139c-0c14-4520-b3c5-4cd60fc7a73f))
   (segment (start 146.7905 98.0259) (end 145.477 99.3394) (width 0.508) (layer "B.Cu") (net 60) (tstamp f01f8ee4-5ab0-46bf-ba4d-6358091f1053))
   (segment (start 145.8683 103.5407) (end 145.477 103.1494) (width 0.508) (layer "B.Cu") (net 61) (tstamp 0ecca017-070b-4f88-93f0-7fde115ca3e7))
-  (segment (start 145.8683 105.4608) (end 145.8683 103.5407) (width 0.508) (layer "B.Cu") (net 61) (tstamp 2b29ef7f-c18e-455f-a453-71b5454b9a3e))
   (segment (start 145.8816 107.8992) (end 145.8816 105.4741) (width 0.508) (layer "B.Cu") (net 61) (tstamp 32fd4268-87d5-4933-903b-8171f9a66e63))
+  (segment (start 145.8683 105.4608) (end 145.8683 103.5407) (width 0.508) (layer "B.Cu") (net 61) (tstamp 6a31b2f2-c10c-4a82-a753-d38bc51e4c05))
   (segment (start 149.5204 105.4608) (end 149.6568 105.5972) (width 0.508) (layer "B.Cu") (net 61) (tstamp d29297fc-ebfe-4b06-9f67-fc41aaab9a9d))
   (segment (start 145.8816 105.4741) (end 145.8683 105.4608) (width 0.508) (layer "B.Cu") (net 61) (tstamp d6f7df52-2ee0-460a-aad8-e716dfcf529a))
   (segment (start 145.8683 105.4608) (end 149.5204 105.4608) (width 0.508) (layer "B.Cu") (net 61) (tstamp e2093985-102f-48fc-aded-3716ca3829c1))
