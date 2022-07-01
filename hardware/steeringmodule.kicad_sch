@@ -1988,6 +1988,9 @@
     (path "/ff57a491-485b-4862-8bf1-76dfe201cc07/6e640563-c788-4010-a4f0-522fce01ccfd"
       (reference "C307") (unit 1) (value "1uF") (footprint "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder")
     )
+    (path "/ff57a491-485b-4862-8bf1-76dfe201cc07/fc36a8a4-eba8-4f1c-a13d-f9bdd449f871"
+      (reference "C308") (unit 1) (value "1uF") (footprint "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder")
+    )
     (path "/638e7cda-f2b7-4bba-84db-158f1b89b212/00000000-0000-0000-0000-00005bf2780d"
       (reference "C401") (unit 1) (value "100nF") (footprint "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder")
     )
