@@ -86,11 +86,27 @@ O módulo foi desenvolvido com o software Kicad, o projeto está na pasta hardwa
 
 ![Esquemático geral](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/a6de4a60345ccac29f99505179099171639378f8/Imagens/steeringmodule_esquema.PNG)
 
-Conexões com o microcontrolador
+### CAN BUS
 
-Conexões da etapa analógica
+### Conexões com o microcontrolador
+
+### Etapa analógica
+
+### Ponte H
 
 # Implementação
+
+### Confecção da PCB
+
+A PCB foi confeccionada pela fresadora CNC do DAELN, operada pelos técnicos do departamento. O resultado foi o seguinte: (foto pós fresa)
+
+A placa foi estanhada para proteger o circuito contra oxidação. As vias foram feitas com fios de cabo de rede, cortados no tamanho adequado e então soldados.
+
+Da ordem dos componentes: a seguinte ordem foi feita SMD, CI, Through-hole sendo os conectores os últimos (para evitar esforço físico na placa). Após o trabalho na placa, foi alcançada a conclusão de que os CI da ponte H devem preceber os SMD. Essa troca é interessante pois o modelo precisa ser soldado com calor (foi utilizado soprador térmico, como visto abaixo) (foto)
+
+Com a placa toda soldada, como pode ser visto na figura, é dado início a etapa de testes. (foto)
+
+### Testes no Circuito
 
 
 # Operação
