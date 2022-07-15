@@ -21,7 +21,8 @@
 void can_app_print_msg(can_t *msg);
 void can_app_task(void);
 void can_app_send_state(void);
-void can_app_send_adc(void);
+void can_app_send_measurements(void);
+
 void can_app_msg_extractors_switch(can_t *msg);
 void can_app_extractor_mic17_state(can_t *msg);
 void can_app_extractor_mic17_msc(can_t *msg);

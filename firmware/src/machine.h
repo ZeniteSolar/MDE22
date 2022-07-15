@@ -56,17 +56,28 @@ typedef union error_flags{
 }error_flags_t;
 
 typedef struct measurements{
-    uint16_t    adc0_avg;       // average value of ADC0
-    uint16_t    adc0_avg_sum_count;
-    uint64_t    adc0_avg_sum;   // average value of ADC0
-    uint16_t    adc0_min;       // period minimum value of ADC0
-    uint16_t    adc0_max;       // period maximum value of ADC0
+    uint16_t    batvoltage_avg;       // average value of ADC0
+    uint16_t    batvoltage_avg_sum_count;
+    uint64_t    batvoltage_avg_sum;   // average value of ADC0
+    
+    uint16_t    position_avg;       // average value of ADC0
+    uint16_t    position_avg_sum_count;
+    uint64_t    position_avg_sum;   // average value of ADC0
+    
+    uint16_t    batcurrent_avg;       // average value of ADC0
+    uint16_t    batcurrent_avg_sum_count;
+    uint64_t    batcurrrent_avg_sum;   // average value of ADC0
+    
 }measurements_t;
 
 
 // machine checks
 void check_buffers(void);
+
+// measurements
 void reset_measurements(void);
+void compute_measurements(void);
+void average_measurements(void)
 
 // debug functions
 void print_configurations(void);
@@ -101,5 +112,9 @@ extern volatile uint8_t total_errors;           // Contagem de ERROS
 
 // other variables
 extern volatile uint8_t led_clk_div;
+
+// ISRs
+ISR(TIMER2_COMPA_vect);
+ISR(PCINT2_vect);
 
 #endif /* ifndef MACHINE_H */

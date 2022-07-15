@@ -1,0 +1,8 @@
+FIRMWARE: 
+    can_app.h:
+    add required extractors, they should include MIC's state and pot reading
+
+    can_app.c:
+    excluded avg_avg and sum structure, correct the variables used here
+        can_app_send_position:
+            complete msg.data accordingly

@@ -1,29 +1,16 @@
 #include "adc.h"
 
-volatile adc_t adc;
+volatile uint8_t print_adc;
 
-/**
- * @brief Changes ADC channel
- * @param __ch is the channel to be switched to
- * @return return the selected channel
- */
-inline uint8_t adc_select_channel(adc_channels_t __ch)
-{
-    if(__ch < ADC_LAST_CHANNEL ) adc.select = __ch;
-
-    ADMUX = (ADMUX & 0xF8) | adc.select; // clears the bottom 3 bits before ORing
-    return adc.select;
-}
+//#define ADC_8BITS
+#define ADC_TIMER_PRESCALER 64
 
 /**
  * @brief inicializa o ADC, configurado para conversão engatilhada com o timer0.
  */
 void adc_init(void)
 {
-    adc.ready = 0;
-    adc.select = ADC0;
-
-    //clr_bit(PRR0, PRADC);                           // Activates clock to adc
+    clr_bit(PRR0, PRADC);                           // Activates clock to adc
 
     // configuracao do ADC
     PORTC   =   0b00000000;                         // disables pull-up for adcs pins
@@ -38,11 +25,8 @@ void adc_init(void)
             | (0 << ADLAR);                         // ADC left adjusted -> using all 10 bits
 #endif
 
-    ADCSRB  =   (0 << ADTS2)                        // Auto-trigger source: timer0 Compare Match A
-            | (1 << ADTS1)
-            | (1 << ADTS0);
+    ADMUX = (ADMUX & 0xF8) | ADC0;
 
-    adc_select_channel(ADC0);                       // Choose admux
     ADCSRA  =   (1 << ADATE)                        // ADC Auto Trigger Enable
             | (1 << ADIE)                           // ADC Interrupt Enable
             | (1 << ADEN)                           // ADC Enable
@@ -51,38 +35,43 @@ void adc_init(void)
             | (1 << ADPS1)
             | (1 << ADPS0);
 
+    ADCSRB  =   (0 << ADTS2)                        // Auto-trigger source: timer0 Compare Match A
+            | (1 << ADTS1)
+            | (1 << ADTS0);
+
     // TIMER configurations
-
-    //clr_bit(PRR0, PRTIM0);                          // Activates clock to timer0
+    clr_bit(PRR, PRTIM1);                          // Activates clock to timer1 (timer0 is used by application PWM)
     // MODE 2 -> CTC with TOP on OCR1
-    TCCR0A  =   (1 << WGM01) | (0 << WGM00)         // mode 2
-            | (0 << COM0B1) | (0 << COM0B0)         // do nothing
-            | (0 << COM0A1) | (0 << COM0A0);        // do nothing
-
-    TCCR0B  =
+    TCCR1A  =   (0 << WGM11) | (0 << WGM10)         // mode 2
+            | (0 << COM1B1) | (0 << COM1B0)         // do nothing
+            | (0 << COM1A1) | (0 << COM1A0);        // do nothing
+    TCCR1B  =
 #if ADC_TIMER_PRESCALER ==     1
-                (0 << CS02) | (0 << CS01) | (1 << CS00) // Prescaler N=1
+                (0 << CS12) | (0 << CS11) | (1 << CS10) // Prescaler N=1
 #elif ADC_TIMER_PRESCALER ==   8
-                (0 << CS02) | (1 << CS01) | (0 << CS00) // Prescaler N=8
-#elif ADC_TIMER_PRESCALER ==   32
-                (0 << CS02) | (1 << CS01) | (1 << CS00) // Prescaler N=32
+                (0 << CS12) | (1 << CS11) | (0 << CS10) // Prescaler N=8
 #elif ADC_TIMER_PRESCALER ==   64
-                (1 << CS02) | (0 << CS01) | (0 << CS00) // Prescaler N=64
-#elif ADC_TIMER_PRESCALER ==   128
-                (1 << CS02) | (0 << CS01) | (1 << CS00) // Prescaler N=128
+                (0 << CS12) | (1 << CS11) | (1 << CS10) // Prescaler N=32
 #elif ADC_TIMER_PRESCALER ==   256
-                (1 << CS02) | (1 << CS01) | (0 << CS00) // Prescaler N=256
+                (1 << CS12) | (0 << CS11) | (0 << CS10) // Prescaler N=64
 #elif ADC_TIMER_PRESCALER ==   1024
-                (1 << CS02) | (1 << CS01) | (1 << CS00) // Prescaler N=1024
+                (1 << CS12) | (0 << CS11) | (1 << CS10) // Prescaler N=128
 #else
                 0
 #endif
-                | (0 << WGM02);      // mode 2
+                | (1 << WGM12) | (0 << WGM13)      // mode ctc
+                | (0 << ICNC1) | (0 << ICES1);
 
-    OCR0A = ADC_TIMER_TOP;                       	// OCR2A = TOP = fcpu/(N*2*f) -1
 
+    TCNT1 = 0;              // Disable read/write direct access to the timer counter
+    OCR1A = 82;             // OCR1A = TOP = fcpu/(N*2*f) -1
 
-    TIMSK0 |=   (1 << OCIE0A);                      // Ativa a interrupcao na igualdade de comparação do TC0 com OCR0A
+    TIMSK1 |=   (1 << OCIE1A)  | (0 << OCIE1B)        // Ativa a interrupcao na igualdade de comparação do TC1 com OCR1A, desativa OCR1B 
+            | (0 << ICIE1) ;                // Desativa input capture interrupt
+
+#ifdef DEBUG_ON
+    set_bit(DDRD, LED1);
+#endif
 
 }
 
@@ -91,30 +80,50 @@ void adc_init(void)
  */
 ISR(ADC_vect)
 {
+    cli(); 
+    static const float batvoltage_coeff = 1; //0.06582490575070313f;
+    static const float position_coeff = 1; //0.06717781789490249f;
+    static const float batcurrent_coeff = 1; //0.01599315004f;
 
-#ifdef FAKE_ADC_ON
-    adc.channel[adc.select].sum += FAKE_ADC;
-#else // FAKE_ADC_ON
-    #ifdef ADC_8BITS
-    adc.channel[adc.select].sum += ADCH;
-    #else // ADC_8BITS
-    adc.channel[adc.select].sum += ADC;
-    #endif // ADC_8BITS
-#endif // FAKE_ADC_ON
+    uint16_t adc = ADC;                     // read adc
+    uint8_t channel = ADMUX & 0x07;         // read channel
 
-    if(++adc.select > ADC_LAST_CHANNEL){
-        adc.select = ADC0;             // recycles
+    /*
+    cpl_bit(PORTD, LED1);
+    usart_send_uint8(ADMUX);
+    usart_send_char(':');
+    usart_send_uint16(ADC);
+    usart_send_char('\n');
+    */
 
-        if(++adc.samples >= ADC_AVG_SIZE_10){
-            adc.channel[0].avg = adc.channel[0].sum >> ADC_AVG_SIZE_2;
+    switch(channel){
+        case ADC1:
+            batvoltage = adc * voltage_coeff;
+            break;
 
-            adc.samples = adc.channel[0].sum = 0;
-            adc.ready = 1;
-        }
+        case ADC2:                       
+            position = adc * position_coeff;
+            break;
+
+        case ADC3: default:
+            batcurrent = adc * current_coeff;
+            channel = 255;             // recycle
+
+            print_adc = 1;
+#ifdef DEBUG_ON
+            set_bit(PORTD, LED1);
+#endif
+            control(); // call control action 
+#ifdef DEBUG_ON
+            clr_bit(PORTD, LED1);
+#endif  
+            break;
     }
 
-    adc_select_channel(adc.select);
+    ADMUX = (ADMUX & 0xF8) | ++channel;   // select next channel
+    //ADCSRA = ADCSRA;                  // rearm for next conversion if TIMER0 not in use
 
+    sei();
 }
 
 /**
@@ -122,3 +131,5 @@ ISR(ADC_vect)
  * BADISR_vect.
  */
 EMPTY_INTERRUPT(TIMER0_COMPA_vect);
+
+

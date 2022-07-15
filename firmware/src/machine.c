@@ -243,91 +243,105 @@ inline void task_reset(void)
 
 void print_infos(void)
 {
+#ifdef PRINT_INFOS
     static uint8_t i = 0;
 
     switch(i++){
         case 0:
-            //print_system_flags();
+            usart_send_string("\naux bat voltage: ");
+            usart_send_float(measurements.batvoltage_avg);
             break;
         case 1:
-            //print_error_flags();
+            usart_send_string("\tail position: ");
+            usart_send_float(measurements.position_avg);
             break;
         case 2:
-            //print_control_others();
+            usart_send_string("\naux bat current: ");
+            usart_send_float(measurements.batcurrent_avg);
+            break;
         default:
             //VERBOSE_MSG_MACHINE(usart_send_char('\n'));
             i = 0;
             break;
     }
+#endif
+}
+
+inline void compute_measurements(void)
+{
+    measurements.batvoltage_avg_sum += batvoltage;
+    measurements.position_avg_sum += position;
+    measurements.batcurrent_avg_sum += batcurrent;
+
+    measurements.batvoltage_avg_sum_count++;
+    measurements.position_avg_sum_count++;
+    measurements.batcurrent_avg_sum_count++;
+}
+
+inline void average_measurements(void)
+{
+    measurements.batvoltage_avg = 100 * measurements.batvoltage_avg_sum / measurements.batvoltage_avg_sum_count;
+    measurements.position_avg = 100 * measurements.position_avg_sum / measurements.position_avg_sum_count;
+    measurements.batcurrent_avg = 100 * measurements.batcurrent_avg_sum / measurements.batcurrent_avg_sum_count;
 }
 
 inline void reset_measurements(void)
 {
-    measurements.adc0_avg_sum_count = 0;
-    measurements.adc0_avg_sum = 0;
-    measurements.adc0_max = 0;
-    measurements.adc0_min = 1023;
+    measurements.batvoltage_avg_sum = 0;
+    measurements.position_avg_sum = 0;
+    measurements.batcurrent_avg_sum = 0;
+
+    measurements.batvoltage_avg_sum_count = 0;
+    measurements.position_avg_sum_count = 0;
+    measurements.batcurrent_avg_sum_count = 0;
 }
 
 /**
  * @brief this is the machine state itself.
  */
+/**
+ * @brief this is the machine state itself.
+ */
 inline void machine_run(void)
 {
-    //print_infos();
-
+    if(print_adc){ print_infos(); print_adc = 0;}
 
     if(machine_clk){
         machine_clk = 0;
-    #ifdef ADC_ON
-        if(adc.ready){
-            adc.ready = 0;
 
-            measurements.adc0_avg = ADC0_AVG;
-                //* ADC0_ANGULAR_COEF
-                //+ ADC0_LINEAR_COEF;
-
-            if(measurements.adc0_avg < measurements.adc0_min)
-                measurements.adc0_min = measurements.adc0_avg;
-            if(measurements.adc0_avg > measurements.adc0_max)
-                measurements.adc0_max = measurements.adc0_avg;
-
-            measurements.adc0_avg_sum_count++;
-            measurements.adc0_avg_sum += measurements.adc0_avg;
-
-            if(error_flags.all){
-                print_system_flags();
-                print_error_flags();
-                print_infos();
-                set_state_error();
-            }
-
-            switch(state_machine){
-                case STATE_INITIALIZING:
-                    task_initializing();
-
-                    break;
-                case STATE_IDLE:
-                    task_idle();
-
-                    break;
-                case STATE_RUNNING:
-                    task_running();
-                    #ifdef CAN_ON
-                        can_app_task();
-                    #endif /* CAN_ON */
-
-                    break;
-                case STATE_ERROR:
-                    task_error();
-
-                case STATE_RESET:
-                default:
-                    task_reset();
-                    break;
-            }
+        if(error_flags.all){
+            print_system_flags();
+            print_error_flags();
+            print_infos();
+            set_state_error();
         }
-    #endif /* ADC_ON */
+
+        compute_measurements();
+
+        switch(state_machine){
+            case STATE_INITIALIZING:
+                task_initializing();
+
+                break;
+            case STATE_IDLE:
+                task_idle();
+
+                break;
+            case STATE_RUNNING:
+                task_running();
+                #ifdef CAN_ON
+                    can_app_task();
+                #endif /* CAN_ON */   
+                
+                break;
+            case STATE_ERROR:
+                task_error();
+
+            case STATE_RESET:
+            default:
+                task_reset();
+                break;
+        }
     }
 }
 
@@ -336,14 +350,16 @@ inline void machine_run(void)
 */
 ISR(TIMER2_COMPA_vect)
 {
-    if(machine_clk_divider++ == MACHINE_CLK_DIVIDER_VALUE){
+    if(++machine_clk_divider == MACHINE_CLK_DIVIDER_VALUE){
+        machine_clk_divider = 0;
+        machine_clk = 1;
+
         /*if(machine_clk){
             for(;;){
                 pwm_reset();
                 VERBOSE_MSG_ERROR(if(machine_clk) usart_send_string("\nERROR: CLOCK CONFLICT!!!\n"));
             }
         }*/
-        machine_clk = 1;
-        machine_clk_divider = 0;
     }
 }
+

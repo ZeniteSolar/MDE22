@@ -71,8 +71,8 @@
 #define     LED_PORT                PORTD
 #define     LED_PIN                 PIND
 #define     LED_DDR                 DDRD
-#define     LED1                    PD5
-#define     LED2                    PD6
+#define     LED1                    PB2
+#define     LED2                    PD3
 #define     cpl_led(y)              cpl_bit(LED_PORT, y)
 #define     set_led(y)              set_bit(LED_PORT, y)
 #define     clr_led(y)              clr_bit(LED_PORT, y)
