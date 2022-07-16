@@ -14,6 +14,7 @@
 
 #include <avr/io.h>
 #include <avr/sleep.h>
+void sleep_init(void);
 
 void sleep_init(void)
 {

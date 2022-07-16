@@ -1,16 +1,17 @@
 #include "adc.h"
 
+volatile float batvoltage, position, batcurrent;
+
 volatile uint8_t print_adc;
 
 //#define ADC_8BITS
-#define ADC_TIMER_PRESCALER 64
 
 /**
  * @brief inicializa o ADC, configurado para conversão engatilhada com o timer0.
  */
 void adc_init(void)
 {
-    clr_bit(PRR0, PRADC);                           // Activates clock to adc
+    clr_bit(PRR, PRADC);                           // Activates clock to adc
 
     // configuracao do ADC
     PORTC   =   0b00000000;                         // disables pull-up for adcs pins
@@ -25,7 +26,7 @@ void adc_init(void)
             | (0 << ADLAR);                         // ADC left adjusted -> using all 10 bits
 #endif
 
-    ADMUX = (ADMUX & 0xF8) | ADC0;
+    ADMUX = (ADMUX & 0xF8) | ADC1;
 
     ADCSRA  =   (1 << ADATE)                        // ADC Auto Trigger Enable
             | (1 << ADIE)                           // ADC Interrupt Enable
@@ -98,22 +99,23 @@ ISR(ADC_vect)
 
     switch(channel){
         case ADC1:
-            batvoltage = adc * voltage_coeff;
+            batvoltage = adc * batvoltage_coeff;
             break;
 
         case ADC2:                       
             position = adc * position_coeff;
             break;
 
-        case ADC3: default:
-            batcurrent = adc * current_coeff;
-            channel = 255;             // recycle
+        case ADC3:
+            batcurrent = adc * batcurrent_coeff;
+        default:
+            channel = 0;             // recycle
 
             print_adc = 1;
 #ifdef DEBUG_ON
             set_bit(PORTD, LED1);
 #endif
-            control(); // call control action 
+            // call control action 
 #ifdef DEBUG_ON
             clr_bit(PORTD, LED1);
 #endif  

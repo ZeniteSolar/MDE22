@@ -55,6 +55,7 @@ typedef union error_flags{
     uint8_t   all;
 }error_flags_t;
 
+// TODO: different structures, then add to measurements
 typedef struct measurements{
     uint16_t    batvoltage_avg;       // average value of ADC0
     uint16_t    batvoltage_avg_sum_count;
@@ -66,7 +67,7 @@ typedef struct measurements{
     
     uint16_t    batcurrent_avg;       // average value of ADC0
     uint16_t    batcurrent_avg_sum_count;
-    uint64_t    batcurrrent_avg_sum;   // average value of ADC0
+    uint64_t    batcurrent_avg_sum;   // average value of ADC0
     
 }measurements_t;
 
@@ -77,12 +78,13 @@ void check_buffers(void);
 // measurements
 void reset_measurements(void);
 void compute_measurements(void);
-void average_measurements(void)
+void average_measurements(void);
 
 // debug functions
 void print_configurations(void);
 void print_system_flags(void);
 void print_error_flags(void);
+void print_infos(void);
 
 // machine tasks
 void task_initializing(void);

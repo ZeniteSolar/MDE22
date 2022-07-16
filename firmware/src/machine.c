@@ -180,6 +180,11 @@ inline void task_running(void)
         cpl_led(LED1);
         led_clk_div = 0;
     }
+    if(measurements.position_avg > 2){
+        set_led(LED2);
+    } else {
+        clr_led(LED2);
+    }
 #endif // LED_ON
 }
 

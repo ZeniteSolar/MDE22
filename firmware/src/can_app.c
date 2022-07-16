@@ -47,7 +47,7 @@ inline void can_app_task(void)
 #ifdef USART_ON
         VERBOSE_MSG_CAN_APP(usart_send_string("adc msg was sent.\n"));
 #endif
-        can_app_send_adc();
+        can_app_send_steeringbat_measurements();
         can_app_send_adc_clk_div = 0;
     }
 
@@ -70,22 +70,22 @@ inline void can_app_send_state(void)
 #endif
 }
 
-inline void can_app_send_measurements(void)
+inline void can_app_send_steeringbat_measurements(void)
 {
-    cant_t msg;
-    msg.id                                  = CAN_MSG_MDE22_MEASUREMENTS_ID;
-    msg.length                              = CAN_MSG_MDE22_MEASUREMENTS_LENGHT; 
+    can_t msg;
+    msg.id                                  = CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_ID;
+    msg.length                              = CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_LENGTH; 
     msg.flags.rtr = 0;
 
     average_measurements();
 
     msg.data[CAN_MSG_GENERIC_STATE_SIGNATURE_BYTE] = CAN_SIGNATURE_SELF;
-    msg.data[CAN_MSG_MDE22_MEASUREMENTS_BATVOLTAGE_L_BYTE] = LOW(measurements.batvoltage_avg);
-    msg.data[CAN_MSG_MDE22_MEASUREMENTS_BATVOLTAGE_H_BYTE] = HIGH(measurements.batvoltage_avg);
-    msg.data[CAN_MSG_MDE22_MEASUREMENTS_POSITION_L_BYTE] = LOW(measurements.position_avg);
-    msg.data[CAN_MSG_MDE22_MEASUREMENTS_POSITION_H_BYTE] = HIGH(measurements.position_avg);
-    msg.data[CAN_MSG_MDE22_MEASUREMENTS_BATCURRENT_L_BYTE] = LOW(measurements.batcurrent_avg);
-    msg.data[CAN_MSG_MDE22_MEASUREMENTS_BATCURRENT_H_BYTE] = HIGH(measurements.batcurrent_avg);
+    msg.data[CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_BATVOLTAGE_L_BYTE] = LOW(measurements.batvoltage_avg);
+    msg.data[CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_BATVOLTAGE_H_BYTE] = HIGH(measurements.batvoltage_avg);
+    msg.data[CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_POSITION_L_BYTE] = LOW(measurements.position_avg);
+    msg.data[CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_POSITION_H_BYTE] = HIGH(measurements.position_avg);
+    msg.data[CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_BATCURRENT_L_BYTE] = LOW(measurements.batcurrent_avg);
+    msg.data[CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_BATCURRENT_H_BYTE] = HIGH(measurements.batcurrent_avg);
 
     reset_measurements();
 

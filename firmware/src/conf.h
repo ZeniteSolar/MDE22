@@ -67,6 +67,7 @@
 
 #endif // MACHINE_ON
 
+//#### LED PINS ####
 #ifdef LED_ON
 #define     LED_PORT                PORTD
 #define     LED_PIN                 PIND

@@ -33,6 +33,8 @@ void wdt_first(void)
 /**	
  * @brief initialize watchdog with some predefined time
  */
+void wdt_init(void);
+
 void wdt_init(void)
 {
     wdt_enable(WDTO_4S);
