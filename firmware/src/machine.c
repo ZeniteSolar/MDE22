@@ -14,7 +14,7 @@ volatile uint8_t led_clk_div;
  */
 void machine_init(void)
 {
-	//clr_bit(PRR0, PRTIM2);                          // Activates clock
+	clr_bit(PRR, PRTIM2);                          // Activates clock
 
     // MODE 2 -> CTC with TOP on OCR1
     TCCR2A  =    (1 << WGM21) | (0 << WGM20)        // mode 2
@@ -144,7 +144,7 @@ inline void print_error_flags(void)
 inline void task_initializing(void)
 {
 #ifdef LED_ON
-    set_led(LED1);
+    set_bit(LED1_PORT, LED1);
 #endif
 
     set_machine_initial_state();
@@ -160,7 +160,7 @@ inline void task_idle(void)
 {
 #ifdef LED_ON
     if(led_clk_div++ >= 30){
-        cpl_led(LED1);
+        cpl_bit(LED1_PORT, LED1);
         led_clk_div = 0;
     }
 #endif
@@ -177,13 +177,15 @@ inline void task_running(void)
 {
 #ifdef LED_ON
     if(led_clk_div++ >= 2){
-        cpl_led(LED1);
+        cpl_bit(LED1_PORT, LED1);
+        cpl_bit(LED2_PORT, LED2);
         led_clk_div = 0;
     }
+    average_measurements();
     if(measurements.position_avg > 2){
-        set_led(LED2);
+        set_bit(LED2_PORT, LED2);
     } else {
-        clr_led(LED2);
+        clr_bit(LED2_PORT, LED2);
     }
 #endif // LED_ON
 }
@@ -196,8 +198,8 @@ inline void task_error(void)
 {
 #ifdef LED_ON
     if(led_clk_div++ >= 5){
-        cpl_led(LED2);
-        set_led(LED1);
+        cpl_bit(LED1_PORT, LED1);
+        set_bit(LED1_PORT, LED1);
         led_clk_div = 0;
     }
 #endif
@@ -226,7 +228,7 @@ inline void task_error(void)
     }
 
 #ifdef LED_ON
-    cpl_led(LED2);
+    cpl_bit(LED2_PORT, LED2);
 #endif
     set_state_initializing();
 }

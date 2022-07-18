@@ -32,7 +32,7 @@ void init(void)
     #ifdef CAN_ON
         VERBOSE_MSG_INIT(usart_send_string("CAN (500kbps)..."));
         #ifdef LED_ON
-            set_led(LED2);
+            set_bit(LED2_PORT, LED2);
         #endif  
         can_init(BITRATE_500_KBPS);
         //can_set_mode(LOOPBACK_MODE);
@@ -85,8 +85,8 @@ void init(void)
     #endif
 	
     #ifdef LED_ON
-        set_bit(LED_DDR, LED1);                      // LED como saída
-        set_bit(LED_DDR, LED2);                      // LED como saída
+        set_bit(DDRD, LED1);                      // LED como saída
+        set_bit(DDRB, LED2);                      // LED como saída
         VERBOSE_MSG_INIT(usart_send_string("LED... OK!\n"));
     #else
         VERBOSE_MSG_INIT(usart_send_string("LED... OFF!\n"));
