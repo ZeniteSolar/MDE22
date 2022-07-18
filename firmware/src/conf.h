@@ -69,14 +69,16 @@
 
 //#### LED PINS ####
 #ifdef LED_ON
-#define     LED_PORT                PORTD
-#define     LED_PIN                 PIND
-#define     LED_DDR                 DDRD
-#define     LED1                    PB2
-#define     LED2                    PD3
-#define     cpl_led(y)              cpl_bit(LED_PORT, y)
-#define     set_led(y)              set_bit(LED_PORT, y)
-#define     clr_led(y)              clr_bit(LED_PORT, y)
+#define     LED1_PORT                   PORTD
+#define     LED1_PIN                    PIND
+#define     LED1_DDR                    DDRD
+#define     LED1                        PD3
+
+#define     LED2_PORT                   PORTB
+#define     LED2_PIN                    PINB
+#define     LED2_DDR                    DDRB
+#define     LED2                        PB2
+
 #else
 #define     cpl_led()
 #define     set_led()
