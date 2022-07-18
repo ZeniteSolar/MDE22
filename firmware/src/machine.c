@@ -363,7 +363,7 @@ ISR(TIMER2_COMPA_vect)
 
         /*if(machine_clk){
             for(;;){
-                pwm_reset();
+                //pwm_reset();
                 VERBOSE_MSG_ERROR(if(machine_clk) usart_send_string("\nERROR: CLOCK CONFLICT!!!\n"));
             }
         }*/

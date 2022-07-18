@@ -8,7 +8,7 @@
  */
 
 #ifndef CONF_H
-//#define CONF_H
+#define CONF_H
 
 #ifndef F_CPU
 #define F_CPU 16000000UL    //define a frequencia do microcontrolador - 16MHz
@@ -32,7 +32,7 @@
 #define MACHINE_ON
 #define LED_ON
 #define WATCHDOG_ON
-#define SLEEP_ON
+//#define SLEEP_ON
 
 #define CAN_SIGNATURE_SELF                  CAN_SIGNATURE_MSC19_4
 
@@ -55,17 +55,16 @@
 #endif //ADC_ON
 
 
-#ifdef MACHINE_ON
 // The machine frequency may not be superior of ADC_FREQUENCY/ADC_AVG_SIZE_10
+#ifdef MACHINE_ON
 #define MACHINE_TIMER_FREQUENCY             300           //<! machine timer frequency in Hz
 #define MACHINE_TIMER_PRESCALER             1024          //<! machine timer prescaler
-#define MACHINE_CLK_DIVIDER_VALUE           ((uint64_t)(uint32_t)MACHINE_TIMER_FREQUENCY*(uint32_t)ADC_AVG_SIZE_10)/(ADC_FREQUENCY)           //<! machine_run clock divider
-#define MACHINE_FREQUENCY                   (MACHINE_TIMER_FREQUENCY)/(MACHINE_CLK_DIVIDER_VALUE)
+#define MACHINE_FREQUENCY                   100           //<! machine frequency in Hz
+#define MACHINE_CLK_DIVIDER_VALUE           (MACHINE_TIMER_FREQUENCY)/(MACHINE_FREQUENCY)  //<! machine_run clock divider
+#endif // MACHINE_ON              (MACHINE_TIMER_FREQUENCY)/(MACHINE_CLK_DIVIDER_VALUE)
 
 // SCALE TO CONVERT ADC DEFINITIONS
 #define VSCALE                              (uint16_t)1000
-
-#endif // MACHINE_ON
 
 //#### LED PINS ####
 #ifdef LED_ON

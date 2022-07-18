@@ -5,6 +5,7 @@ volatile float batvoltage, position, batcurrent;
 volatile uint8_t print_adc;
 
 //#define ADC_8BITS
+#define ADC_TIMER_PRESCALER 64
 
 /**
  * @brief inicializa o ADC, configurado para conversão engatilhada com o timer0.
@@ -67,8 +68,8 @@ void adc_init(void)
     TCNT1 = 0;              // Disable read/write direct access to the timer counter
     OCR1A = 82;             // OCR1A = TOP = fcpu/(N*2*f) -1
 
-    TIMSK1 |=   (1 << OCIE1A)  | (0 << OCIE1B)        // Ativa a interrupcao na igualdade de comparação do TC1 com OCR1A, desativa OCR1B 
-            | (0 << ICIE1) ;                // Desativa input capture interrupt
+    TIMSK1 |=   (1 << OCIE1A);//  | (0 << OCIE1B)        // Ativa a interrupcao na igualdade de comparação do TC1 com OCR1A, desativa OCR1B 
+            //| (0 << ICIE1) ;                // Desativa input capture interrupt
 
 #ifdef DEBUG_ON
     set_bit(DDRD, LED1);
@@ -117,7 +118,7 @@ ISR(ADC_vect)
 #endif
             // call control action 
 #ifdef DEBUG_ON
-            clr_bit(PORTD, LED1);
+            clr_bit(PORTB, LED1);
 #endif  
             break;
     }
@@ -132,6 +133,6 @@ ISR(ADC_vect)
  * @brief ISR necessária para auto-trigger do ADC. Caso contrário, dispara
  * BADISR_vect.
  */
-EMPTY_INTERRUPT(TIMER0_COMPA_vect);
+EMPTY_INTERRUPT(TIMER1_COMPA_vect);
 
 
