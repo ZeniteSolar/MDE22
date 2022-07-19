@@ -177,15 +177,15 @@ inline void task_running(void)
 {
 #ifdef LED_ON
     if(led_clk_div++ >= 2){
-        cpl_bit(LED1_PORT, LED1);
+        //cpl_bit(LED1_PORT, LED1);
         cpl_bit(LED2_PORT, LED2);
         led_clk_div = 0;
     }
     average_measurements();
     if(measurements.position_avg > 2){
-        set_bit(LED2_PORT, LED2);
+        set_bit(LED1_PORT, LED1);
     } else {
-        clr_bit(LED2_PORT, LED2);
+        clr_bit(LED1_PORT, LED1);
     }
 #endif // LED_ON
 }
