@@ -110,10 +110,6 @@ inline void print_configurations(void)
 {
     VERBOSE_MSG_MACHINE(usart_send_string("CONFIGURATIONS:\n"));
 
-    //VERBOSE_MSG_MACHINE(usart_send_string("\nadc_f: "));
-    //VERBOSE_MSG_MACHINE(usart_send_uint16( ADC_FREQUENCY ));
-    //VERBOSE_MSG_MACHINE(usart_send_char(','));
-    //VERBOSE_MSG_MACHINE(usart_send_uint16( ADC_AVG_SIZE_10 ));
     VERBOSE_MSG_MACHINE(usart_send_string("\nmachine_f: "));
     VERBOSE_MSG_MACHINE(usart_send_uint16( MACHINE_FREQUENCY ));
 
@@ -176,8 +172,19 @@ inline void task_idle(void)
 inline void task_running(void)
 {
 #ifdef LED_ON
-    if(led_clk_div++ >= 2){
+    if(led_clk_div++ >= 10){
         //set_bit(LED1_PORT, LED1);
+        average_measurements();
+        usart_send_uint16(measurements.position_avg);
+        usart_send_char('\t');
+        usart_send_uint16(measurements.batvoltage_avg);
+        usart_send_char('\n');
+
+        if(measurements.position_avg>3){
+            cpl_bit(LED1_PORT, LED1);
+        }else{
+            clr_bit(LED1_PORT, LED1);
+        }
         led_clk_div = 0;
     }
 #endif // LED_ON
