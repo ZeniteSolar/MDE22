@@ -36,16 +36,6 @@
 #define CAN_SIGNATURE_SELF                  CAN_SIGNATURE_MSC19_4
 
 #ifdef ADC_ON
-// ADC CONFIGURATION
-// note that changing ADC_FREQUENCY may cause problems with avg_sum_samples
-#define ADC_FREQUENCY                       10000 // 20000
-#define ADC_TIMER_PRESCALER                 8
-#define ADC0_AVG                            adc.channel[ADC0].avg
-#define ADC0_ANGULAR_COEF                   10000 //(40000/((4/5)*1024))
-#define ADC0_LINEAR_COEF                    0
-#define ADC_AVG_SIZE_2                      7                  // in base 2
-#define ADC_AVG_SIZE_10                     128                // in base 10
-
 //#define FAKE_ADC_ON
 #ifdef FAKE_ADC_ON
 #define FAKE_ADC                            1
