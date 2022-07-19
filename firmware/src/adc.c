@@ -70,7 +70,7 @@ void adc_init(void)
     TCNT1 = 0;              // Disable read/write direct access to the timer counter
     OCR1B = 82;             // OCR1A = TOP = fcpu/(N*2*f) -1
 
-    TIMSK1 |=   (1 << OCIE1A)  | (0 << OCIE1B)        // Ativa a interrupcao na igualdade de comparação do TC1 com OCR1A, desativa OCR1B 
+    TIMSK1 |=   (0 << OCIE1A)  | (1 << OCIE1B)        // Ativa a interrupcao na igualdade de comparação do TC1 com OCR1A, desativa OCR1B 
             | (0 << ICIE1) ;                // Desativa input capture interrupt
 
 #ifdef DEBUG_ON
@@ -90,7 +90,7 @@ ISR(ADC_vect)
     static const float batcurrent_coeff = 1; //0.01599315004f;
 
     uint16_t adc = ADC;                     // read adc
-    uint8_t channel = ADMUX & 0x07;         // read channel
+    uint8_t channel = ADMUX & 0x0E;         // read channel
 
     
     cpl_bit(LED1_PORT, LED1);
@@ -125,7 +125,7 @@ ISR(ADC_vect)
             break;
     }
 
-    ADMUX = (ADMUX & 0xF8) | ++channel;   // select next channel
+    ADMUX = (ADMUX & 0xF1) | ++channel;   // select next channel
     //ADCSRA = ADCSRA;                  // rearm for next conversion if TIMER0 not in use
 
     sei();
@@ -135,6 +135,6 @@ ISR(ADC_vect)
  * @brief ISR necessária para auto-trigger do ADC. Caso contrário, dispara
  * BADISR_vect.
  */
-EMPTY_INTERRUPT(TIMER1_COMPA_vect);
+EMPTY_INTERRUPT(TIMER1_COMPB_vect);
 
 
