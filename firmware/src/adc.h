@@ -24,7 +24,7 @@ typedef enum adc_channels{
 } adc_channels_t;                           //*< the adc_channel type
 extern volatile uint8_t print_adc;
 
-extern volatile float batvoltage, position, batcurrent;
+extern volatile uint8_t batvoltage, position, batcurrent;
 
 void adc_init(void);
 

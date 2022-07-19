@@ -1,11 +1,11 @@
 #include "adc.h"
 
-volatile float batvoltage, position, batcurrent;
+volatile uint8_t batvoltage, position, batcurrent;
 
 volatile uint8_t print_adc;
 
 //#define ADC_8BITS
-//#define ADC_TIMER_PRESCALER 64
+#define ADC_TIMER_PRESCALER 64
 
 /**
  * @brief inicializa o ADC, configurado para conversão engatilhada com o timer0.
@@ -27,27 +27,27 @@ void adc_init(void)
             | (0 << ADLAR);                         // ADC left adjusted -> using all 10 bits
 #endif
 
-    ADMUX = (ADMUX & 0xF8) | ADC1;
+    ADMUX = (ADMUX & 0xF1) | ADC1;
 
     ADCSRA  =   (1 << ADATE)                        // ADC Auto Trigger Enable
             | (1 << ADIE)                           // ADC Interrupt Enable
             | (1 << ADEN)                           // ADC Enable
             | (1 << ADSC)                           // Do the first Start of Conversion
             | (1 << ADPS2)                          // ADC Prescaller = 128;
-            | (1 << ADPS1)
+            | (0 << ADPS1)
             | (1 << ADPS0);
 
-    ADCSRB  =   (0 << ADTS2)                        // Auto-trigger source: timer0 Compare Match A
-            | (1 << ADTS1)
+    ADCSRB  =   (1 << ADTS2)                        // Auto-trigger source: timer1 Compare Match B
+            | (0 << ADTS1)
             | (1 << ADTS0);
 
     // TIMER configurations
     clr_bit(PRR, PRTIM1);                          // Activates clock to timer1 (timer0 is used by application PWM)
     // MODE 2 -> CTC with TOP on OCR1
-    TCCR1A  =   (0 << WGM11) | (0 << WGM10)         // mode 2
-            | (0 << COM1B1) | (0 << COM1B0)         // do nothing
-            | (0 << COM1A1) | (0 << COM1A0);        // do nothing
-    TCCR1B  =
+    //TCCR1A  =   (0 << WGM11) | (0 << WGM10)         // mode 2
+     //      | (0 << COM1B1) | (0 << COM1B0)         // do nothing
+      //     | (0 << COM1A1) | (0 << COM1A0);        // do nothing
+    TCCR1B  = 
 #if ADC_TIMER_PRESCALER ==     1
                 (0 << CS12) | (0 << CS11) | (1 << CS10) // Prescaler N=1
 #elif ADC_TIMER_PRESCALER ==   8
@@ -61,12 +61,14 @@ void adc_init(void)
 #else
                 0
 #endif
-                | (1 << WGM12) | (0 << WGM13)      // mode ctc
+                | (0 << WGM13) | (1 << WGM12)
+                | (0 << WGM11) | (0 << WGM10)       // mode ctc
+                | (1 << COM1B1) | (1 << COM1B0)     // Set OC1B on compare match
                 | (0 << ICNC1) | (0 << ICES1);
 
 
     TCNT1 = 0;              // Disable read/write direct access to the timer counter
-    OCR1A = 82;             // OCR1A = TOP = fcpu/(N*2*f) -1
+    OCR1B = 82;             // OCR1A = TOP = fcpu/(N*2*f) -1
 
     TIMSK1 |=   (1 << OCIE1A)  | (0 << OCIE1B)        // Ativa a interrupcao na igualdade de comparação do TC1 com OCR1A, desativa OCR1B 
             | (0 << ICIE1) ;                // Desativa input capture interrupt
@@ -90,13 +92,13 @@ ISR(ADC_vect)
     uint16_t adc = ADC;                     // read adc
     uint8_t channel = ADMUX & 0x07;         // read channel
 
-    /*
-    cpl_bit(PORTD, LED1);
+    
+    cpl_bit(LED1_PORT, LED1);
     usart_send_uint8(ADMUX);
     usart_send_char(':');
     usart_send_uint16(ADC);
     usart_send_char('\n');
-    */
+    
 
     switch(channel){
         case ADC1:
