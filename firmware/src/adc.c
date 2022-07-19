@@ -1,6 +1,6 @@
 #include "adc.h"
 
-volatile uint8_t batvoltage, position, batcurrent;
+volatile uint16_t batvoltage, position, batcurrent;
 
 volatile uint8_t print_adc;
 
@@ -17,7 +17,7 @@ void adc_init(void)
     // configuracao do ADC
     PORTC   =   0b00000000;                         // disables pull-up for adcs pins
     DDRC    =   0b00000000;                         // all adcs as inputs
-    DIDR0   =   0b11110001;                         // ADC0 to ADC2 as adc (digital disable)
+    DIDR0   =   0b11111111;                         // ADC0 to ADC2 as adc (digital disable)
 
     ADMUX   =   (0 << REFS1)                        // AVcc with external capacitor at AREF pin
             | (1 << REFS0)
@@ -44,8 +44,8 @@ void adc_init(void)
     // TIMER configurations
     clr_bit(PRR, PRTIM1);                          // Activates clock to timer1 (timer0 is used by application PWM)
     // MODE 2 -> CTC with TOP on OCR1
-    //TCCR1A  =   (0 << WGM11) | (1 << WGM10)         // mode ctc
-    //        | (0 << COM1A1) | (0 << COM1A0);        // do nothing
+    TCCR1A  =   (0 << WGM11) | (1 << WGM10)         // mode ctc
+            | (0 << COM1A1) | (0 << COM1A0);        // do nothing
     TCCR1B  =   (0 << WGM13) | (1 << WGM12)
             | (0 << WGM11) | (0 << WGM10)       // mode ctc
             | (0 << COM1B1) | (0 << COM1B0) 
@@ -90,12 +90,12 @@ ISR(ADC_vect)
     uint16_t adc = ADC;                     // read adc
     uint8_t channel = ADMUX & 0x0E;         // read channel
 
-    
-    cpl_bit(LED1_PORT, LED1);
+    //usart_send_char(':');
+    /*cpl_bit(LED1_PORT, LED1);
     usart_send_uint8(ADMUX);
     usart_send_char(':');
     usart_send_uint16(ADC);
-    usart_send_char('\n');
+    usart_send_char('\n');*/
     
 
     switch(channel){
@@ -110,7 +110,7 @@ ISR(ADC_vect)
         case ADC3:
             batcurrent = adc * batcurrent_coeff;
         default:
-            channel = 0;             // recycle
+            channel = 255;             // recycle
 
             print_adc = 1;
 #ifdef DEBUG_ON
