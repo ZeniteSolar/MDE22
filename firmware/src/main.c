@@ -26,7 +26,7 @@ void init(void)
     #endif
 
     #ifdef SPI_ON
-        set_bit(DDRB, PB0);     //output to be the spi master
+        set_bit(DDRB, PB2);     //output to be the spi master
         
     #endif
 
