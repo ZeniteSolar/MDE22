@@ -44,12 +44,14 @@ void adc_init(void)
     // TIMER configurations
     clr_bit(PRR, PRTIM1);                          // Activates clock to timer1 (timer0 is used by application PWM)
     // MODE 2 -> CTC with TOP on OCR1
-    //TCCR1A  =   (0 << WGM11) | (0 << WGM10)         // mode 2
-     //      | (0 << COM1B1) | (0 << COM1B0)         // do nothing
-      //     | (0 << COM1A1) | (0 << COM1A0);        // do nothing
+    //TCCR1A  =   (0 << WGM11) | (1 << WGM10)         // mode ctc
+    //        | (0 << COM1A1) | (0 << COM1A0);        // do nothing
     TCCR1B  =   (0 << WGM13) | (1 << WGM12)
             | (0 << WGM11) | (0 << WGM10)       // mode ctc
-            | (0 << COM1B1) | (0 << COM1B0) |
+            | (0 << COM1B1) | (0 << COM1B0) 
+            | (0 << CS12) | (1 << CS11) | (1 << CS10) // Prescaler N=64
+            | (0 << ICNC1) | (0 << ICES1);
+/*
 #if ADC_TIMER_PRESCALER ==     1
                 (0 << CS12) | (0 << CS11) | (1 << CS10) // Prescaler N=1
 #elif ADC_TIMER_PRESCALER ==   8
@@ -62,14 +64,12 @@ void adc_init(void)
                 (1 << CS12) | (0 << CS11) | (1 << CS10) // Prescaler N=128
 #else
                 0
-#endif
-            | (0 << ICNC1) | (0 << ICES1);
+#endif*/
 
     TCNT1 = 0;              // Disable read/write direct access to the timer counter
-    OCR1B = 82;             // OCR1A = TOP = fcpu/(N*2*f) -1
+    OCR1B = 82;             // OCR1B = TOP = fcpu/(N*2*f) -1
 
-    TIMSK1 |=   (1 << OCIE1B);        // Ativa a interrupcao na igualdade de comparação do TC1 com OCR1A, desativa OCR1B 
-            //| (0 << ICIE1) ;                // Desativa input capture interrupt
+    TIMSK1 |=   (1 << OCIE1B);        // Ativa a interrupcao na igualdade de comparação
 
 #ifdef DEBUG_ON
     set_bit(DDRD, LED1);
