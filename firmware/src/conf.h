@@ -38,7 +38,7 @@
 #ifdef ADC_ON
 //#define FAKE_ADC_ON
 #ifdef FAKE_ADC_ON
-#define FAKE_ADC                            1
+//#define FAKE_ADC                            1
 #endif // FAKE_ADC_ON
 
 #endif //ADC_ON
