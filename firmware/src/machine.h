@@ -14,6 +14,9 @@
 #include <avr/wdt.h>
 #include <avr/interrupt.h>
 
+//***
+#include <util/delay.h>
+
 #include "conf.h"
 
 // Equations for mode 2 (CTC with TOP OCR2A)
@@ -57,17 +60,17 @@ typedef union error_flags{
 
 // TODO: different structures, then add to measurements
 typedef struct measurements{
-    uint16_t    batvoltage_avg;       // average value of ADC0
+    uint16_t    batvoltage_avg;       
     uint16_t    batvoltage_avg_sum_count;
-    uint64_t    batvoltage_avg_sum;   // average value of ADC0
+    uint64_t    batvoltage_avg_sum;   
     
-    uint16_t    position_avg;       // average value of ADC0
+    uint16_t    position_avg;       
     uint16_t    position_avg_sum_count;
-    uint64_t    position_avg_sum;   // average value of ADC0
+    uint64_t    position_avg_sum;   
     
-    uint16_t    batcurrent_avg;       // average value of ADC0
+    uint16_t    batcurrent_avg;       
     uint16_t    batcurrent_avg_sum_count;
-    uint64_t    batcurrent_avg_sum;   // average value of ADC0
+    uint64_t    batcurrent_avg_sum;   
     
 }measurements_t;
 
