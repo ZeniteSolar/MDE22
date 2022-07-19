@@ -177,18 +177,8 @@ inline void task_running(void)
 {
 #ifdef LED_ON
     if(led_clk_div++ >= 2){
-        led_clk_div = 0;
         set_bit(LED1_PORT, LED1);
-        //cpl_bit(LED2_PORT, LED2);
-        average_measurements();
-        usart_send_uint8(measurements.position_avg);
-        _delay_ms(50);
-        usart_send_char('\n');
-
-    if(measurements.position_avg > 2){
-        clr_bit(LED1_PORT, LED1);
-        _delay_ms(300);
-    }
+        led_clk_div = 0;
     }
 #endif // LED_ON
 }
