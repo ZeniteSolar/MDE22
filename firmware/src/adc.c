@@ -49,9 +49,7 @@ void adc_init(void)
       //     | (0 << COM1A1) | (0 << COM1A0);        // do nothing
     TCCR1B  =   (0 << WGM13) | (1 << WGM12)
             | (0 << WGM11) | (0 << WGM10)       // mode ctc
-            | (0 << COM1B1) | (0 << COM1B0)     
-            | (0 << ICNC1) | (0 << ICES1); 
-/*            
+            | (0 << COM1B1) | (0 << COM1B0) |
 #if ADC_TIMER_PRESCALER ==     1
                 (0 << CS12) | (0 << CS11) | (1 << CS10) // Prescaler N=1
 #elif ADC_TIMER_PRESCALER ==   8
@@ -64,8 +62,8 @@ void adc_init(void)
                 (1 << CS12) | (0 << CS11) | (1 << CS10) // Prescaler N=128
 #else
                 0
-#endif*/
-
+#endif
+            | (0 << ICNC1) | (0 << ICES1);
 
     TCNT1 = 0;              // Disable read/write direct access to the timer counter
     OCR1B = 82;             // OCR1A = TOP = fcpu/(N*2*f) -1
@@ -128,7 +126,7 @@ ISR(ADC_vect)
     }
 
     ADMUX = (ADMUX & 0xF1) | ++channel;   // select next channel
-    ADCSRA = ADCSRA;                  // rearm for next conversion if TIMER0 not in use
+    //ADCSRA = ADCSRA;                  // rearm for next conversion if TIMER0 not in use
 
     sei();
 }
