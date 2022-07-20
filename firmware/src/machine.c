@@ -173,19 +173,22 @@ inline void task_running(void)
 {
 #ifdef LED_ON
     compute_measurements();
-    if(led_clk_div++ >= 10){
+    if(led_clk_div++ >= 2){
         //set_bit(LED1_PORT, LED1);
         average_measurements();
-        usart_send_uint16(measurements.batvoltage_avg);
-        usart_send_char('\n');
+        usart_send_string("Posit: ");
         usart_send_uint16(measurements.position_avg);
-        usart_send_char('\n');
+        usart_send_char('\t');
+        usart_send_string("BatV: ");
+        usart_send_uint16(measurements.batvoltage_avg);
+        usart_send_char('\t');
+        usart_send_string("BatCurr: ");
         usart_send_uint16(measurements.batcurrent_avg);
         usart_send_char('\n');
 
         reset_measurements();
 
-        if(measurements.position_avg>3){
+        if(measurements.position_avg>210){
             cpl_bit(LED1_PORT, LED1);
         }else{
             clr_bit(LED1_PORT, LED1);
@@ -281,9 +284,9 @@ void print_infos(void)
 
 inline void compute_measurements(void)
 {
-    measurements.batvoltage_avg_sum += batvoltage;
-    measurements.position_avg_sum += position;
-    measurements.batcurrent_avg_sum += batcurrent;
+    measurements.batvoltage_avg_sum += 100 * batvoltage;
+    measurements.position_avg_sum += 100 * position;
+    measurements.batcurrent_avg_sum += 100 * batcurrent;
 
     measurements.batvoltage_avg_sum_count++;
     measurements.position_avg_sum_count++;
@@ -292,9 +295,9 @@ inline void compute_measurements(void)
 
 inline void average_measurements(void)
 {
-    measurements.batvoltage_avg = 100 * measurements.batvoltage_avg_sum / measurements.batvoltage_avg_sum_count;
-    measurements.position_avg = 100 * measurements.position_avg_sum / measurements.position_avg_sum_count;
-    measurements.batcurrent_avg = 100 * measurements.batcurrent_avg_sum / measurements.batcurrent_avg_sum_count;
+    measurements.batvoltage_avg = measurements.batvoltage_avg_sum / measurements.batvoltage_avg_sum_count;
+    measurements.position_avg = measurements.position_avg_sum / measurements.position_avg_sum_count;
+    measurements.batcurrent_avg = measurements.batcurrent_avg_sum / measurements.batcurrent_avg_sum_count;
 }
 
 inline void reset_measurements(void)

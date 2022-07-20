@@ -27,7 +27,7 @@ void adc_init(void)
             | (0 << ADLAR);                         // ADC left adjusted -> using all 10 bits
 #endif
 
-    ADMUX = (ADMUX & 0xF1) | ADC1;
+    ADMUX = (ADMUX & 0xF8) | ADC1;
 
     ADCSRA  =   (1 << ADATE)                        // ADC Auto Trigger Enable
             | (1 << ADIE)                           // ADC Interrupt Enable
@@ -83,14 +83,12 @@ void adc_init(void)
 ISR(ADC_vect)
 {
     cli(); 
-    static const float batvoltage_coeff = 0.01858890894745124f; // 0,03717781789490249
-    static const float position_coeff = 1.0f; //0.06717781789490249f;
-    static const float batcurrent_coeff = 1.0f; //0.01599315004f;
+    static const float batvoltage_coeff =   0.0182689111487f; //;
+    static const float position_coeff =     0.0041538461538f; //;
+    static const float batcurrent_coeff =   1.0f; //0.01599315004f;
 
     uint16_t adc = ADC;                     // read adc
-    uint8_t channel = ADMUX & 0x0E;         // read channel
-
-    //usart_send_char(':');
+    uint8_t channel = ADMUX & 0x07;         // read channel
 
     switch(channel){
         case ADC1:
@@ -104,7 +102,7 @@ ISR(ADC_vect)
         case ADC3:
             batcurrent = adc * batcurrent_coeff;
         default:
-            channel = 255;             // recycle
+            channel = ADC1 -1;             // recycle
 
             print_adc = 1;
 #ifdef DEBUG_ON
@@ -119,7 +117,8 @@ ISR(ADC_vect)
             break;
     }
 
-    ADMUX = (ADMUX & 0xF1) | ++channel;   // select next channel
+    ADMUX = (ADMUX & 0xF8) | ++channel;   // select next channel
+    //ADCSRA = ADCSRA;
     
     sei();
 }
