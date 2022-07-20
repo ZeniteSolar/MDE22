@@ -19,9 +19,7 @@
 #include "../lib/bit_utils.h"
 #include "../lib/log2.h"
 
-typedef enum adc_channels{
-    ADC1 ,ADC2, ADC3
-} adc_channels_t;                           //*< the adc_channel type
+typedef enum adc_channels{ADC1, ADC2, ADC3} adc_channels_t;                           //*< the adc_channel type
 extern volatile uint8_t print_adc;
 
 extern volatile uint16_t batvoltage, position, batcurrent;
