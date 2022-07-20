@@ -83,17 +83,18 @@ void adc_init(void)
 ISR(ADC_vect)
 {
     cli(); 
-    static const float batvoltage_coeff =   0.0182689111487f; //;
-    static const float position_coeff =     0.0041538461538f; //;
+    static const float batvoltage_coeff =   0.0183146067415f;
+    static const float position_coeff =     0.0030405405405f; //;
     static const float batcurrent_coeff =   1.0f; //0.01599315004f;
 
     uint16_t adc = ADC;                     // read adc
     uint8_t channel = ADMUX & 0x07;         // read channel
 
+
     switch(channel){
         case ADC1:
             batvoltage = adc * batvoltage_coeff;
-             break;
+            break;
 
         case ADC2:                       
             position = adc * position_coeff;
