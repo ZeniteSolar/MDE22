@@ -173,7 +173,7 @@ inline void task_running(void)
 {
 #ifdef LED_ON
     compute_measurements();
-    if(led_clk_div++ >= 2){
+    if(led_clk_div++ >= 50){
         //set_bit(LED1_PORT, LED1);
         average_measurements();
         usart_send_string("Posit: ");
