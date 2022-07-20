@@ -176,9 +176,11 @@ inline void task_running(void)
     if(led_clk_div++ >= 10){
         //set_bit(LED1_PORT, LED1);
         average_measurements();
-        usart_send_uint16(measurements.position_avg);
-        usart_send_char('\t');
         usart_send_uint16(measurements.batvoltage_avg);
+        usart_send_char('\n');
+        usart_send_uint16(measurements.position_avg);
+        usart_send_char('\n');
+        usart_send_uint16(measurements.batcurrent_avg);
         usart_send_char('\n');
 
         reset_measurements();

@@ -63,15 +63,12 @@ typedef struct measurements{
     uint16_t    batvoltage_avg;       
     uint16_t    batvoltage_avg_sum_count;
     uint64_t    batvoltage_avg_sum;   
-    
     uint16_t    position_avg;       
     uint16_t    position_avg_sum_count;
     uint64_t    position_avg_sum;   
-    
     uint16_t    batcurrent_avg;       
     uint16_t    batcurrent_avg_sum_count;
     uint64_t    batcurrent_avg_sum;   
-    
 }measurements_t;
 
 
