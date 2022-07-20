@@ -83,7 +83,7 @@ void adc_init(void)
 ISR(ADC_vect)
 {
     cli(); 
-    static const float batvoltage_coeff = 1; //0.06582490575070313f;
+    static const float batvoltage_coeff = 3.779; // 12.6 / 3.334 = 
     static const float position_coeff = 1; //0.06717781789490249f;
     static const float batcurrent_coeff = 1; //0.01599315004f;
 
@@ -91,12 +91,6 @@ ISR(ADC_vect)
     uint8_t channel = ADMUX & 0x0E;         // read channel
 
     //usart_send_char(':');
-    /*cpl_bit(LED1_PORT, LED1);
-    usart_send_uint8(ADMUX);
-    usart_send_char(':');
-    usart_send_uint16(ADC);
-    usart_send_char('\n');*/
-    
 
     switch(channel){
         case ADC1:
@@ -110,7 +104,7 @@ ISR(ADC_vect)
         case ADC3:
             batcurrent = adc * batcurrent_coeff;
         default:
-            channel = 255;             // recycle
+            channel = 0;             // recycle
 
             print_adc = 1;
 #ifdef DEBUG_ON
@@ -126,8 +120,7 @@ ISR(ADC_vect)
     }
 
     ADMUX = (ADMUX & 0xF1) | ++channel;   // select next channel
-    //ADCSRA = ADCSRA;                  // rearm for next conversion if TIMER0 not in use
-
+    
     sei();
 }
 
