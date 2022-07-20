@@ -1,6 +1,6 @@
 #include "adc.h"
 
-volatile uint16_t batvoltage, position, batcurrent;
+volatile float batvoltage, position, batcurrent;
 
 volatile uint8_t print_adc;
 
@@ -83,9 +83,9 @@ void adc_init(void)
 ISR(ADC_vect)
 {
     cli(); 
-    static const float batvoltage_coeff = 3.779; // 12.6 / 3.334 = 
-    static const float position_coeff = 1; //0.06717781789490249f;
-    static const float batcurrent_coeff = 1; //0.01599315004f;
+    static const float batvoltage_coeff = 0.01858890894745124f; // 0,03717781789490249
+    static const float position_coeff = 1.0f; //0.06717781789490249f;
+    static const float batcurrent_coeff = 1.0f; //0.01599315004f;
 
     uint16_t adc = ADC;                     // read adc
     uint8_t channel = ADMUX & 0x0E;         // read channel
@@ -104,7 +104,7 @@ ISR(ADC_vect)
         case ADC3:
             batcurrent = adc * batcurrent_coeff;
         default:
-            channel = 0;             // recycle
+            channel = 255;             // recycle
 
             print_adc = 1;
 #ifdef DEBUG_ON
