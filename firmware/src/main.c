@@ -36,7 +36,7 @@ void init(void)
             set_bit(LED2_PORT, LED2);
         #endif  
         can_init(BITRATE_500_KBPS);
-        can_set_mode(LOOPBACK_MODE);
+        //can_set_mode(LOOPBACK_MODE);
         VERBOSE_MSG_INIT(usart_send_string(" OK!\n"));
         VERBOSE_MSG_INIT(usart_send_string("CAN filters..."));
         can_static_filter(can_filter);
