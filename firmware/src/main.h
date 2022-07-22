@@ -51,6 +51,13 @@
 #pragma message "MACHINE: OFF!"
 #endif /*ifdef MACHINE_ON*/
 
+#ifdef HBRIDGE_ON
+#include "hbridge.h"
+#pragma message "HBRIDGE: ON!"
+#else
+#pragma message "HBRIDGE: OFF!"
+#endif /*ifdef HBRIDGE_ON*/
+
 #ifdef LED_ON
 #pragma message "LED: ON!"
 #else

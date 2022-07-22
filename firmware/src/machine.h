@@ -35,6 +35,9 @@
 #include "can_app.h"
 extern const uint8_t can_filter[];
 #endif
+#ifdef HBRIDGE_ON
+#include "hbridge.h"
+#endif
 
 typedef enum state_machine{
     STATE_INITIALIZING,

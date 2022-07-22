@@ -85,6 +85,18 @@ void init(void)
         wdt_reset();
     #endif
 	
+    #ifdef HBRIDGE_ON
+        VERBOSE_MSG_INIT(usart_send_string("HBRIDGE..."));
+        hbridge_init();
+        VERBOSE_MSG_INIT(usart_send_string(" OK!\n"));
+    #else
+        VERBOSE_MSG_INIT(usart_send_string("MACHINE... OFF!\n"));
+    #endif
+
+    #ifdef WATCHDOG_ON
+        wdt_reset();
+    #endif
+    
     #ifdef LED_ON
         set_bit(DDRD, LED1);                      // LED como saída
         set_bit(DDRB, LED2);                      // LED como saída

@@ -17,7 +17,7 @@
 // CONFIGURACOES DE COMPILACAO
 //#define DEBUG_ON
 #define VERBOSE_ON
-#define VERBOSE_ON_CAN_APP
+//#define VERBOSE_ON_CAN_APP
 #define VERBOSE_ON_MACHINE
 #define VERBOSE_ON_ADC
 #define VERBOSE_ON_INIT
@@ -29,6 +29,7 @@
 //#define CAN_DEPENDENT
 #define ADC_ON
 #define MACHINE_ON
+#define HBRIDGE_ON
 #define LED_ON
 #define WATCHDOG_ON
 //#define SLEEP_ON
@@ -52,8 +53,18 @@
 #define MACHINE_CLK_DIVIDER_VALUE           (MACHINE_TIMER_FREQUENCY)/(MACHINE_FREQUENCY)  //<! machine_run clock divider
 #endif // MACHINE_ON              (MACHINE_TIMER_FREQUENCY)/(MACHINE_CLK_DIVIDER_VALUE)
 
-// SCALE TO CONVERT ADC DEFINITIONS
-#define VSCALE                              (uint16_t)1000
+#ifdef  HBRIDGE_ON
+//#define HBRIDGE_TIMER_FREQUENCY             0
+//#define HBRIDGE_TIMER_PRESCALER             0
+//#define HBRIDGE_SWITCHING_FREQUENCY         0
+#define HBRIDGE_CLK_DIVIDER_VALUE           (HBRIDGE_TIMER_FREQUENCY)/(HBRIDGE_SWITCHING_FREQUENCY)
+#define HBRIDGE_PORT                        PORTD
+#define HBRIDGE_PWM_DDR                     DDRD
+#define HBRIDGE_PWM_PIN1                    PD6
+#define HBRIDGE_PWM_PIN2                    PD5   
+#define HBRIDGE_ENABLE_PIN                  PD2
+#define HBRIDGE_TESTING_CLK_DIV_VALUE       800
+#endif // HBRIDGE_ON
 
 //#### LED PINS ####
 #ifdef LED_ON
