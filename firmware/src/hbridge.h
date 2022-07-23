@@ -32,7 +32,7 @@
 #define HBRIDGE_H
 
 #include <avr/io.h>
-#include <avr/interrupt.h>
+#include "avr/interrupt.h"
 #include "conf.h"
 #include "../lib/bit_utils.h"
 #include "usart.h"
@@ -43,7 +43,11 @@ extern volatile uint32_t hbridge_testing_clk_div;
 //Equation
 void hbridge_init(void);
 void hbridge_testing(void);
-//void hbridge_toggle_side(void);
+void hbridge_toggle_side(void);
+uint8_t hbridge_set_pwm(uint8_t side, float duty);
+
+enum {HBRIDGE_OK, HBRIDGE_ERROR};
+enum {HBRIDGE_SIDE_A, HBRIDGE_SIDE_B};
 //void hbridge_follow(uint16_t position_target);
 
 #endif /* ifndef HBRIDGE_H */
