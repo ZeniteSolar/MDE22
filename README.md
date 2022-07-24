@@ -108,6 +108,16 @@ Com a placa toda soldada, como pode ser visto na figura, é dado início a etapa
 
 ### Testes no Circuito
 
+### Montagem dos Sensores de Posição
+
+O código desenvolvido para a ponte H pressupõe as seguintes relações:
+
+| Potenciômetro | Posição da Rabeta |
+| ------------- | ------------------- |
+| Valor máximo  | limite de estibordo |
+| Valor médio   | centrada  |
+| Valor mínimo  | limite de bombordo |
+
 
 # Operação
 
