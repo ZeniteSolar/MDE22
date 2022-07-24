@@ -17,6 +17,7 @@
 #include "can_ids.h"
 #include "machine.h"
 #include "usart.h"
+#include "hbridge.h"
 
 void can_app_print_msg(can_t *msg);
 void can_app_task(void);
@@ -24,8 +25,8 @@ void can_app_send_state(void);
 void can_app_send_steeringbat_measurements(void);
 
 void can_app_msg_extractors_switch(can_t *msg);
-void can_app_extractor_mic17_state(can_t *msg);
-void can_app_extractor_mic17_msc(can_t *msg);
+void can_app_extractor_mic19_state(can_t *msg);
+void can_app_extractor_mic19_mde(can_t *msg);
 void check_can(void);
 
 #ifdef CAN_ON
