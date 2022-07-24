@@ -1,22 +1,26 @@
 #include "hbridge.h"
 
 
-volatile uint16_t position_target;
 volatile uint32_t hbridge_testing_clk_div;
+volatile uint16_t tail_position_pilot;
+volatile int tail_diff;
+volatile uint16_t tail_diff_old;
+volatile float duty_coeff;
 
-void hbridge_init()
+void hbridge_init(void)
 {   
-    TCCR0A = (1<<COM0A1) | (1<<COM0A0)              
-            | (1<<COM0B1)| (0<<COM0B0)              
+    TCCR0A = (1<<COM0A1) | (1<<COM0A0)              // Set on compare match when up-counting, clear ... on down-counting
+            | (1<<COM0B1)| (0<<COM0B0)              // Clear on compare match when up-counting, set ... on down-counting
             | (0<< WGM01) | (1<<WGM00);              
 
-    // fOCnxPCPWM = (fclk_IO)/(N x 510), N being the prescaler  16MHz / ( x 510)    
+    // fOCnxPCPWM = (fclk_IO)/(N x 510), N being the prescaler
+    // Prescaler 010 = 8 -> 3921.5 Hz  
     TCCR0B = (0<<WGM02) | (0<<CS02) | (1<<CS01) | (0<<CS00);                           
 
     // Sets the OC0A and OC0B duty cycle, remenber Timer/Counter0 is 8bits
     TCNT0 = 0;
-    OCR0A = 255;       // Begin on 50%    // OCR0B = unused 
-    OCR0B = 128;
+    OCR0A = 255;       // No PWM 
+    OCR0B = 0;         // No PWM
 
 
 // Set pins as output DDRxn = 1
@@ -26,6 +30,12 @@ void hbridge_init()
     
 // Initiate HBRIDGE disabled;
     clr_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN);
+
+    tail_diff = 0;
+    tail_diff_old = 0;
+    duty_coeff = 0;
+    
+    tail_position_pilot = 128;
 }
 
 uint8_t hbridge_set_pwm(uint8_t side, float duty)
@@ -44,7 +54,7 @@ uint8_t hbridge_set_pwm(uint8_t side, float duty)
     }
 }
 
-void hbridge_testing()
+void hbridge_testing(void)
 {
     set_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN);  // Enable H-Bridge
 
@@ -60,17 +70,45 @@ void hbridge_testing()
     }
 }
 
-/*void hbridge_follow(uint16_t position_target)
+void hbridge_task(void)
 {
-    while(position_tail != position_target)
-    {
-        if(position_tail < position_target){
+    tail_diff = tail_position_pilot - measurements.position_avg;    // Check sensor pot difference: pilot - tail
 
-        }else{
-
-        }
+    /*if(tail_diff > 0){
+        tail_diff_old < tail_diff ? tail_diff_old = tail_diff;          // Used for responsive duty cycle on hbridge pwm
+    } else if (tali_diff < 0) {
+        tail_diff_old < (-1 * tail_diff) ? tail_diff_old = tail_diff;
+    } else {
+        tail_diff_old = 0;
     }
-}*/
+    
+    // Duty cycle mantained until tail_tolerance state achieved. Duty is maxed at tail_diff=270° 
+    //         Minimum at 5%            0.0037 %/°
+    duty_coeff = 0.05 + (0.95 * (tail_diff_old / 270)); 
+#ifdef VERBOSE_ON_HBRIDGE
+    usart_send_uint16(tail_diff_old);
+    usart_send_string(" :tail_diff_old\n");
+#endif
+    */
+
+    duty_coeff = 0.05;
+
+#ifdef VERBOSE_ON_HBRIDGE
+        tail_diff > 0 ? usart_send_string("Vira ESTIBORDO\n") : usart_send_string("Vira BOMBORDO\n");
+#endif
+    if(tail_diff > TAIL_TOLERANCE_POSITIVE){
+        hbridge_set_pwm(HBRIDGE_SIDE_A, 0);
+        hbridge_set_pwm(HBRIDGE_SIDE_B, duty_coeff);
+    } else if (tail_diff < TAIL_TOLERANCE_NEGATIVE){
+        hbridge_set_pwm(HBRIDGE_SIDE_A, duty_coeff);
+        hbridge_set_pwm(HBRIDGE_SIDE_B, 0);
+    } else {
+        tail_diff_old = 0;
+        hbridge_set_pwm(HBRIDGE_SIDE_A, 0);
+        hbridge_set_pwm(HBRIDGE_SIDE_B, 0);
+    }
+}
+
 
 EMPTY_INTERRUPT(TIMER0_COMPA_vect);
 EMPTY_INTERRUPT(TIMER0_COMPB_vect);
