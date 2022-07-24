@@ -33,18 +33,28 @@
 
 #include <avr/io.h>
 #include "avr/interrupt.h"
-#include "conf.h"
 #include "../lib/bit_utils.h"
+#include "conf.h"
+#include "machine.h"
 #include "usart.h"
 
-extern volatile uint16_t position_target, position_tail;
 extern volatile uint32_t hbridge_testing_clk_div;
+extern volatile uint16_t tail_position_pilot;
+
+extern volatile int tail_diff;
+extern volatile uint16_t tail_diff_old;
+extern volatile float duty_coeff;
+
+#define TAIL_TOLERANCE_POSITIVE        2
+#define TAIL_TOLERANCE_NEGATIVE        -2
 
 //Equation
 void hbridge_init(void);
 void hbridge_testing(void);
 void hbridge_toggle_side(void);
 uint8_t hbridge_set_pwm(uint8_t side, float duty);
+void hbridge_check(void);
+void hbridge_task(void);
 
 enum {HBRIDGE_OK, HBRIDGE_ERROR};
 enum {HBRIDGE_SIDE_A, HBRIDGE_SIDE_B};
