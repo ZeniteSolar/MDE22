@@ -47,4 +47,19 @@
  */
 #define HIGH(y)         ((y>>8)&0xFF)
 
+/**
+ *  Concatena dois bytes 
+ */
+#define HIGH_LOW(z, y, x)     (z = (y << 8) | (x));
+
+/**
+ *  Detecta borda de subida
+ */
+#define RISING_EDGE(_new, _old)      (((_new) ^ (_old)) & (_new))
+
+/**
+ *  Detecta borda de subida
+ */
+#define FALLING_EDGE(_new, _old)      (((_new) ^ (_old)) & (_old))
+
 #endif /* ifndef _BIT_UTILS_H_*/
