@@ -33,7 +33,6 @@
 #ifdef CAN_ON
 #include "can.h"
 #include "can_app.h"
-extern const uint8_t can_filter[];
 #endif
 #ifdef HBRIDGE_ON
 #include "hbridge.h"
@@ -117,9 +116,5 @@ extern volatile uint8_t total_errors;           // Contagem de ERROS
 
 // other variables
 extern volatile uint8_t led_clk_div;
-
-// ISRs
-ISR(TIMER2_COMPA_vect);
-ISR(PCINT2_vect);
 
 #endif /* ifndef MACHINE_H */
