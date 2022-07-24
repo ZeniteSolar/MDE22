@@ -3,6 +3,7 @@
 
 uint32_t can_app_send_state_clk_div;
 uint32_t can_app_send_adc_clk_div;
+volatile uint16_t tail_position_pilot;
 
 /**
  * @brief Prints a can message via usart
@@ -100,18 +101,31 @@ inline void can_app_send_steeringbat_measurements(void)
  * @brief extracts the specific MIC19 STATE message
  * @param *msg pointer to the message to be extracted
  */
-inline void can_app_extractor_mic17_state(can_t *msg)
+inline void can_app_extractor_mic19_state(can_t *msg)
 {
     // TODO:
-    //  - se tiver em erro, desligar acionamento
+    //  - se tiver em erro, desligar a ponte H
     if(msg->data[CAN_MSG_GENERIC_STATE_SIGNATURE_BYTE] == CAN_SIGNATURE_MIC19){
         // zerar contador
         if(msg->data[CAN_MSG_GENERIC_STATE_ERROR_BYTE]){
             //ERROR!!!
-        }
-        /*if(contador == maximo)*/{
+        } 
+        /*if(contador == maximo){
             //ERROR!!!
-        }
+        }*/
+    }
+}
+
+/**
+ * @brief extracts the steering wheel position measurement from MIC19 
+ * @param *msg pointer to the message to be extracted
+ */
+inline void can_app_extractor_mic19_mde(can_t *msg)
+{
+    if(msg->data[CAN_MSG_MIC19_MDE_SIGNATURE_BYTE] == CAN_SIGNATURE_MIC19){
+        HIGH_LOW(tail_position_pilot, msg->data[CAN_MSG_MIC19_MDE_POSITION_H_BYTE], msg->data[CAN_MSG_MIC19_MDE_POSITION_L_BYTE]);
+    } else {
+        // ERROR!!
     }
 }
 
@@ -125,11 +139,20 @@ inline void can_app_msg_extractors_switch(can_t *msg)
         switch(msg->id){
             case CAN_MSG_MIC19_STATE_ID:
 #ifdef USART_ON
-                VERBOSE_MSG_CAN_APP(usart_send_string("got a state msg: "));
+                VERBOSE_MSG_CAN_APP(usart_send_string("got MIC state msg: "));
 #endif
                 VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
-                can_app_extractor_mic17_state(msg);
+                can_app_extractor_mic19_state(msg);
                 break;
+
+            case CAN_MSG_MIC19_MDE_ID:
+#ifdef USART_ON
+                VERBOSE_MSG_CAN_APP(usart_send_string("got MIC steering measure msg: "));
+#endif
+                VERBOSE_MSG_CAN_APP(can_app_print_msg(msg));
+                can_app_extractor_mic19_mde(msg);
+                break;
+
             default:
 #ifdef USART_ON
                 VERBOSE_MSG_CAN_APP(usart_send_string("got a unknown msg: "));
@@ -145,16 +168,16 @@ inline void can_app_msg_extractors_switch(can_t *msg)
  */
 inline void check_can(void)
 {
-    // If no messages is received from mic17 for
+    // If no messages is received from mic19 for
     // CAN_APP_CHECKS_WITHOUT_MIC19_MSG cycles, than it go to a specific error state.
     //VERBOSE_MSG_CAN_APP(usart_send_string("checks: "));
-    //VERBOSE_MSG_CAN_APP(usart_send_uint16(can_app_checks_without_mic17_msg));
+    //VERBOSE_MSG_CAN_APP(usart_send_uint16(can_app_checks_without_mic19_msg));
 #ifdef CAN_DEPENDENT
-    if(can_app_checks_without_mic17_msg++ >= CAN_APP_CHECKS_WITHOUT_MIC19_MSG){
+    if(can_app_checks_without_mic19_msg++ >= CAN_APP_CHECKS_WITHOUT_MIC19_MSG){
 #ifdef USART_ON
         VERBOSE_MSG_CAN_APP(usart_send_string("Error: too many cycles withtou message.\n"));
 #endif
-        can_app_checks_without_mic17_msg = 0;
+        can_app_checks_without_mic19_msg = 0;
         error_flags.no_canbus = 1;
         set_state_error();
     }
