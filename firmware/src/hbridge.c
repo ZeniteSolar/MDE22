@@ -72,17 +72,16 @@ void hbridge_testing(void)
 
 void hbridge_task(void)
 {
-    if(tail_position_pilot < 0 || tail_position_pilot > 270){
+    if(tail_position_pilot > 270){
         error_flags.invalid_str_whl = 1;
         set_state_error();
     }
-    if(measurements.position_avg < 0 || measurements.position_avg > 270)
+    if(measurements.position_avg > 270)
     {
         error_flags.invalid_tail = 1;
         set_state_error();
     }
     
-    tail_diff = tail_position_pilot - measurements.position_avg;    // Check sensor pot difference: pilot - tail
 
     /*if(tail_diff > 0){
         tail_diff_old < tail_diff ? tail_diff_old = tail_diff;          // Used for responsive duty cycle on hbridge pwm
@@ -100,6 +99,7 @@ void hbridge_task(void)
     usart_send_string(" :tail_diff_old\n");
 #endif
     */
+    tail_diff = tail_position_pilot - measurements.position_avg;    // Check sensor pot difference: pilot - tail
 
     duty_coeff = 0.05;
 
