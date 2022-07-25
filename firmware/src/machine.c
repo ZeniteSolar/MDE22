@@ -219,6 +219,10 @@ inline void task_error(void)
 
     if(error_flags.no_canbus)
         VERBOSE_MSG_ERROR(usart_send_string("\t - No canbus communication with MIC19!\n"));
+    if(error_flags.invalid_tail)
+        VERBOSE_MSG_ERROR(usart_send_string("\t - Invalid tail angle, position unacceptable!\n"));
+    if(error_flags.invalid_str_whl)
+        VERBOSE_MSG_ERROR(usart_send_string("\t - Invalid steering wheel angle!\n"));
     if(!error_flags.all)
         VERBOSE_MSG_ERROR(usart_send_string("\t - Oh no, it was some unknown error.\n"));
 
