@@ -37,6 +37,8 @@ void check_can(void);
 #define CAN_APP_SEND_ADC_CLK_DIV    1
 #endif
 
+#define CAN_APP_CHECKS_WITHOUT_MIC19_MSG  500
+
 extern uint32_t can_app_send_state_clk_div;
 extern uint32_t can_app_send_adc_clk_div;
 

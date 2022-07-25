@@ -1,6 +1,8 @@
 #include "can_app.h"
 #include <math.h>
 
+uint16_t can_app_checks_without_mic19_msg;
+
 uint32_t can_app_send_state_clk_div;
 uint32_t can_app_send_adc_clk_div;
 volatile uint16_t tail_position_pilot;
