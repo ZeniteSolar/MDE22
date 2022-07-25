@@ -172,9 +172,9 @@ inline void task_idle(void)
 inline void task_running(void)
 {
 #ifdef LED_ON
-    compute_measurements();
+    //compute_measurements();
     if(led_clk_div++ >= 50){
-        average_measurements();
+        /*average_measurements();
         usart_send_string("Posit: ");
         usart_send_uint16(measurements.position_avg);
         usart_send_char('\t');
@@ -185,7 +185,7 @@ inline void task_running(void)
         usart_send_uint16(measurements.batcurrent_avg);
         usart_send_char('\n');
 
-        reset_measurements();
+        reset_measurements();*/
 
         if(measurements.position_avg>210){
             cpl_bit(LED1_PORT, LED1);
@@ -348,7 +348,7 @@ inline void machine_run(void)
             case STATE_RUNNING:
                 task_running();
                 #ifdef HBRIDGE_ON
-                    hbridge_testing();
+                    hbridge_task();
                 #endif /* HBRIDGE_ON */    
                 #ifdef CAN_ON
                     can_app_task();
