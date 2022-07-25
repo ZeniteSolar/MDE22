@@ -2,6 +2,7 @@
 
 
 volatile uint32_t hbridge_testing_clk_div;
+volatile uint32_t hbridge_verbose_clk_div;
 volatile uint16_t tail_position_pilot;
 volatile int tail_diff;
 volatile uint16_t tail_diff_old;
@@ -72,13 +73,20 @@ void hbridge_testing(void)
 
 void hbridge_task(void)
 {
+    average_measurements();
+
+
     if(tail_position_pilot > 270){
         error_flags.invalid_str_whl = 1;
+        usart_send_uint16(tail_position_pilot);
+        usart_send_char('\n');
         set_state_error();
     }
     if(measurements.position_avg > 270)
     {
         error_flags.invalid_tail = 1;
+        usart_send_uint16(measurements.position_avg);
+        usart_send_char('\n');
         set_state_error();
     }
     
@@ -101,10 +109,13 @@ void hbridge_task(void)
     */
     tail_diff = tail_position_pilot - measurements.position_avg;    // Check sensor pot difference: pilot - tail
 
-    duty_coeff = 0.05;
+    duty_coeff = 0.1;
 
 #ifdef VERBOSE_ON_HBRIDGE
+    if(hbridge_verbose_clk_div++ >= HBRIDGE_VERBOSE_CLK_DIV){
         tail_diff > 0 ? usart_send_string("Vira ESTIBORDO\n") : usart_send_string("Vira BOMBORDO\n");
+        hbridge_verbose_clk_div = 0;
+    }
 #endif
     if(tail_diff > TAIL_TOLERANCE){
         hbridge_set_pwm(HBRIDGE_SIDE_A, 0);

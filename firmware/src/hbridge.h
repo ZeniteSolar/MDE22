@@ -39,6 +39,7 @@
 #include "usart.h"
 
 extern volatile uint32_t hbridge_testing_clk_div;
+extern volatile uint32_t hbridge_verbose_clk_div;
 extern volatile uint16_t tail_position_pilot;
 
 extern volatile int tail_diff;
