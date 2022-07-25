@@ -64,7 +64,6 @@
 #define HBRIDGE_PWM_PIN1                    PD6
 #define HBRIDGE_PWM_PIN2                    PD5   
 #define HBRIDGE_ENABLE_PIN                  PD2
-#define HBRIDGE_TESTING_CLK_DIV_VALUE       800
 #define HBRIDGE_VERBOSE_CLK_DIV             120
 #endif // HBRIDGE_ON
 
