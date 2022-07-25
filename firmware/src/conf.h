@@ -65,7 +65,7 @@
 #define HBRIDGE_PWM_PIN2                    PD5   
 #define HBRIDGE_ENABLE_PIN                  PD2
 #define HBRIDGE_TESTING_CLK_DIV_VALUE       800
-#define HBRIDGE_VERBOSE_CLK_DIV             40
+#define HBRIDGE_VERBOSE_CLK_DIV             400
 #endif // HBRIDGE_ON
 
 //#### LED PINS ####
