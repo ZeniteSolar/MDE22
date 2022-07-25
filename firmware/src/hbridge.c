@@ -72,6 +72,16 @@ void hbridge_testing(void)
 
 void hbridge_task(void)
 {
+    if(tail_position_pilot < 0 || tail_position_pilot > 270){
+        error_flags.invalid_str_whl = 1;
+        set_state_error();
+    }
+    if(measurements.position_avg < 0 || measurements.position_avg > 270)
+    {
+        error_flags.invalid_tail = 1;
+        set_state_error();
+    }
+    
     tail_diff = tail_position_pilot - measurements.position_avg;    // Check sensor pot difference: pilot - tail
 
     /*if(tail_diff > 0){
@@ -96,10 +106,10 @@ void hbridge_task(void)
 #ifdef VERBOSE_ON_HBRIDGE
         tail_diff > 0 ? usart_send_string("Vira ESTIBORDO\n") : usart_send_string("Vira BOMBORDO\n");
 #endif
-    if(tail_diff > TAIL_TOLERANCE_POSITIVE){
+    if(tail_diff > TAIL_TOLERANCE){
         hbridge_set_pwm(HBRIDGE_SIDE_A, 0);
         hbridge_set_pwm(HBRIDGE_SIDE_B, duty_coeff);
-    } else if (tail_diff < TAIL_TOLERANCE_NEGATIVE){
+    } else if (tail_diff < TAIL_TOLERANCE){
         hbridge_set_pwm(HBRIDGE_SIDE_A, duty_coeff);
         hbridge_set_pwm(HBRIDGE_SIDE_B, 0);
     } else {

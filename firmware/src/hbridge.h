@@ -45,8 +45,7 @@ extern volatile int tail_diff;
 extern volatile uint16_t tail_diff_old;
 extern volatile float duty_coeff;
 
-#define TAIL_TOLERANCE_POSITIVE        2
-#define TAIL_TOLERANCE_NEGATIVE        -2
+#define TAIL_TOLERANCE                  2
 
 //Equation
 void hbridge_init(void);
