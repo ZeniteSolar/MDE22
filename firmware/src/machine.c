@@ -171,12 +171,15 @@ inline void task_idle(void)
  */
 inline void task_running(void)
 {
-#ifdef LED_ON
-    //compute_measurements();
-    if(led_clk_div++ >= 50){
-        /*average_measurements();
-        usart_send_string("Posit: ");
+#ifdef USART_ON
+
+    if(led_clk_div++ >= 200){
+        
+        usart_send_string("Tail Posit: ");
         usart_send_uint16(measurements.position_avg);
+        usart_send_char('\t');
+        usart_send_string("Pilot Posit: ");
+        usart_send_uint16(tail_position_pilot);
         usart_send_char('\t');
         usart_send_string("BatV: ");
         usart_send_uint16(measurements.batvoltage_avg);
@@ -185,16 +188,9 @@ inline void task_running(void)
         usart_send_uint16(measurements.batcurrent_avg);
         usart_send_char('\n');
 
-        reset_measurements();*/
-
-        if(measurements.position_avg>210){
-            cpl_bit(LED1_PORT, LED1);
-        }else{
-            clr_bit(LED1_PORT, LED1);
-        }
         led_clk_div = 0;
     }
-#endif // LED_ON
+#endif // USART_ON
 }
 
 
