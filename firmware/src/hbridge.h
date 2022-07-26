@@ -38,24 +38,33 @@
 #include "machine.h"
 #include "usart.h"
 
-extern volatile uint32_t hbridge_usart_clk_div;
-extern volatile uint32_t hbridge_verbose_clk_div;
-extern volatile uint16_t tail_position_pilot;
-
-extern volatile int tail_diff;
-extern volatile uint16_t tail_diff_old;
 extern volatile float duty_coeff;
-
-#define TAIL_TOLERANCE                  2
+extern volatile int tail_diff;
+extern volatile int tail_diff_old;
+extern volatile uint32_t hbridge_verbose_clk_div;
+extern volatile uint32_t hbridge_side_switch_clk_div;
+extern volatile uint16_t tail_position_pilot;
+extern volatile uint8_t hbridge_led_clk_div;
 
 //Equation
 void hbridge_init(void);
 void hbridge_toggle_side(void);
 uint8_t hbridge_set_pwm(uint8_t side, float duty);
-void hbridge_check(void);
 void hbridge_task(void);
 
+typedef union hbridge_flags{
+    struct{
+        uint8_t     side_A_switch_on    :1;
+        uint8_t     side_B_switch_on    :1; 
+        uint8_t     curr_path_low_high  :1;
+        uint8_t     wrong_side_turn     :1;
+        uint8_t     force_center    :1;
+    };
+    uint8_t     all__;
+} hbridge_flags_t;
+
 enum {HBRIDGE_OK, HBRIDGE_ERROR};
+enum {SIDE_A_SWITCH, SIDE_B_SWITCH};
 enum {HBRIDGE_SIDE_A, HBRIDGE_SIDE_B};
 //void hbridge_follow(uint16_t position_target);
 
