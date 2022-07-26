@@ -1,12 +1,13 @@
 #include "hbridge.h"
 
-
+volatile float duty_coeff;
+volatile int tail_diff;
+volatile int tail_diff_old;
 volatile uint32_t hbridge_testing_clk_div;
 volatile uint32_t hbridge_verbose_clk_div;
 volatile uint16_t tail_position_pilot;
-volatile int tail_diff;
-volatile uint16_t tail_diff_old;
-volatile float duty_coeff;
+volatile uint8_t hbridge_led_clk_div;
+volatile hbridge_flags_t hbridge_flags;
 
 void hbridge_init(void)
 {   
@@ -36,7 +37,35 @@ void hbridge_init(void)
     tail_diff_old = 0;
     duty_coeff = 0;
     
-    tail_position_pilot = 128;
+    hbridge_flags.all__ = 0;
+    hbridge_flags.force_center = 1;
+}
+
+/**
+ * @brief PROTOTYPE. This function exchanges hbridge's switching side 
+ * while keeping current flow direction. 
+ */
+void hbridge_toggle_side(void)
+{
+    if(hbridge_flags.curr_path_low_high == 0){
+
+        // which side is switching?
+            // make this side higher switch on (set_pwm(...,1))
+        // make the other side switch 
+
+        // Set system flag about this state
+        hbridge_flags.curr_path_low_high = 1;
+    } else {
+
+        // which side is switching?
+            // make this side higher switch on (set_pwm(...,1))
+        // make the other side switch 
+
+        // Set system flag about this state
+
+        hbridge_flags.curr_path_low_high = 0;
+    }
+
 }
 
 uint8_t hbridge_set_pwm(uint8_t side, float duty)
@@ -57,7 +86,7 @@ uint8_t hbridge_set_pwm(uint8_t side, float duty)
 
 void hbridge_task(void)
 {
-    if (!tst_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN)) {
+    if ((!hbridge_flags.wrong_side_turn) && (!tst_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN))) {
         set_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN);
         usart_send_string("HBridge is now enabled!\n");
     }
@@ -75,7 +104,7 @@ void hbridge_task(void)
 
     /*if(tail_diff > 0){
         tail_diff_old < tail_diff ? tail_diff_old = tail_diff;          // Used for responsive duty cycle on hbridge pwm
-    } else if (tali_diff < 0) {
+    } else if (tail_diff < 0) {
         tail_diff_old < (-1 * tail_diff) ? tail_diff_old = tail_diff;
     } else {
         tail_diff_old = 0;
@@ -87,29 +116,70 @@ void hbridge_task(void)
 #ifdef VERBOSE_ON_HBRIDGE
     usart_send_uint16(tail_diff_old);
     usart_send_string(" :tail_diff_old\n");
-#endif
-    */
+#endif */
+    if(hbridge_flags.force_center == 1){
+        usart_send_string("Tail shall be centered until MIC returns.\n");
+        tail_position_pilot = 165;
+    }
     tail_diff = tail_position_pilot - measurements.position_avg;    // Check sensor pot difference: pilot - tail
+    duty_coeff = 0.8;
 
-    duty_coeff = 0.2;
 
 #ifdef VERBOSE_ON_HBRIDGE
     if(hbridge_verbose_clk_div++ >= HBRIDGE_VERBOSE_CLK_DIV){
-        tail_diff > 0 ? usart_send_string("Vira ESTIBORDO\n") : usart_send_string("Vira BOMBORDO\n");
+        if (tail_diff > TAIL_TOLERANCE){
+            VERBOSE_MSG_HBRIDGE(usart_send_string("Vira ESTIBORDO\t"));
+        } else if (tail_diff < -TAIL_TOLERANCE) { 
+            VERBOSE_MSG_HBRIDGE(usart_send_string("Vira BOMBORDO\t"));
+        } else {
+            VERBOSE_MSG_HBRIDGE(usart_send_string("Motor parado.\t"));
+        }
+        VERBOSE_MSG_HBRIDGE(usart_send_string("Side Switching: "));
+        VERBOSE_MSG_HBRIDGE(usart_send_uint8(hbridge_flags.all__));
+        VERBOSE_MSG_HBRIDGE(usart_send_char('\n'));
         hbridge_verbose_clk_div = 0;
     }
 #endif
-    if(tail_diff > TAIL_TOLERANCE){
+
+#ifdef LED_ON
+    if (hbridge_led_clk_div++ >= 3){
+        cpl_bit(LED1_PORT, LED1);
+        hbridge_led_clk_div = 0;
+        /*usart_send_char('\n');
+        usart_send_uint16(tail_diff_old);
+        usart_send_char('\t');
+        usart_send_uint16(tail_diff);
+        usart_send_char('\n');*/
+    }
+#endif
+
+    if (tail_diff > TAIL_TOLERANCE){
         hbridge_set_pwm(HBRIDGE_SIDE_A, 0);
         hbridge_set_pwm(HBRIDGE_SIDE_B, duty_coeff);
-    } else if (tail_diff < TAIL_TOLERANCE){
+        hbridge_flags.side_B_switch_on = 1;
+        hbridge_flags.side_A_switch_on = 0;
+        if(tail_diff_old > tail_diff){
+            clr_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN);
+            usart_send_string("TURNING TO THE WRONG SIDE!\n");
+            hbridge_flags.wrong_side_turn = 1;
+        }
+    } else if (tail_diff < -TAIL_TOLERANCE){
         hbridge_set_pwm(HBRIDGE_SIDE_A, duty_coeff);
         hbridge_set_pwm(HBRIDGE_SIDE_B, 0);
+        hbridge_flags.side_B_switch_on = 0;
+        hbridge_flags.side_A_switch_on = 1;
+        if(tail_diff_old < tail_diff){
+            clr_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN);
+            usart_send_string("TURNING TO THE WRONG SIDE!\n");
+            hbridge_flags.wrong_side_turn = 1;
+        }
     } else {
-        tail_diff_old = 0;
         hbridge_set_pwm(HBRIDGE_SIDE_A, 0);
         hbridge_set_pwm(HBRIDGE_SIDE_B, 0);
+        hbridge_flags.side_B_switch_on = 0;
+        hbridge_flags.side_A_switch_on = 0;
     }
+    //tail_diff_old = tail_diff;
 }
 
 
