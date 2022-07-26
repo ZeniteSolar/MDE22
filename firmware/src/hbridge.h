@@ -38,7 +38,7 @@
 #include "machine.h"
 #include "usart.h"
 
-extern volatile uint32_t hbridge_testing_clk_div;
+extern volatile uint32_t hbridge_usart_clk_div;
 extern volatile uint32_t hbridge_verbose_clk_div;
 extern volatile uint16_t tail_position_pilot;
 
@@ -50,7 +50,6 @@ extern volatile float duty_coeff;
 
 //Equation
 void hbridge_init(void);
-void hbridge_testing(void);
 void hbridge_toggle_side(void);
 uint8_t hbridge_set_pwm(uint8_t side, float duty);
 void hbridge_check(void);

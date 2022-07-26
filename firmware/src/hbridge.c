@@ -55,38 +55,20 @@ uint8_t hbridge_set_pwm(uint8_t side, float duty)
     }
 }
 
-void hbridge_testing(void)
-{
-    set_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN);  // Enable H-Bridge
-
-    if(hbridge_testing_clk_div++ >= HBRIDGE_TESTING_CLK_DIV_VALUE){
-
-        hbridge_set_pwm(HBRIDGE_SIDE_A, 0);
-        hbridge_set_pwm(HBRIDGE_SIDE_B, 0.2);
-        
-#ifdef LED_ON
-    cpl_bit(LED2_PORT, LED2);
-#endif
-        hbridge_testing_clk_div=0;
-    }
-}
-
 void hbridge_task(void)
 {
-    average_measurements();
+    if (!tst_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN)) {
+        set_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN);
+        usart_send_string("HBridge is now enabled!\n");
+    }
 
-
-    if(tail_position_pilot > 270){
+    if (tail_position_pilot > 270){
         error_flags.invalid_str_whl = 1;
-        usart_send_uint16(tail_position_pilot);
-        usart_send_char('\n');
         set_state_error();
     }
-    if(measurements.position_avg > 270)
+    if (measurements.position_avg > 270)
     {
         error_flags.invalid_tail = 1;
-        usart_send_uint16(measurements.position_avg);
-        usart_send_char('\n');
         set_state_error();
     }
     
@@ -109,7 +91,7 @@ void hbridge_task(void)
     */
     tail_diff = tail_position_pilot - measurements.position_avg;    // Check sensor pot difference: pilot - tail
 
-    duty_coeff = 0.1;
+    duty_coeff = 0.2;
 
 #ifdef VERBOSE_ON_HBRIDGE
     if(hbridge_verbose_clk_div++ >= HBRIDGE_VERBOSE_CLK_DIV){
