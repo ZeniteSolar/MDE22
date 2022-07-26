@@ -64,7 +64,9 @@
 #define HBRIDGE_PWM_PIN1                    PD6
 #define HBRIDGE_PWM_PIN2                    PD5   
 #define HBRIDGE_ENABLE_PIN                  PD2
-#define HBRIDGE_VERBOSE_CLK_DIV             120
+#define HBRIDGE_VERBOSE_CLK_DIV             200
+#define HBRIDG_SIDE_SWITCH_CLK_DIV          3000
+#define TAIL_TOLERANCE                  3
 #endif // HBRIDGE_ON
 
 //#### LED PINS ####
