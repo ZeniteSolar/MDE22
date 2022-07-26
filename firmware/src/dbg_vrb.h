@@ -51,6 +51,12 @@
 #else
 #define VERBOSE_MSG_MACHINE(x)
 #endif 
+
+#ifdef VERBOSE_ON_HBRIDGE
+#define VERBOSE_MSG_HBRIDGE(x) x
+#else
+#define VERBOSE_MSG_HBRIDGE(x)
+#endif 
  
 
 #ifdef DEBUG_ON
@@ -70,6 +76,8 @@
 //#pragma message "The value of ABC: " XSTR(ABC)
 #define XSTR(x) STR(x)
 #define STR(x) #x
+
+
 
 
 #endif /* ifndef DBG_VRB_H */
