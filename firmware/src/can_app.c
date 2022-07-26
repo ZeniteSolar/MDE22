@@ -1,8 +1,8 @@
 #include "can_app.h"
 #include <math.h>
 
+volatile hbridge_flags_t hbridge_flags;
 uint16_t can_app_checks_without_mic19_msg;
-
 uint32_t can_app_send_state_clk_div;
 uint32_t can_app_send_adc_clk_div;
 volatile uint16_t tail_position_pilot;
@@ -105,12 +105,12 @@ inline void can_app_send_steeringbat_measurements(void)
  */
 inline void can_app_extractor_mic19_state(can_t *msg)
 {
-    // TODO:
-    //  - se tiver em erro, desligar a ponte H
     if(msg->data[CAN_MSG_GENERIC_STATE_SIGNATURE_BYTE] == CAN_SIGNATURE_MIC19){
-        // zerar contador
+        
         if(msg->data[CAN_MSG_GENERIC_STATE_ERROR_BYTE]){
             //ERROR!!!
+        } else {
+            can_app_checks_without_mic19_msg = 0;
         } 
         /*if(contador == maximo){
             //ERROR!!!
@@ -126,6 +126,7 @@ inline void can_app_extractor_mic19_mde(can_t *msg)
 {
     if(msg->data[CAN_MSG_MIC19_MDE_SIGNATURE_BYTE] == CAN_SIGNATURE_MIC19){
         HIGH_LOW(tail_position_pilot, msg->data[CAN_MSG_MIC19_MDE_POSITION_H_BYTE], msg->data[CAN_MSG_MIC19_MDE_POSITION_L_BYTE]);
+        can_app_checks_without_mic19_msg = 0;
     } else {
         // ERROR!!
     }
@@ -174,17 +175,18 @@ inline void check_can(void)
     // CAN_APP_CHECKS_WITHOUT_MIC19_MSG cycles, than it go to a specific error state.
     //VERBOSE_MSG_CAN_APP(usart_send_string("checks: "));
     //VERBOSE_MSG_CAN_APP(usart_send_uint16(can_app_checks_without_mic19_msg));
-#ifdef CAN_DEPENDENT
+    
     if(can_app_checks_without_mic19_msg++ >= CAN_APP_CHECKS_WITHOUT_MIC19_MSG){
 #ifdef USART_ON
-        VERBOSE_MSG_CAN_APP(usart_send_string("Error: too many cycles withtou message.\n"));
+        usart_send_string("Too many cycles withtou message.\n");
 #endif
         can_app_checks_without_mic19_msg = 0;
-        error_flags.no_canbus = 1;
-        set_state_error();
+        hbridge_flags.force_center = 1;
+    } else {
+        hbridge_flags.force_center = 0;
     }
-#endif
 
+    
     if(can_check_message()){
         can_t msg;
         if(can_get_message(&msg)){
