@@ -116,7 +116,7 @@ void hbridge_task(void)
     }
     tail_diff = tail_position_pilot - measurements.position_avg;    // Check sensor pot difference: pilot - tail
     duty_coeff = 0.8;
-    
+
 #ifdef VERBOSE_ON_HBRIDGE
     if(hbridge_verbose_clk_div++ >= HBRIDGE_VERBOSE_CLK_DIV){
 
@@ -176,6 +176,7 @@ void hbridge_task(void)
         hbridge_flags.side_B_switch_on = 0;
         hbridge_flags.side_A_switch_on = 0;
     }
+    tail_diff_old = tail_diff;
 }
 
 
