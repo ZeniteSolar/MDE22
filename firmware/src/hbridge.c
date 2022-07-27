@@ -88,35 +88,14 @@ void hbridge_task(void)
 {
     if ((!hbridge_flags.wrong_side_turn) && (!tst_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN))) {
         set_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN);
-        usart_send_string("HBridge is now enabled!\n");
+        usart_send_string("HBridge is enabled!\n");
     }
 
-    if (tail_position_pilot > 270){
+    if (tail_position_pilot > 270 || measurements.position_avg > 270){
         error_flags.invalid_str_whl = 1;
         set_state_error();
     }
-    if (measurements.position_avg > 270)
-    {
-        error_flags.invalid_tail = 1;
-        set_state_error();
-    }
-    
 
-    /*if(tail_diff > 0){
-        tail_diff_old < tail_diff ? tail_diff_old = tail_diff;          // Used for responsive duty cycle on hbridge pwm
-    } else if (tail_diff < 0) {
-        tail_diff_old < (-1 * tail_diff) ? tail_diff_old = tail_diff;
-    } else {
-        tail_diff_old = 0;
-    }
-    
-    // Duty cycle mantained until tail_tolerance state achieved. Duty is maxed at tail_diff=270° 
-    //         Minimum at 5%            0.0037 %/°
-    duty_coeff = 0.05 + (0.95 * (tail_diff_old / 270)); 
-#ifdef VERBOSE_ON_HBRIDGE
-    usart_send_uint16(tail_diff_old);
-    usart_send_string(" :tail_diff_old\n");
-#endif */
     if(hbridge_flags.force_center == 1){
         usart_send_string("Tail shall be centered until MIC returns.\n");
         tail_position_pilot = 165;
@@ -124,9 +103,25 @@ void hbridge_task(void)
     tail_diff = tail_position_pilot - measurements.position_avg;    // Check sensor pot difference: pilot - tail
     duty_coeff = 0.8;
 
+    // Responsive duty cycle. 
+    // tail_diff_old receives tail_diff if the latter is greater than the first.
+    /*if(tail_diff > 0){
+        tail_diff_old < tail_diff ? tail_diff_old = tail_diff;          
+    } else if (tail_diff < 0) {
+        tail_diff_old > tail_diff) ? tail_diff_old = tail_diff;
+    } else {
+        tail_diff_old = 0;
+    }
+    // Duty cycle mantained until tail_tolerance state achieved. Duty is maxed at tail_diff=270° 
+    //         Minimum at 5%            0.3518 %/°
+    duty_coeff = 0.05 + (0.95 * (tail_diff_old / 270)); */
 
 #ifdef VERBOSE_ON_HBRIDGE
     if(hbridge_verbose_clk_div++ >= HBRIDGE_VERBOSE_CLK_DIV){
+
+        VERBOSE_MSG_HBRIDGE(usart_send_uint16(tail_diff_old));
+        VERBOSE_MSG_HBRIDGE(usart_send_string(" :tail_diff_old\n"));
+
         if (tail_diff > TAIL_TOLERANCE){
             VERBOSE_MSG_HBRIDGE(usart_send_string("Vira ESTIBORDO\t"));
         } else if (tail_diff < -TAIL_TOLERANCE) { 
@@ -179,7 +174,6 @@ void hbridge_task(void)
         hbridge_flags.side_B_switch_on = 0;
         hbridge_flags.side_A_switch_on = 0;
     }
-    //tail_diff_old = tail_diff;
 }
 
 
