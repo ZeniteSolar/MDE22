@@ -121,6 +121,10 @@ O código desenvolvido para a ponte H pressupõe as seguintes relações:
 
 # Operação
 
+A etapa de operação fica dividida entre duas partes: Programação e testes de bancada.
+
+Para a programação é utilizada linguagem C
+
 # Considerações
 
 # Bibliografia
