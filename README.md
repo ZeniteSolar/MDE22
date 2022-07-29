@@ -200,7 +200,7 @@ Esse timer possui menos bits e menor funcionalidade em comparação aos outros d
 
 Os testes em bancada foram feitos com o auxílio de fontes de tensão variada, nos laboratórios do IFSC câmpus Florianópolis.
 
-| Fontes de bancada no teste de bancada final |
+| Fontes de bancada com corrente máxima |
 | --- |
 |![Fonte de bancaca 3A](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Fontes%20de%20bancada%203A.jpg)|
 
@@ -208,15 +208,16 @@ Foram efetuados os testes do ADC e da rede CAN, esses resultados foram visualiza
 
 No caso do PWM é necessário o uso de osciloscópio, portanto são deixadas as figuras para alguns dos testes executados com o auxílio de um reostato.
 
-| Duty Cycle 40% |
+| Duty Cycle 40% Sinal | Duty Cycle 40% Valores |
 | ------ | ------ |
 |![Duty Cycle 40% signal](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2040%25%20Signal.jpg)|![Duty Cycle 40% values](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2040%25%20Values.jpg)|
 
-| Duty Cycle 80% |
+| Duty Cycle 80% | Duty Cycle 80% Valores |
 | ------ | ------ |
 |![Duty Cycle 80% signal](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2080%25%20Signal.jpg)|![Duty Cycle 80% values](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2080%25%20Signal.jpg)|
 
-| Duty Cycle 80% 3A (mínima resistência no reostato) |
+Para testar o circuito com alta corrente foi reduzida a resistência no reostato e mantido o duty cycle:
+| Duty Cycle 80% 3A  | Duty Cycle 80% Valores |
 | ------ | ------ |
 |![Duty 80% Signal (3A)](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2080%25%20Signal%20-%20Low%20resistance,%203A.jpg)|![Duty 80% Values (3A)](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2080%25%20Values%20-%20Low%20resistance,%203A.jpg)|
 
