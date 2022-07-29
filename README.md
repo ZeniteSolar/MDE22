@@ -18,7 +18,7 @@ Aluno:
 4. [Implementação](#implementação)
 5. [Operação](#operação)
 6. [Considerações Finais](#considerações)
-7. [Bibliografia](#bibliografia)
+7. [Referências](#Referências)
 
 # Introdução
 
@@ -32,7 +32,7 @@ O sistema eletrônico atual foi danificado após a competição em março de 202
 
 # Concepção
 
-Pensando em um sistema de direção, a escolha de utilizar uma direção elétrica pode trazer maior responsividade mesmo tendo uma fração do peso de um sistema mecânico [referência]. Além disso, sistemas mecânicos podem pedir esforço físco do motorista e uma necessidade maior de manutenção. Por essas razões a direção elétrica é vantajosa no sistema da embarcação.
+Pensando em um sistema de direção, a escolha de utilizar uma direção elétrica pode trazer maior responsividade mesmo tendo uma fração do peso de um sistema mecânico. Além disso, sistemas mecânicos podem pedir esforço físco do motorista e uma necessidade maior de manutenção. Por essas razões a direção elétrica é vantajosa no sistema da embarcação.
 
 Abaixo está o diagrama representando um sistema de direção elétrica e suas partes. 
 ![Diagrama concepção](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/cb3b7e7deb8563f8dec3147824b006344d2aa883/Imagens/Diagrama%20de%20blocos%20da%20dire%C3%A7%C3%A3o%20el%C3%A9trica.PNG)
@@ -48,36 +48,49 @@ Para implementar o todo é preciso definir os requisitos das partes, e as possí
 
 Existem algumas opções para os sensors de rotação como: indutivo, óptico, sensor de efeito Hall, potênciometro de rotação, encoder. A alternativa mais econômica e de simples implementação é um potênciometro linear comum, atualmente utilizados no sistema da equipe Zênite.
 
-Os tipos mais utilizados para sensores de direção (steering) no mercado ([Bosch](https://www.bosch-motorsport.com/content/downloads/Raceparts/en-GB/120530059.html), [CUI Inc](https://www.cuidevices.com/catalog/motion/rotary-encoders), [TT Electronics](https://www.ttelectronics.com/products/categories/steering-sensors/search-results/)), são os resistivos, encoders, e os de tecnologia GMR ([Giant magnetoresistance](https://en.wikipedia.org/wiki/Giant_magnetoresistance)).
+Os tipos mais utilizados para sensores de direção (no sentido steering) no mercado são os seguintes: resistivos, encoders, e os de tecnologia GMR ([Giant magnetoresistance](https://en.wikipedia.org/wiki/Giant_magnetoresistance)). (veja as empresas consideradas em [Referências](#Referências))
 
-<!-- Explicar encoders e GMR?  -->
-Sensores desse nível são tecnologia de ponta portanto estão fora de questão, no entanto, vale observar que o sensor resistivo permanece sendo utilizado (até mesmo em veículos comuns [link]()). 
+Sensores desse nível são tecnologia de ponta e portanto estão fora de questão, de qualquer forma vale observar que o sensor resistivo permanece sendo utilizado (até mesmo em veículos comuns, como o [sensor de posição borboleta](https://www.dpk.com.br/como-funciona-o-sensor-de-posicao-da-borboleta/)). 
 
 Para um contraste entre os líderes: sensores resistivos têm desvantagem pelo desgaste e possível mal contato, os GMR podem sofrer interferência em ambientes com forte campo magnético, e os encoders (por serem digitais) apresentam um desafio na troca Precisão X Complexidade (preço). 
 
-Buscando o equilíbrio entre robustez, facilidade de implementação e preço, o sensor resistivo se destaca. 1
+Buscando o equilíbrio entre robustez, facilidade de implementação e preço, o sensor resistivo se destaca.
  
 * ## Controlador
 
-A rede CAN implementada elimina a necessidade de cabeamento entre popa e proa, reduzindo ruído na leitura dos sensores e eliminando problemas mecânicos com cabeamento. Além disso, a comunicação pela rede possibilita o envio de dados pelo módulo e o controle da direção utilizando mensagens de outros módulos.
+A rede CAN implementada elimina a necessidade de cabeamento, com o próprio sinal, entre popa e proa. Isso garante redução de ruído na leitura dos sensores e aproveita o cabeamento CAN ja existente, compactando o sistema. 
 
-Um microcontrolador de linha comercial será o suficiente para garantir a execução das tarefas e tempo de resposta desejados. Além de portas PWM e entradas do ADC, seria interessante um microcontrolador com interface CAN como o STM32F103xx ou equivalentes. No entanto, essa alternativa supera o preço de CI's transceiver e interface CAN, além disso é trabalhoso de gravar e regravar (sendo que a última opção é um grande diferencial para corrigir erros, durante uma competição por exemplo).
+Além disso, a comunicação pela rede possibilita o envio de dados pelo módulo e o controle da direção utilizando mensagens de outros módulos. Dessa forma, fica aberto o leque para futuras implementações que podem incluir: 
+
+    Mensagens e/ou sensores de redundância 
+    Modo de baixo consumo - Ativado pelo módulo de processamento de dados
+    Direção remota
+    
+
+
+Um microcontrolador de linha comercial será o suficiente para garantir a execução das tarefas e tempo de resposta desejados. Além de portas PWM e entradas do ADC, seria interessante um microcontrolador com interface CAN como o STM32F103xx ou equivalentes. No entanto, essa alternativa supera o preço de CI's transceiver e interface CAN, além disso sua programação é mais trabalhosa.
 
 Pela facilidade de programação e preço, é proposto o [ATmega328P](https://br.mouser.com/ProductDetail/Microchip-Technology-Atmel/ATMEGA328P-PU?qs=K8BHR703ZXguOQv3sKbWcg%3D%3D). Para a conexão com a rede can, os CI's mais comum e de preço acessível são o transceiver 
 [MCP2551](https://br.mouser.com/datasheet/2/268/20001667G-1115479.pdf) e o circuito de interface CAN/SPI [MCP2515](https://br.mouser.com/datasheet/2/268/MCP2515_Family_Data_Sheet_DS20001801K-2303489.pdf).
 
-O controlador que não está em foco é necessário, no entanto, não há necessidade de criar um módulo CAN cujo único propósito é a leitura de um valor analógico. Essa função pode ser desempenhada por outro módulo já presente na proa.
+O controlador que não está em foco é necessário. A função de leitura do potenciômetro do volante será desempenhada por outro módulo já presente na proa: [MIC19](https://github.com/ZeniteSolar/MIC19)
 
 * ## Potência
 
-O motor DC brushed é acionado por uma ponte H, atualmente alimentada por uma bateria de 12V, 
+O motor DC brushed é acionado por uma ponte H, atualmente alimentada por uma bateria de 12V. O circuito atual é implementado por dois integrados meia-ponte [BTS7960](https://pdf1.alldatasheet.com/datasheet-pdf/view/152657/INFINEON/BTS7960.html). 
+
+Esse componnete foi descontinuado, e a melhor alternativa encontrada foi o https://www.mouser.com/datasheet/2/149/FAN7093-76982.pdf. Como o atual já está em mãos e esse projeto tem como foco integração e telemetria, foi utilizado o mesmo circuito integrado.
 
 
 * ## Medidas e Feedback
 
-É interessante fornecer à rede CAN dados sobre o consumo do sistema, portanto é proposto um sensor de corrente para cada braço da ponte H. O [INA240](https://www.ti.com/lit/ds/symlink/ina240.pdf?ts=1649772128538) é um exemplo de sensor de corrente bidirecional com rejeição de PWM, mas existem alternativas com o resistor shunt integrado.
+É essencial fornecer à rede CAN dados sobre o consumo do sistema, por ser um sistema de potência alimentado por bateria. Portanto é proposto um sensor de corrente para cada braço da ponte H. 
 
-Essa medida deve constribuir para o feedback, que também terá o dado de posição da rabeta. Levar esses dados à um display garante que o piloto tenha conhecimento sobre o estado do sistema e sobre o consumo que sua pilotagem está provocando.
+Convenientemente, o circuito integrado meia-ponte BTS7960 possui um pino de saída para sensoriamento de corrente — uma fonte de corrente é conectada à saída, e a corrnte IS é proporcional à corrente na carga IL de acordo com o resistor de medida RIS.
+
+Alternativamente, poderia ser usado um circuito como o [INA240](https://www.ti.com/lit/ds/symlink/ina240.pdf?ts=1649772128538), sensor de corrente bidirecional ultrapreciso com rejeição de PWM. Da mesma família de CI's, o INA826 será utilizado para medida de tensão da bateria (tensão na ponteH).
+
+Essas medidas devem constribuir para o feedback, que também terá o dado de posição da rabeta. Levar esses dados à um display garante que o piloto tenha conhecimento sobre o estado do sistema e sobre o consumo que sua pilotagem está provocando.
 
 # Design
 
@@ -85,6 +98,18 @@ Essa medida deve constribuir para o feedback, que também terá o dado de posiç
 O módulo foi desenvolvido com o software Kicad, o projeto está na pasta hardware desse git e seu esquemático completo pode ser visualizado [aqui](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/main/hardware/PDF/steeringmodule.pdf). Abaixo está o esquemático geral:
 
 ![Esquemático geral](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/a6de4a60345ccac29f99505179099171639378f8/Imagens/steeringmodule_esquema.PNG)
+
+Os componentes escolhidos a partir da análise na concepção são os seguintes: Potênciometros Lineares, Atmega328P, BTS7960, MCP2515, MCP2551 (ou MCP2561), e INA826. 
+
+Para estar de acordo com os módulos do sistema da embarcação, também serão necessários os seguintes componentes: 
+
+    2 conectores fêmea RJ45, 
+    2 borne fêmea 2EDGRC 2 vias (robusto e prático, alternativa é usar terminal block), 
+    socket estampado 28 pinos par ao atmega328p, 
+    diodos zenner para proteção dos ADC do microcontrolador, 
+    2 cristais osciladores
+
+O software Kicad possui uma função para exportação de lista completa de materiais (BOM - Bill Of Materials). Pode ser encontrada na pasta hardware, neste [link]()
 
 ### CAN BUS
 
@@ -127,9 +152,14 @@ Para a programação é utilizada linguagem C
 
 # Considerações
 
-# Bibliografia
+# Referênciass
 
 
+
+Pesquisa por sensores de steering no mercado:
+[Bosch](https://www.bosch-motorsport.com/content/downloads/Raceparts/en-GB/120530059.html)
+[CUI Inc](https://www.cuidevices.com/catalog/motion/rotary-encoders)
+[TT Electronics](https://www.ttelectronics.com/products/categories/steering-sensors/search-results/)
 
 
 
