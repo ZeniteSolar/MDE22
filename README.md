@@ -125,7 +125,7 @@ Vale notar que este repositório possui uma branch exclusiva para uma placa enco
 
 | Encomendada Frente | Encomendada Trás |
 | -----  | ----- |
-|<img src="https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/pcb%20front.PNG" width ="325" height="460">|<img src="https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/pcb%20back.PNG" width="325" height="460">|
+|<img src="https://github.com/ZeniteSolar/MDE22/blob/a99deb80abc7bee7c553f9edaa48115d4b41ed4c/Imagens/Encomendada%20Frente.jpg" width ="325" height="530">|<img src="https://github.com/ZeniteSolar/MDE22/blob/a99deb80abc7bee7c553f9edaa48115d4b41ed4c/Imagens/Encomendada%20Tr%C3%A1s.jpg" width="325" height="530">|
 
 # Implementação
 
