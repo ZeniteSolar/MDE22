@@ -37,13 +37,6 @@
 
 #define CAN_SIGNATURE_SELF                  CAN_SIGNATURE_MDE22
 
-#ifdef ADC_ON
-//#define FAKE_ADC_ON
-#ifdef FAKE_ADC_ON
-#define FAKE_ADC                            1
-#endif // FAKE_ADC_ON
-
-#endif //ADC_ON
 
 
 // The machine frequency may not be superior of ADC_FREQUENCY/ADC_AVG_SIZE_10
