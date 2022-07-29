@@ -18,7 +18,7 @@ Aluno:
 4. [Implementação](#implementação)
 5. [Operação](#operação)
 6. [Considerações Finais](#considerações)
-7. [Referências](#Referências)
+7. [Referências](#referências)
 
 # Introdução
 
@@ -79,7 +79,7 @@ O controlador que não está em foco é necessário. A função de leitura do po
 
 O motor DC brushed é acionado por uma ponte H, atualmente alimentada por uma bateria de 12V. O circuito atual é implementado por dois integrados meia-ponte [BTS7960](https://pdf1.alldatasheet.com/datasheet-pdf/view/152657/INFINEON/BTS7960.html). 
 
-Esse componnete foi descontinuado, e a melhor alternativa encontrada foi o https://www.mouser.com/datasheet/2/149/FAN7093-76982.pdf. Como o atual já está em mãos e esse projeto tem como foco integração e telemetria, foi utilizado o mesmo circuito integrado.
+Esse componnete foi descontinuado, e a melhor alternativa encontrada foi o [FAN7093](https://www.mouser.com/datasheet/2/149/FAN7093-76982.pdf). Como o atual já está em mãos e esse projeto tem como foco integração e telemetria, foi utilizado o mesmo circuito integrado.
 
 
 * ## Medidas e Feedback
@@ -115,7 +115,7 @@ Abaixo está a previsão em 3D do resultado final. Como será explicado na etapa
 
 | Frente | Trás |
 | -----  | ----- |
-|![PCB 3D Frente](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/pcb%20front.PNG)|![PCB 3D Trás](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/pcb%20front.PNG)|
+|![PCB 3D Frente](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/pcb%20front.PNG)|![PCB 3D Trás](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/pcb%20back.PNG)|
 
 
 Vale notar que este repositório possui uma branch exclusiva para uma placa encomendada, cujo layout foi aprimorado.
@@ -124,24 +124,25 @@ Vale notar que este repositório possui uma branch exclusiva para uma placa enco
 
 ### Confecção da PCB
 
-A PCB foi confeccionada pela fresadora CNC do DAELN, operada pelos técnicos do departamento, o resultado é mostrado abaixo. A placa confeccionada não apresentou o espaçamento mínimo desejado par a malha de potência, uma retificadeira foi usada para excluir as trilhas indesejadas — é imporante lembrar que esse tipo de ferramente pede o uso de EPI.
+A PCB foi confeccionada pela fresadora CNC do DAELN, operada pelos técnicos do departamento, o resultado é mostrado abaixo. 
 
 ![Ajustes com a Dremel](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Ajustes%20com%20a%20dremel.jpg)
 
+Como a placa confeccionada não apresentou o espaçamento mínimo desejado par a malha de potência, uma retificadeira foi usada para excluir as trilhas indesejadas — é imporante lembrar que esse tipo de ferramente pede o uso de EPI.
+
 ![Use Óculos de Proteção](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Use%20%C3%B3culos%20de%20prote%C3%A7%C3%A3o.jpg)
 
-A placa foi estanhada para proteger o circuito contra oxidação. As vias foram feitas com fios de cabo de rede, cortados no tamanho adequado e então soldados.
+A placa foi estanhada para proteger o circuito contra oxidação, e as vias foram feitas com fios de cabo de rede, cortados no tamanho adequado e então soldados.
 
-Da ordem dos componentes: a seguinte ordem foi feita SMD, CI, Through-hole sendo os conectores os últimos (para evitar esforço físico na placa). Após o trabalho na placa, foi alcançada a conclusão de que os CI da ponte H devem preceber os SMD. Essa troca é interessante pois o modelo precisa ser soldado com calor, no caso com auxílio de soprador térmico.
+Da ordem dos componentes, a solda foi feita da seguinte forma: SMD, CI, Through-hole sendo os conectores os últimos (para evitar esforço físico na placa). 
 
-A placa soldada pode ser vista na figura.
+Após o trabalho na placa, foi alcançada a conclusão de que os CI da ponte H devem preceber os SMD. Essa troca é interessante pois o modelo precisa ser soldado com calor, no caso com auxílio de soprador térmico. A placa soldada pode ser vista na figura.
 
 | Frente | Trás |
 | -----  | ----- |
 |![PCB Soldada Frente](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/PCB%20soldada%20frente.jpg)|![PCB Soldada Trás](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/PCB%20soldada%20tr%C3%A1s.jpg)|
 
-Finalizados os processos de preparação, pode-se começar a programação do microcontrolador, que é feita na linguagem C. As bibiotecas utilizadas e código fonte podem ser encontradas na pasta hardware desse repositório. 
-
+Finalizados os processos de preparação, é dado início à programação do microcontrolador, que é feita na linguagem C. As bibiotecas utilizadas e código fonte podem ser encontradas na pasta firmware desse repositório. 
 
 # Operação
 
@@ -201,7 +202,7 @@ Os testes em bancada foram feitos com o auxílio de fontes de tensão variada, n
 
 | Fontes de bancada no teste de bancada final |
 | --- |
-|[Fonte de bancaca 3A](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Fontes%20de%20bancada%203A.jpg)|
+|![Fonte de bancaca 3A](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Fontes%20de%20bancada%203A.jpg)|
 
 Foram efetuados os testes do ADC e da rede CAN, esses resultados foram visualizados no computador pela comunicação serial conectando um arduino ao barramento Usart da placa.
 
@@ -209,15 +210,15 @@ No caso do PWM é necessário o uso de osciloscópio, portanto são deixadas as 
 
 | Duty Cycle 40% |
 | ------ | ------ |
-|[Duty Cycle 40% signal](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2040%25%20Signal.jpg)|[Duty Cycle 40% values](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2040%25%20Values.jpg)|
+|![Duty Cycle 40% signal](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2040%25%20Signal.jpg)|![Duty Cycle 40% values](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2040%25%20Values.jpg)|
 
 | Duty Cycle 80% |
 | ------ | ------ |
-|[Duty Cycle 80% signal](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2080%25%20Signal.jpg)|[Duty Cycle 80% values](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2080%25%20Signal.jpg)|
+|![Duty Cycle 80% signal](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2080%25%20Signal.jpg)|![Duty Cycle 80% values](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2080%25%20Signal.jpg)|
 
 | Duty Cycle 80% 3A (mínima resistência no reostato) |
 | ------ | ------ |
-|[Duty 80% Signal (3A)](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2080%25%20Signal%20-%20Low%20resistance,%203A.jpg)|[Duty 80% Values (3A)](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2080%25%20Values%20-%20Low%20resistance,%203A.jpg)|
+|![Duty 80% Signal (3A)](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2080%25%20Signal%20-%20Low%20resistance,%203A.jpg)|![Duty 80% Values (3A)](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2080%25%20Values%20-%20Low%20resistance,%203A.jpg)|
 
 Esses resultados foram satisfatórios, tendo em vista que o circuito não estava acumulando calor, o PWM estava de acordo com o desejado a partir da configuração, e os valores de acordo com o datasheet.
 
