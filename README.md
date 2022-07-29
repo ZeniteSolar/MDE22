@@ -109,33 +109,49 @@ Para estar de acordo com os módulos do sistema da embarcação, também serão 
     diodos zenner para proteção dos ADC do microcontrolador, 
     2 cristais osciladores
 
-O software Kicad possui uma função para exportação de lista completa de materiais (BOM - Bill Of Materials). Pode ser encontrada na pasta hardware, neste [link]()
+O software Kicad possui uma função para exportação de lista completa de materiais (BOM - Bill Of Materials). Pode ser encontrada na pasta hardware, neste [link](https://github.com/ZeniteSolar/MDE22/blob/f59e0732b5ff4f93045a860adb85f9820dcc4e83/hardware/steeringmodule.csv). 
 
-### CAN BUS
+Abaixo está a previsão em 3D do resultado final. Como será explicado na etapa de implementação, a PCB foi confeccionada com a ajuda de uma fresadora da instituição. 
 
-### Conexões com o microcontrolador
+| Frente | Trás |
+| -----  | ----- |
+|![PCB 3D Frente](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/pcb%20front.PNG)|![PCB 3D Trás](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/pcb%20front.PNG)|
 
-### Etapa analógica
 
-### Ponte H
+Vale notar que este repositório possui uma branch exclusiva para uma placa encomendada, cujo layout foi aprimorado.
 
 # Implementação
 
 ### Confecção da PCB
 
-A PCB foi confeccionada pela fresadora CNC do DAELN, operada pelos técnicos do departamento. O resultado foi o seguinte: (foto pós fresa)
+A PCB foi confeccionada pela fresadora CNC do DAELN, operada pelos técnicos do departamento, o resultado é mostrado abaixo. A placa confeccionada não apresentou o espaçamento mínimo desejado par a malha de potência, uma retificadeira foi usada para excluir as trilhas indesejadas — é imporante lembrar que esse tipo de ferramente pede o uso de EPI.
+
+![Ajustes com a Dremel](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Ajustes%20com%20a%20dremel.jpg)
+
+![Use Óculos de Proteção](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Use%20%C3%B3culos%20de%20prote%C3%A7%C3%A3o.jpg)
 
 A placa foi estanhada para proteger o circuito contra oxidação. As vias foram feitas com fios de cabo de rede, cortados no tamanho adequado e então soldados.
 
-Da ordem dos componentes: a seguinte ordem foi feita SMD, CI, Through-hole sendo os conectores os últimos (para evitar esforço físico na placa). Após o trabalho na placa, foi alcançada a conclusão de que os CI da ponte H devem preceber os SMD. Essa troca é interessante pois o modelo precisa ser soldado com calor (foi utilizado soprador térmico, como visto abaixo) (foto)
+Da ordem dos componentes: a seguinte ordem foi feita SMD, CI, Through-hole sendo os conectores os últimos (para evitar esforço físico na placa). Após o trabalho na placa, foi alcançada a conclusão de que os CI da ponte H devem preceber os SMD. Essa troca é interessante pois o modelo precisa ser soldado com calor, no caso com auxílio de soprador térmico.
 
-Com a placa toda soldada, como pode ser visto na figura, é dado início a etapa de testes. (foto)
+A placa soldada pode ser vista na figura.
 
-### Testes no Circuito
+| Frente | Trás |
+| -----  | ----- |
+|![PCB Soldada Frente](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/PCB%20soldada%20frente.jpg)|![PCB Soldada Trás](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/PCB%20soldada%20tr%C3%A1s.jpg)|
 
-### Montagem dos Sensores de Posição
+Finalizados os processos de preparação, pode-se começar a programação do microcontrolador, que é feita na linguagem C. As bibiotecas utilizadas e código fonte podem ser encontradas na pasta hardware desse repositório. 
 
-O código desenvolvido para a ponte H pressupõe as seguintes relações:
+
+# Operação
+
+A etapa de operação fica dividida entre duas partes: Programação e testes de bancada. Dado início na lógica básica, como quais periféricos do microcontrolador são utilizados, estas etapas se desenvolvem em conjunto.
+
+#### Programação
+
+Durante todo o processo foi utilizado como referência o datasheet da microchip para o atmega328p, que se encontra nas [referências](#Referências) desse trabalho.
+
+Na configuração em si dos periféricos, começando pelo ADC, foi encontrado um dilema sobre qual orientação dos potenciômetros do sistema. Como o sistema está em upgrade foi descartada a configuração atual. Fica então definido que o código desenvolvido pressupõe as seguintes relações:
 
 | Potenciômetro | Posição da Rabeta |
 | ------------- | ------------------- |
@@ -143,18 +159,76 @@ O código desenvolvido para a ponte H pressupõe as seguintes relações:
 | Valor médio   | centrada  |
 | Valor mínimo  | limite de bombordo |
 
+- ADC
 
-# Operação
+O ADC é utilizado com 10 bits, com 3 canais: Sensor de tensão, sensor de corrente e potenciômetro. A escala máxima do potenciômetro fica definida para 270, como se a medida fosse feita diretamente para graus de rotação. 
 
-A etapa de operação fica dividida entre duas partes: Programação e testes de bancada.
+Essa questão de escala é configurada pelos coeficientes em adc.c, basta operar algumas medidas com coeficiente unitário e então fazer o cálculo
 
-Para a programação é utilizada linguagem C
+    coeficiente desejado = Valor_desejado / Valor_atual
+    
+É interessante fazer esse teste com o valor de fundo de escala, uma vez que este "valor desejado" está claro.
+
+- Rede CAN
+
+Do trabalho com a biblioteca CAN: a rede CAN é implemtada a partir de ID's, tendo identificação dos módulos no barramento e de suas mensagens. Para gerar esses ID's a equipe Zênite desenvolveu um script que gera esses valores para o módulo em desenvolvimento.
+
+Esse caminho também trás segurança, garantindo que não haverão ID's iguais e reduzindo possíveis confusões causadas por erro humando e/ou desenvolvimento paralelo. Tudo isso pode ser encontrado no repositório [CAN_IDS](https://github.com/ZeniteSolar/CAN_IDS).
+
+Tendo os ID's gerados para o módulo e suas mensagens, é preciso alterar o can_filter.h para incluir os ID's de quem se deseja escutar (no caso esse projeto precisa escutar o [MIC19](https://github.com/ZeniteSolar/MIC19)), e criar as funções de extração e envio de mensagens em can_app.c/h.
+
+- PWM
+
+Alguns pontos chave para a operação do PWM: Timer escolhido, prescaler (frequência desejada), definição do duty cycle (nesse caso implementado pela função set_pwm em hbridge.c). 
+
+Por um erro na etapa de Design, as saídas PWM estão conectadas nos pinos com o timer básico do ATmega328P, o Timer/Counter 0. O Modo de operação do timer deve ser o de phase correct PWM (que garante maior sincronismo em relação ao Fast PWM). Como descrtio no datasheet a frequência pode ser calculada da seguinte forma: 
+
+$$ fOCnxPWM = {fclkI/O \over {N * 510}} $$
+
+    fOCnxPWM é a frequência do PWM nas portas OCnx (no caso OC0A e OC0B, em PD5 e PD6)
+    fclkI/O é a frequência de clock do cristal oscilador (16MHz)
+    N é o prescaler configurado
+
+Esse timer possui menos bits e menor funcionalidade em comparação aos outros dois. Para a aplicação o único impacto foi a utilização de uma frequência inferior ao desejado (~3921.5Hz). Isso acontece pela falta de opções de prescaler no Timer/Counter0: 
+    
+    prescaler = 1, fPWM =  31.37kHz (supera os limites do CI half-bridge)
+    prescaler = 8 --> 3.92kHz       (utilizado)
+
+
+#### Testes no Circuito
+
+Os testes em bancada foram feitos com o auxílio de fontes de tensão variada, nos laboratórios do IFSC câmpus Florianópolis.
+
+| Fontes de bancada no teste de bancada final |
+| --- |
+|[Fonte de bancaca 3A](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Fontes%20de%20bancada%203A.jpg)|
+
+Foram efetuados os testes do ADC e da rede CAN, esses resultados foram visualizados no computador pela comunicação serial conectando um arduino ao barramento Usart da placa.
+
+No caso do PWM é necessário o uso de osciloscópio, portanto são deixadas as figuras para alguns dos testes executados com o auxílio de um reostato.
+
+| Duty Cycle 40% |
+| ------ | ------ |
+|[Duty Cycle 40% signal](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2040%25%20Signal.jpg)|[Duty Cycle 40% values](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2040%25%20Values.jpg)|
+
+| Duty Cycle 80% |
+| ------ | ------ |
+|[Duty Cycle 80% signal](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2080%25%20Signal.jpg)|[Duty Cycle 80% values](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2080%25%20Signal.jpg)|
+
+| Duty Cycle 80% 3A (mínima resistência no reostato) |
+| ------ | ------ |
+|[Duty 80% Signal (3A)](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2080%25%20Signal%20-%20Low%20resistance,%203A.jpg)|[Duty 80% Values (3A)](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2080%25%20Values%20-%20Low%20resistance,%203A.jpg)|
+
+Esses resultados foram satisfatórios, tendo em vista que o circuito não estava acumulando calor, o PWM estava de acordo com o desejado a partir da configuração, e os valores de acordo com o datasheet.
+
+O próximo passo é o teste com o motor.
 
 # Considerações
 
 # Referênciass
 
-
+Datasheet ATmega328P:
+[Microchip, Atmel ATmega328P](https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf)
 
 Pesquisa por sensores de steering no mercado:
 [Bosch](https://www.bosch-motorsport.com/content/downloads/Raceparts/en-GB/120530059.html)
