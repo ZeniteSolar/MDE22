@@ -224,7 +224,9 @@ Esses resultados foram satisfatórios, tendo em vista que o circuito não estava
 
 O próximo passo é o teste com o motor. A montagem do teste em bancada é feita na embarcação, com fontes de bancada, placas e conexões necessárias.
 
-<img src="https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/Testes%20com%20Motor.jpg" width="620" height="550">
+<p align="center">
+  <img src="https://github.com/ZeniteSolar/MDE22/blob/8283bc81c4a9d4ee74052ef4564bf314acc439f0/Imagens/Testes%20com%20Motor.jpg" width="720" height="550">
+<\p>
 
 Durante o teste com motor foram implementadas lógicas de operação ao PWM da ponte H:
 
@@ -238,7 +240,9 @@ A última lógica foi julgada interessante considerando que o próprio sistema �
 A parte mecânica pode ser vista na figura abaixo. O eixo da transmissão é acoplado na correia pelo disco, e o motor DC da direção controla a correia.
 No topo desse pode ser visto o potenciômetro utilizado para medida de rotação.
 
-![Motor e Correira](https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/Motor%20e%20correia.jpg)
+<p align="center">
+  <img src="https://github.com/ZeniteSolar/MDE22/blob/8283bc81c4a9d4ee74052ef4564bf314acc439f0/Imagens/Motor%20e%20correia.jpg" width="470" height="350">
+<\p>
 
 Os testes com motor foram um sucesso utilizando as fontes de bancada, o vídeo do funcionamento está na pasta Imagens.
 
@@ -252,7 +256,7 @@ Confecção da placa: resultado ruim, fabricação ocasionou mais trabalho e com
 
 | Sistema Antigo | Sistema Montado | Exemplo de suporte |
 | --- | --- | --- |
-|![Sistema Antigo](https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/Montagem%20do%20sistema%20antigo.jpg)|![Sistema Montado](https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/Sistema%20Montado.jpg)|![Exemplo de Suporte](https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/Exemplo%20de%20suporte.jpg)|
+|![Sistema Antigo](https://github.com/ZeniteSolar/MDE22/blob/8283bc81c4a9d4ee74052ef4564bf314acc439f0/Imagens/Montagem%20do%20sistema%20antigo.jpg)|![Sistema Montado](https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/Sistema%20Montado.jpg)|![Exemplo de Suporte](https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/Exemplo%20de%20suporte.jpg)|
 
 Sistema alimentado por bateria
 PWM responsivo e testes com piloto, em água
