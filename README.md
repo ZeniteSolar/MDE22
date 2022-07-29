@@ -114,7 +114,7 @@ Abaixo está a previsão em 3D do resultado final. Como será explicado na etapa
 
 | Frente | Trás |
 | -----  | ----- |
-|![PCB 3D Frente](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/pcb%20front.PNG)|![PCB 3D Trás](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/pcb%20back.PNG)|
+|<img src="https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/pcb%20front.PNG" width ="325" height="460">|<img src="https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/pcb%20back.PNG" width="325" height="460">|
 
 
 Vale notar que este repositório possui uma branch exclusiva para uma placa encomendada, cujo layout foi aprimorado.
@@ -127,7 +127,7 @@ A PCB foi confeccionada pela fresadora CNC do DAELN, operada pelos técnicos do 
 
 | Ajustes com a dremel | EPI |
 | --- | --- |
-|<img src="https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Ajustes%20com%20a%20dremel.jpg" width="400" height="525">|<img src="https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Use%20%C3%B3culos%20de%20prote%C3%A7%C3%A3o.jpg" width="400" height="525">
+|<img src="https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Ajustes%20com%20a%20dremel.jpg" width="250" height="315">|<img src="https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Use%20%C3%B3culos%20de%20prote%C3%A7%C3%A3o.jpg" width="250" height="315">
 
 A placa foi estanhada para proteger o circuito contra oxidação, e as vias foram feitas com fios de cabo de rede, cortados no tamanho adequado e então soldados.
 
@@ -136,8 +136,8 @@ Da ordem dos componentes, a solda foi feita da seguinte forma: SMD, CI, Through-
 Após o trabalho na placa, foi alcançada a conclusão de que os CI da ponte H devem preceber os SMD. Essa troca é interessante pois o modelo precisa ser soldado com calor, no caso com auxílio de soprador térmico. A placa soldada pode ser vista na figura.
 
 | Frente | Trás |
-| -----  | ----- |
-|<img src="https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/PCB%20soldada%20frente.jpg" width="300" height="475">|<img src="https://github.com/ZeniteSolar/MDE22/blob/3640950bb22653374b23fce8999609d81420ede7/Imagens/PCB%20soldada%20tr%C3%A1s.jpg" width="300" height="475">|
+|:-----:|:-----:|
+|<img src="https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/PCB%20soldada%20frente.jpg" width="200" height="325">|<img src="https://github.com/ZeniteSolar/MDE22/blob/3640950bb22653374b23fce8999609d81420ede7/Imagens/PCB%20soldada%20tr%C3%A1s.jpg" width="200" height="325">|
 
 Finalizados os processos de preparação, é dado início à programação do microcontrolador, que é feita na linguagem C. As bibiotecas utilizadas e código fonte podem ser encontradas na pasta firmware desse repositório. 
 
@@ -197,9 +197,8 @@ Esse timer possui menos bits e menor funcionalidade em comparação aos outros d
 
 Os testes em bancada foram feitos com o auxílio de fontes de tensão variada, nos laboratórios do IFSC câmpus Florianópolis.
 
-| Fontes de bancada com corrente máxima |
-| --- |
-|<img src="https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Fontes%20de%20bancada%203A.jpg" width="720" height="400">|
+<p align="center">
+  <img src="https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Fontes%20de%20bancada%203A.jpg" width="520" height="340">
 
 Foram efetuados os testes do ADC e da rede CAN, esses resultados foram visualizados no computador pela comunicação serial conectando um arduino ao barramento Usart da placa.
 
@@ -225,8 +224,7 @@ Esses resultados foram satisfatórios, tendo em vista que o circuito não estava
 O próximo passo é o teste com o motor. A montagem do teste em bancada é feita na embarcação, com fontes de bancada, placas e conexões necessárias.
 
 <p align="center">
-  <img src="https://github.com/ZeniteSolar/MDE22/blob/8283bc81c4a9d4ee74052ef4564bf314acc439f0/Imagens/Testes%20com%20Motor.jpg" width="720" height="550">
-<\p>
+  <img src="https://github.com/ZeniteSolar/MDE22/blob/8283bc81c4a9d4ee74052ef4564bf314acc439f0/Imagens/Testes%20com%20Motor.jpg" width="420" height="250">
 
 Durante o teste com motor foram implementadas lógicas de operação ao PWM da ponte H:
 
@@ -241,8 +239,7 @@ A parte mecânica pode ser vista na figura abaixo. O eixo da transmissão é aco
 No topo desse pode ser visto o potenciômetro utilizado para medida de rotação.
 
 <p align="center">
-  <img src="https://github.com/ZeniteSolar/MDE22/blob/8283bc81c4a9d4ee74052ef4564bf314acc439f0/Imagens/Motor%20e%20correia.jpg" width="470" height="350">
-<\p>
+  <img src="https://github.com/ZeniteSolar/MDE22/blob/8283bc81c4a9d4ee74052ef4564bf314acc439f0/Imagens/Motor%20e%20correia.jpg" width="340" height="250">
 
 Os testes com motor foram um sucesso utilizando as fontes de bancada, o vídeo do funcionamento está na pasta Imagens.
 
