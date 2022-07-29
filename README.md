@@ -140,7 +140,7 @@ Após o trabalho na placa, foi alcançada a conclusão de que os CI da ponte H d
 
 | Frente | Trás |
 | -----  | ----- |
-|![PCB Soldada Frente](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/PCB%20soldada%20frente.jpg)|![PCB Soldada Trás](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/PCB%20soldada%20tr%C3%A1s.jpg)|
+|![PCB Soldada Frente](https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/PCB%20soldada%20frente.jpg)|![PCB Soldada Trás](https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/PCB%20soldada%20tr%C3%A1s.jpg)|
 
 Finalizados os processos de preparação, é dado início à programação do microcontrolador, que é feita na linguagem C. As bibiotecas utilizadas e código fonte podem ser encontradas na pasta firmware desse repositório. 
 
@@ -223,9 +223,44 @@ Para testar o circuito com alta corrente foi reduzida a resistência no reostato
 
 Esses resultados foram satisfatórios, tendo em vista que o circuito não estava acumulando calor, o PWM estava de acordo com o desejado a partir da configuração, e os valores de acordo com o datasheet.
 
-O próximo passo é o teste com o motor.
+#### Testes com Motor
+
+O próximo passo é o teste com o motor. A montagem do teste em bancada é feita na embarcação, com fontes de bancada, placas e conexões necessárias.
+
+![Testes com Motor](https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/Testes%20com%20Motor.jpg)
+
+Durante o teste com motor foram implementadas lógicas de operação ao PWM da ponte H:
+
+    Ponte H ativada pela diferença entre os potenciômetros
+    Começo centrado                                        
+    Centro forçado caso não haja comunicação                
+    Proteção contra lado invertido
+
+A última lógica foi julgada interessante considerando que o próprio sistema é montado/desmontado para viagens e testes na água. É possível que haja um erro de conexão que, sem essa proteção, poderia fazer com que um giro contínuo de 360° danificasse o sistema.
+
+A parte mecânica pode ser vista na figura abaixo. O eixo da transmissão é acoplado na correia pelo disco, e o motor DC da direção controla a correia.
+No topo desse pode ser visto o potenciômetro utilizado para medida de rotação.
+
+![Motor e Correira](https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/Motor%20e%20correia.jpg)
+
+Os testes com motor foram um sucesso utilizando as fontes de bancada, o vídeo do funcionamento está na pasta Imagens.
 
 # Considerações
+
+Todas os periféricos funcionais
+Medidas elétricas satisfatórias 
+Lógica essencial completa
+Performance dos componentes: maioria satisfatória, exceção ponte H e suas proteções internas
+Confecção da placa: resultado ruim, fabricação ocasionou mais trabalho e comprometeu a robustez do sistema
+
+| Sistema Antigo | Sistema Montado | Exemplo de suporte |
+| --- | --- | --- |
+|![Sistema Antigo](https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/Montagem%20do%20sistema%20antigo.jpg)|![Sistema Montado](https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/Sistema%20Montado.jpg)|![Exemplo de Suporte](https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/Exemplo%20de%20suporte.jpg)|
+
+Sistema alimentado por bateria
+PWM responsivo e testes com piloto, em água
+Projeto da Ponte H dedicado para esta aplicação
+
 
 # Referências
 
