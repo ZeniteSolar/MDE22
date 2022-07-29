@@ -251,9 +251,13 @@ Lógica essencial completa
 Performance dos componentes: maioria satisfatória, exceção ponte H e suas proteções internas
 Confecção da placa: resultado ruim, fabricação ocasionou mais trabalho e comprometeu a robustez do sistema
 
-| Sistema Antigo | Sistema Montado | Exemplo de suporte |
-| --- | --- | --- |
-|![Sistema Antigo](https://github.com/ZeniteSolar/MDE22/blob/8283bc81c4a9d4ee74052ef4564bf314acc439f0/Imagens/Montagem%20do%20sistema%20antigo.jpg)|![Sistema Montado](https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/Sistema%20Montado.jpg)|![Exemplo de Suporte](https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/Exemplo%20de%20suporte.jpg)|
+| Sistema Montado | Exemplo de suporte |
+| --- | --- |
+|<img src="https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/Sistema%20Montado.jpg" width="250" height="360">|<img src="https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/Exemplo%20de%20suporte.jpg" width="250" height="360">|
+
+| Sistema Antigo | Ponte H |
+| --- | --- |
+|<img src="https://github.com/ZeniteSolar/MDE22/blob/8283bc81c4a9d4ee74052ef4564bf314acc439f0/Imagens/Montagem%20do%20sistema%20antigo.jpg" width="250" height="280">|<img src="https://github.com/ZeniteSolar/MDE22/blob/8283bc81c4a9d4ee74052ef4564bf314acc439f0/Imagens/Montagem%20antiga%20PonteH.jpg" width="250" height="280">|
 
 Sistema alimentado por bateria
 PWM responsivo e testes com piloto, em água
