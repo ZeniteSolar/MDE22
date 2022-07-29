@@ -257,7 +257,7 @@ Confecção da placa: resultado ruim, fabricação ocasionou mais trabalho e com
 
 | Sistema Antigo | Ponte H |
 | --- | --- |
-|<img src="https://github.com/ZeniteSolar/MDE22/blob/8283bc81c4a9d4ee74052ef4564bf314acc439f0/Imagens/Montagem%20do%20sistema%20antigo.jpg" width="250" height="280">|<img src="https://github.com/ZeniteSolar/MDE22/blob/8283bc81c4a9d4ee74052ef4564bf314acc439f0/Imagens/Montagem%20antiga%20PonteH.jpg" width="250" height="280">|
+|<img src="https://github.com/ZeniteSolar/MDE22/blob/8283bc81c4a9d4ee74052ef4564bf314acc439f0/Imagens/Montagem%20do%20sistema%20antigo.jpg" width="250" height="280">|<img src="https://github.com/ZeniteSolar/MDE22/blob/8283bc81c4a9d4ee74052ef4564bf314acc439f0/Imagens/Montagem%20antiga%20PonteH.jpg" width="280" height="210">|
 
 Sistema alimentado por bateria
 PWM responsivo e testes com piloto, em água
