@@ -32,7 +32,7 @@ Esse módulo tem como objetivo controlar a direção da rabeta da embarcação G
 
 É inspirado pelo sistema atualmente implementado, desenvolvido por Cesar Dias Parente. Os arquivos do projeto podem ser encontrados [aqui](https://github.com/ZeniteSolar/MDE18/tree/main).
 
-A embarcação da equipe Zênite é operada em competições de barcos solares, onde são exigidas alta performance e robustez. A equipe obteve êxito em diversos anos de competição, a direção elétrica contribuindo para isso especialmente em provas de manobras como o Slalom.
+A embarcação da equipe Zênite é operada em competições de barcos solares, onde são exigidas alta performance e robustez. A equipe obteve êxito em diversos anos de competição, a direção elétrica contribuindo para isso especialmente em provas de manobras como o Slalom (Ziguezague).
 
 O sistema eletrônico atual foi danificado após a competição em março de 2022, o que é um motivador para sua atualização. 
 
@@ -123,7 +123,7 @@ Abaixo está a previsão em 3D do resultado final. Como será explicado na etapa
 |<img src="https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/pcb%20front.PNG" width ="325" height="460">|<img src="https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/pcb%20back.PNG" width="325" height="460">|
 
 
-Vale notar que este repositório possui uma branch exclusiva para uma placa encomendada, cujo layout foi aprimorado e a silkscreen foi propriamente desenhada para auxiliar na etapa de Implementação e possíveis reparos.
+Vale notar que este repositório possui uma branch exclusiva para uma placa encomendada, cujo layout foi aprimorado e a silkscreen foi propriamente desenhada para auxiliar na etapa de Implementação e possíveis reparos. Essa placa não foi utilizada durante o projeto pela data de entrega da mesma. 
 
 | Encomendada Frente | Encomendada Trás |
 | -----  | ----- |
@@ -133,7 +133,7 @@ Vale notar que este repositório possui uma branch exclusiva para uma placa enco
 
 ### Confecção da PCB
 
-A PCB foi confeccionada pela fresadora CNC do DAELN, operada pelos técnicos do departamento, o resultado é mostrado abaixo. Como a placa confeccionada não apresentou o espaçamento mínimo desejado par a malha de potência, uma retificadeira foi usada para excluir as trilhas indesejadas — é imporante lembrar que esse tipo de ferramente pede o uso de EPI.
+A PCB foi confeccionada pela fresadora CNC do DAELN, operada pelos técnicos do departamento, o resultado é mostrado abaixo. Como a placa confeccionada não apresentou o espaçamento mínimo desejado para a malha de potência, uma retificadeira foi usada para excluir as trilhas indesejadas — é imporante lembrar que esse tipo de ferramenta pede o uso de EPI.
 
 | Ajustes com a dremel | EPI |
 | --- | --- |
@@ -173,9 +173,9 @@ O ADC é utilizado com 10 bits, com 3 canais: Sensor de tensão, sensor de corre
 
 Essa questão de escala é configurada pelos coeficientes em adc.c, basta operar algumas medidas com coeficiente unitário e então fazer o cálculo
 
-    coeficiente desejado = Valor_desejado / Valor_atual
+$$ coeficiente = {ValorDesejado \over ValorObtido} $$
     
-É interessante fazer esse teste com o valor de fundo de escala, uma vez que este "valor desejado" está claro.
+É interessante fazer esse teste com o valor de fundo de escala, pois o "Valor Desejado" é naturalmente conhecido.
 
 - Rede CAN
 
@@ -259,7 +259,7 @@ Quando o sistema foi testado com bateria ele deixou de funcionar, o diagnóstico
 
 Todos os periféricos do microcontrolador estão funcionais. Todas medidas elétricas, que eram um dos principais objetivos, apresentaram precisão satisfatória. 
 
-A lógica essencial do funcionamento está completa, existem travas de segurança e o motor pode ser movimentado.
+A lógica essencial do funcionamento está completa, existem algumas travas de segurança, porém não o suficiente, e por fim o motor pode ser movimentado.
 
 Performance dos componentes: maioria satisfatória, exceção ponte H e suas proteções internas que não ativaram no teste com bateria.
 
@@ -267,7 +267,7 @@ Confecção da placa: resultado ruim, fabricação ocasionou mais trabalho e com
 
 Abaixo podemos ver o sistema montado com um suporte experimental — devido às dimensões da placa, é preciso ser fabricado um suporte dedicado à mesma. 
 
-Ao lado é mostrada o módulo fonte principal ([MFP19](https://github.com/ZeniteSolar/MFP19)): que converte a tensão no banco de baterias e fornece os 18V da rede CAN. Os futuros suportes do barco devem seguir este modelo.
+Ao lado é mostrada o módulo fonte principal ([MFP19](https://github.com/ZeniteSolar/MFP19)) que converte a tensão no banco de baterias e fornece os 18V da rede CAN. Os futuros suportes do barco devem seguir este modelo feito com impressão 3D.
 
 | Sistema Montado | Exemplo de suporte |
 | --- | --- |
@@ -283,10 +283,13 @@ Para efeito de comparação, aqui estão as imagens do sistema anterior.
 
 Alguns dos próximo passos para esse módulo e futuras atualizações:
 
-    Sistema alimentado por bateria
-    PWM responsivo aos movimentos do piloto (e testes com piloto)
-    Projeto da Ponte H ou escolha de um CI não descontinuado
-    *Controle da direção à distância (sem piloto)
+- Sistema alimentado por bateria
+- PWM responsivo aos movimentos do piloto (e testes com piloto)
+- Projeto da Ponte H ou escolha de um CI não descontinuado
+- Mensagens e/ou sensores de redundância 
+- Modo de baixo consumo - Ativado pelo módulo de processamento de dados
+- *Direção remota
+
 
 *O sucesso dessa etapa criaria espaço para ainda outra atualização: O barco autônomo.
 
