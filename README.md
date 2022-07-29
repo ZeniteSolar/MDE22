@@ -299,8 +299,8 @@ Datasheet ATmega328P:
 [Microchip, Atmel ATmega328P](https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf)
 
 Pesquisa por sensores de steering no mercado:
-[Bosch](https://www.bosch-motorsport.com/content/downloads/Raceparts/en-GB/120530059.html)
-[CUI Inc](https://www.cuidevices.com/catalog/motion/rotary-encoders)
+[Bosch](https://www.bosch-motorsport.com/content/downloads/Raceparts/en-GB/120530059.html),
+[CUI Inc](https://www.cuidevices.com/catalog/motion/rotary-encoders),
 [TT Electronics](https://www.ttelectronics.com/products/categories/steering-sensors/search-results/)
 
 
