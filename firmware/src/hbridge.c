@@ -97,25 +97,13 @@ void hbridge_task(void)
     }
 
 
-    // Responsive duty cycle. 
-    // tail_diff_old receives tail_diff if the latter is greater than the first.
-    /*if(tail_diff > 0){
-        tail_diff_old < tail_diff ? tail_diff_old = tail_diff;          
-    } else if (tail_diff < 0) {
-        tail_diff_old > tail_diff) ? tail_diff_old = tail_diff;
-    } else {
-        tail_diff_old = 0;
-    }
-    // Duty cycle mantained until tail_tolerance state achieved. Duty is maxed at tail_diff=270° 
-    //         Minimum at 5%            0.3518 %/°
-    duty_coeff = 0.05 + (0.95 * (tail_diff_old / 270)); */
 
     if(hbridge_flags.force_center == 1){
         usart_send_string("Tail shall be centered until MIC returns.\n");
         tail_position_pilot = 165;
     }
     tail_diff = tail_position_pilot - measurements.position_avg;    // Check sensor pot difference: pilot - tail
-    duty_coeff = 0.8;
+    duty_coeff = 0.5;
 
 #ifdef VERBOSE_ON_HBRIDGE
     if(hbridge_verbose_clk_div++ >= HBRIDGE_VERBOSE_CLK_DIV){
@@ -159,7 +147,7 @@ void hbridge_task(void)
             usart_send_string("TURNING TO THE WRONG SIDE!\n");
             hbridge_flags.wrong_side_turn = 1;
         }
-    } else if (tail_diff < -TAIL_TOLERANCE){
+    } else if (tail_diff < TAIL_TOLERANCE){
         hbridge_set_pwm(HBRIDGE_SIDE_A, duty_coeff);
         hbridge_set_pwm(HBRIDGE_SIDE_B, 0);
         hbridge_flags.side_B_switch_on = 0;
@@ -176,7 +164,7 @@ void hbridge_task(void)
         hbridge_flags.side_B_switch_on = 0;
         hbridge_flags.side_A_switch_on = 0;
     }
-    tail_diff_old = tail_diff;
+   // tail_diff_old = tail_diff;
 }
 
 
