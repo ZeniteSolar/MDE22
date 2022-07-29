@@ -6,6 +6,10 @@ Departamento Acadêmico de Eletrônica Curso de Engenharia Eletrônica
 
 Projeto Integrador III
 
+Professores:
+
+* Robinson Pizzio e Daniel Lohmann
+
 Aluno:
 
 * Gabriel Ayres Rodrigues
@@ -117,7 +121,11 @@ Abaixo está a previsão em 3D do resultado final. Como será explicado na etapa
 |<img src="https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/pcb%20front.PNG" width ="325" height="460">|<img src="https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/pcb%20back.PNG" width="325" height="460">|
 
 
-Vale notar que este repositório possui uma branch exclusiva para uma placa encomendada, cujo layout foi aprimorado.
+Vale notar que este repositório possui uma branch exclusiva para uma placa encomendada, cujo layout foi aprimorado e a silkscreen foi propriamente desenhada para auxiliar na etapa de Implementação e possíveis reparos.
+
+| Encomendada Frente | Encomendada Trás |
+| -----  | ----- |
+|<img src="https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/pcb%20front.PNG" width ="325" height="460">|<img src="https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/pcb%20back.PNG" width="325" height="460">|
 
 # Implementação
 
@@ -263,7 +271,7 @@ Ao lado é mostrada o módulo fonte principal ([MFP19](https://github.com/Zenite
 | --- | --- |
 |<img src="https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/Sistema%20Montado.jpg" width="250" height="360">|<img src="https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/Exemplo%20de%20suporte.jpg" width="250" height="360">|
 
-Para efeito de comparação, aqui estão as imagens do sistema antigo. 
+Para efeito de comparação, aqui estão as imagens do sistema anterior. 
 
 | Sistema Antigo | Ponte H |
 | --- | --- |
