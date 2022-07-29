@@ -48,7 +48,7 @@ Para implementar o todo é preciso definir os requisitos das partes, e as possí
 
 Existem algumas opções para os sensors de rotação como: indutivo, óptico, sensor de efeito Hall, potênciometro de rotação, encoder. A alternativa mais econômica e de simples implementação é um potênciometro linear comum, atualmente utilizados no sistema da equipe Zênite.
 
-Os tipos mais utilizados para sensores de direção (no sentido steering) no mercado são os seguintes: resistivos, encoders, e os de tecnologia GMR ([Giant magnetoresistance](https://en.wikipedia.org/wiki/Giant_magnetoresistance)). (veja as empresas consideradas em [Referências](#Referências))
+Os tipos mais utilizados para sensores de direção (no sentido steering) no mercado são os seguintes: resistivos, encoders, e os de tecnologia GMR ([Giant magnetoresistance](https://en.wikipedia.org/wiki/Giant_magnetoresistance)). (veja as empresas consideradas em [Referências](#referências))
 
 Sensores desse nível são tecnologia de ponta e portanto estão fora de questão, de qualquer forma vale observar que o sensor resistivo permanece sendo utilizado (até mesmo em veículos comuns, como o [sensor de posição borboleta](https://www.dpk.com.br/como-funciona-o-sensor-de-posicao-da-borboleta/)). 
 
@@ -150,7 +150,7 @@ A etapa de operação fica dividida entre duas partes: Programação e testes de
 
 #### Programação
 
-Durante todo o processo foi utilizado como referência o datasheet da microchip para o atmega328p, que se encontra nas [referências](#referências) desse trabalho.
+Durante todo o processo foi utilizado como referência o datasheet da microchip para o atmega328p, que se encontra nas [Referências](#referências) desse trabalho.
 
 Na configuração em si dos periféricos, começando pelo ADC, foi encontrado um dilema sobre qual orientação dos potenciômetros do sistema. Como o sistema está em upgrade foi descartada a configuração atual. Fica então definido que o código desenvolvido pressupõe as seguintes relações:
 
@@ -227,7 +227,7 @@ O próximo passo é o teste com o motor.
 
 # Considerações
 
-# Referênciass
+# Referências
 
 Datasheet ATmega328P:
 [Microchip, Atmel ATmega328P](https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf)
