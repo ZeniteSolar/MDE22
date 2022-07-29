@@ -94,7 +94,6 @@ Essas medidas devem constribuir para o feedback, que também terá o dado de pos
 
 # Design
 
-<!-- Lista breve explicando os elementos escolhidos?  -->
 O módulo foi desenvolvido com o software Kicad, o projeto está na pasta hardware desse git e seu esquemático completo pode ser visualizado [aqui](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/main/hardware/PDF/steeringmodule.pdf). Abaixo está o esquemático geral:
 
 ![Esquemático geral](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/a6de4a60345ccac29f99505179099171639378f8/Imagens/steeringmodule_esquema.PNG)
@@ -124,13 +123,11 @@ Vale notar que este repositório possui uma branch exclusiva para uma placa enco
 
 ### Confecção da PCB
 
-A PCB foi confeccionada pela fresadora CNC do DAELN, operada pelos técnicos do departamento, o resultado é mostrado abaixo. 
+A PCB foi confeccionada pela fresadora CNC do DAELN, operada pelos técnicos do departamento, o resultado é mostrado abaixo. Como a placa confeccionada não apresentou o espaçamento mínimo desejado par a malha de potência, uma retificadeira foi usada para excluir as trilhas indesejadas — é imporante lembrar que esse tipo de ferramente pede o uso de EPI.
 
-[[https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Ajustes%20com%20a%20dremel.jpg|width=400px]]
-
-Como a placa confeccionada não apresentou o espaçamento mínimo desejado par a malha de potência, uma retificadeira foi usada para excluir as trilhas indesejadas — é imporante lembrar que esse tipo de ferramente pede o uso de EPI.
-
-![Use Óculos de Proteção](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Use%20%C3%B3culos%20de%20prote%C3%A7%C3%A3o.jpg)
+| Ajustes com a dremel | EPI |
+| --- | --- |
+|<img src="https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Ajustes%20com%20a%20dremel.jpg" width="400" height="525">|<img src="https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Use%20%C3%B3culos%20de%20prote%C3%A7%C3%A3o.jpg" width="400" height="525">
 
 A placa foi estanhada para proteger o circuito contra oxidação, e as vias foram feitas com fios de cabo de rede, cortados no tamanho adequado e então soldados.
 
@@ -140,7 +137,7 @@ Após o trabalho na placa, foi alcançada a conclusão de que os CI da ponte H d
 
 | Frente | Trás |
 | -----  | ----- |
-|![PCB Soldada Frente](https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/PCB%20soldada%20frente.jpg)|![PCB Soldada Trás](https://github.com/ZeniteSolar/MDE22/blob/3640950bb22653374b23fce8999609d81420ede7/Imagens/PCB%20soldada%20tr%C3%A1s.jpg)|
+|<img src="https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/PCB%20soldada%20frente.jpg" width="300" height="475">|<img src="https://github.com/ZeniteSolar/MDE22/blob/3640950bb22653374b23fce8999609d81420ede7/Imagens/PCB%20soldada%20tr%C3%A1s.jpg" width="300" height="475">|
 
 Finalizados os processos de preparação, é dado início à programação do microcontrolador, que é feita na linguagem C. As bibiotecas utilizadas e código fonte podem ser encontradas na pasta firmware desse repositório. 
 
@@ -202,7 +199,7 @@ Os testes em bancada foram feitos com o auxílio de fontes de tensão variada, n
 
 | Fontes de bancada com corrente máxima |
 | --- |
-|![Fonte de bancaca 3A](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Fontes%20de%20bancada%203A.jpg)|
+|<img src="https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Fontes%20de%20bancada%203A.jpg" width="720" height="400">|
 
 Foram efetuados os testes do ADC e da rede CAN, esses resultados foram visualizados no computador pela comunicação serial conectando um arduino ao barramento Usart da placa.
 
@@ -227,7 +224,7 @@ Esses resultados foram satisfatórios, tendo em vista que o circuito não estava
 
 O próximo passo é o teste com o motor. A montagem do teste em bancada é feita na embarcação, com fontes de bancada, placas e conexões necessárias.
 
-![Testes com Motor](https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/Testes%20com%20Motor.jpg)
+<img src="https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/Testes%20com%20Motor.jpg" width="620" height="550">
 
 Durante o teste com motor foram implementadas lógicas de operação ao PWM da ponte H:
 
