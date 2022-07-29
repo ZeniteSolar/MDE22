@@ -126,7 +126,7 @@ Vale notar que este repositório possui uma branch exclusiva para uma placa enco
 
 A PCB foi confeccionada pela fresadora CNC do DAELN, operada pelos técnicos do departamento, o resultado é mostrado abaixo. 
 
-![Ajustes com a Dremel](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Ajustes%20com%20a%20dremel.jpg)
+![Ajustes com a Dremel](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Ajustes%20com%20a%20dremel.jpg =400x400)
 
 Como a placa confeccionada não apresentou o espaçamento mínimo desejado par a malha de potência, uma retificadeira foi usada para excluir as trilhas indesejadas — é imporante lembrar que esse tipo de ferramente pede o uso de EPI.
 
