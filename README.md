@@ -150,7 +150,7 @@ A etapa de operação fica dividida entre duas partes: Programação e testes de
 
 #### Programação
 
-Durante todo o processo foi utilizado como referência o datasheet da microchip para o atmega328p, que se encontra nas [referências](#Referências) desse trabalho.
+Durante todo o processo foi utilizado como referência o datasheet da microchip para o atmega328p, que se encontra nas [referências](#referências) desse trabalho.
 
 Na configuração em si dos periféricos, começando pelo ADC, foi encontrado um dilema sobre qual orientação dos potenciômetros do sistema. Como o sistema está em upgrade foi descartada a configuração atual. Fica então definido que o código desenvolvido pressupõe as seguintes relações:
 
