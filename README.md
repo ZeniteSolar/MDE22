@@ -6,7 +6,7 @@ Departamento Acadêmico de Eletrônica
 
 Curso de Engenharia Eletrônica
 
-Projeto Integrador III
+Unidade Curricular: Projeto Integrador III
 
 Professores:
 
