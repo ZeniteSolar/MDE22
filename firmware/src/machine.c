@@ -179,7 +179,7 @@ inline void task_running(void)
         usart_send_uint16(measurements.position_avg);
         usart_send_char('\t');
         usart_send_string("Pilot Posit: ");
-        usart_send_uint16(tail_position_pilot);
+        usart_send_uint16(str_whl_position);
         usart_send_char('\t');
         usart_send_string("BatV: ");
         usart_send_uint16(measurements.batvoltage_avg);
@@ -217,8 +217,6 @@ inline void task_error(void)
         VERBOSE_MSG_ERROR(usart_send_string("\t - No canbus communication with MIC19!\n"));
     if(error_flags.invalid_tail)
         VERBOSE_MSG_ERROR(usart_send_string("\t - Invalid tail angle, position unacceptable!\n"));
-    if(error_flags.invalid_str_whl)
-        VERBOSE_MSG_ERROR(usart_send_string("\t - Invalid steering wheel angle!\n"));
     if(!error_flags.all)
         VERBOSE_MSG_ERROR(usart_send_string("\t - Oh no, it was some unknown error.\n"));
 
@@ -228,8 +226,7 @@ inline void task_error(void)
 
     if(total_errors < 2){
         VERBOSE_MSG_ERROR(usart_send_string("I will reset the machine state.\n"));
-    }
-    if(total_errors >= 20){
+    } else {
         VERBOSE_MSG_ERROR(usart_send_string("The watchdog will reset the whole system.\n"));
         set_state_reset();
     }
