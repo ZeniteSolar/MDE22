@@ -5,7 +5,7 @@ volatile hbridge_flags_t hbridge_flags;
 uint16_t can_app_checks_without_mic19_msg;
 uint32_t can_app_send_state_clk_div;
 uint32_t can_app_send_adc_clk_div;
-volatile uint16_t tail_position_pilot;
+volatile uint16_t str_whl_position;
 
 /**
  * @brief Prints a can message via usart
@@ -125,7 +125,7 @@ inline void can_app_extractor_mic19_state(can_t *msg)
 inline void can_app_extractor_mic19_mde(can_t *msg)
 {
     if(msg->data[CAN_MSG_MIC19_MDE_SIGNATURE_BYTE] == CAN_SIGNATURE_MIC19){
-        HIGH_LOW(tail_position_pilot, msg->data[CAN_MSG_MIC19_MDE_POSITION_H_BYTE], msg->data[CAN_MSG_MIC19_MDE_POSITION_L_BYTE]);
+        HIGH_LOW(str_whl_position, msg->data[CAN_MSG_MIC19_MDE_POSITION_H_BYTE], msg->data[CAN_MSG_MIC19_MDE_POSITION_L_BYTE]);
         can_app_checks_without_mic19_msg = 0;
     } else {
         // ERROR!!
@@ -178,7 +178,7 @@ inline void check_can(void)
     
     if(can_app_checks_without_mic19_msg++ >= CAN_APP_CHECKS_WITHOUT_MIC19_MSG){
 #ifdef USART_ON
-        usart_send_string("Too many cycles withtou message.\n");
+        usart_send_string("Too many cycles without MIC19 messages.\n");
 #endif
         can_app_checks_without_mic19_msg = 0;
         hbridge_flags.force_center = 1;
