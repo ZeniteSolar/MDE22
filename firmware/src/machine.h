@@ -57,7 +57,7 @@ typedef union error_flags{
     struct{
         uint8_t     no_canbus       :1;
         uint8_t     invalid_tail    :1;
-        uint8_t     invalid_str_whl :1;
+        uint8_t     wrong_side_turn :1;
     };
     uint8_t   all;
 }error_flags_t;
