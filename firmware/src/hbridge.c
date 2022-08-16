@@ -5,7 +5,7 @@ volatile int tail_diff;
 volatile int tail_diff_old;
 volatile uint32_t hbridge_testing_clk_div;
 volatile uint32_t hbridge_verbose_clk_div;
-volatile uint16_t tail_position_pilot;
+volatile uint16_t str_whl_position;
 volatile uint8_t hbridge_led_clk_div;
 volatile hbridge_flags_t hbridge_flags;
 
@@ -68,6 +68,13 @@ void hbridge_toggle_side(void)
 
 }
 
+/**
+ * @brief Sets pwm duty cycle value on OCR identified by 'side'
+ * 
+ * @param side : Identify switching side (OCR0A or OCR0B)
+ * @param duty : duty cycle
+ * @return uint8_t 
+ */
 uint8_t hbridge_set_pwm(uint8_t side, float duty)
 {
     if(duty < 0){
@@ -84,25 +91,39 @@ uint8_t hbridge_set_pwm(uint8_t side, float duty)
     }
 }
 
+/**
+ * @brief 
+ * 
+ */
 void hbridge_task(void)
 {
-    if ((!hbridge_flags.wrong_side_turn) && (!tst_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN))) {
+    // Check for errors 
+    if (measurements.position_avg > 270){
+        error_flags.invalid_tail = 1;
+        set_state_error();
+    }
+
+    // Safeguard for steering wheel angle
+    // force_center flag is set to 0 on check_can by receiving MIC19 message
+    if(str_whl_position > 270) {
+        hbridge_flags.force_center = 1;
+        usart_send_string("Invalid str wheel angle, value > 270.\n");
+    }
+
+    // Enable for operation
+    if(!tst_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN)) {
         set_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN);
         usart_send_string("HBridge is enabled!\n");
     }
 
-    if (tail_position_pilot > 270 || measurements.position_avg > 270){
-        error_flags.invalid_str_whl = 1;
-        set_state_error();
-    }
-
-
-
+// Operation
     if(hbridge_flags.force_center == 1){
-        usart_send_string("Tail shall be centered until MIC returns.\n");
-        tail_position_pilot = 165;
+        usart_send_string("Tail shall be centered.\n");
+        str_whl_position = 165;
     }
-    tail_diff = tail_position_pilot - measurements.position_avg;    // Check sensor pot difference: pilot - tail
+
+    // Check sensor pot difference: pilot - tail
+    tail_diff = str_whl_position - measurements.position_avg;    // Check sensor pot difference: pilot - tail
     duty_coeff = 0.5;
 
 #ifdef VERBOSE_ON_HBRIDGE
@@ -138,24 +159,28 @@ void hbridge_task(void)
 #endif
 
     if (tail_diff > TAIL_TOLERANCE){
-        hbridge_set_pwm(HBRIDGE_SIDE_A, 0);
-        hbridge_set_pwm(HBRIDGE_SIDE_B, duty_coeff);
-        hbridge_flags.side_B_switch_on = 1;
-        hbridge_flags.side_A_switch_on = 0;
-        if(tail_diff_old > tail_diff){
-            clr_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN);
+        if (measurements.position_avg < 260) {
+            hbridge_set_pwm(HBRIDGE_SIDE_A, 0);
+            hbridge_set_pwm(HBRIDGE_SIDE_B, duty_coeff);
+            hbridge_flags.side_B_switch_on = 1;
+            hbridge_flags.side_A_switch_on = 0;
+        }
+        else if(tail_diff_old > tail_diff){
+           // clr_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN);
             usart_send_string("TURNING TO THE WRONG SIDE!\n");
-            hbridge_flags.wrong_side_turn = 1;
+            error_flags.wrong_side_turn = 1;
         }
     } else if (tail_diff < TAIL_TOLERANCE){
-        hbridge_set_pwm(HBRIDGE_SIDE_A, duty_coeff);
-        hbridge_set_pwm(HBRIDGE_SIDE_B, 0);
-        hbridge_flags.side_B_switch_on = 0;
-        hbridge_flags.side_A_switch_on = 1;
-        if(tail_diff_old < tail_diff){
-            clr_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN);
+        if (measurements.position_avg > 10) {
+            hbridge_set_pwm(HBRIDGE_SIDE_A, duty_coeff);
+            hbridge_set_pwm(HBRIDGE_SIDE_B, 0);
+            hbridge_flags.side_B_switch_on = 0;
+            hbridge_flags.side_A_switch_on = 1;
+        }
+        else if(tail_diff_old < tail_diff){
+            // clr_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN);
             usart_send_string("TURNING TO THE WRONG SIDE!\n");
-            hbridge_flags.wrong_side_turn = 1;
+            error_flags.wrong_side_turn = 1;
         }
     } else {
         tail_diff_old = 0;
@@ -164,7 +189,7 @@ void hbridge_task(void)
         hbridge_flags.side_B_switch_on = 0;
         hbridge_flags.side_A_switch_on = 0;
     }
-   // tail_diff_old = tail_diff;
+   tail_diff_old = tail_diff;
 }
 
 
