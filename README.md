@@ -251,7 +251,7 @@ No topo desse pode ser visto o potenciômetro utilizado para medida de rotação
 <p align="center">
   <img src="https://github.com/ZeniteSolar/MDE22/blob/8283bc81c4a9d4ee74052ef4564bf314acc439f0/Imagens/Motor%20e%20correia.jpg" width="340" height="250">
 
-Os testes com motor foram um sucesso utilizando as fontes de bancada, o vídeo do funcionamento está na pasta Imagens.
+Os testes com motor foram um sucesso utilizando as fontes de bancada, o vídeo do funcionamento está na pasta Imagens. Devido ao tamanho do arquivo o github não pode executá-lo, portanto precisa ser baixado. Uma alternativa é utilizar este [link do drive](https://drive.google.com/file/d/12XCSZ1QREOxFkqlZAvMiaMpx_ZMUlxNi/view?usp=sharing).
 
 Quando o sistema foi testado com bateria ele deixou de funcionar, o diagnóstico aponta para a queima de um dos CI half-bridge.
 
