@@ -43,7 +43,7 @@ extern volatile int tail_diff;
 extern volatile int tail_diff_old;
 extern volatile uint32_t hbridge_verbose_clk_div;
 extern volatile uint32_t hbridge_side_switch_clk_div;
-extern volatile uint16_t tail_position_pilot;
+extern volatile uint16_t str_whl_position;
 extern volatile uint8_t hbridge_led_clk_div;
 
 //Equation
@@ -57,8 +57,7 @@ typedef union hbridge_flags{
         uint8_t     side_A_switch_on    :1;
         uint8_t     side_B_switch_on    :1; 
         uint8_t     curr_path_low_high  :1;
-        uint8_t     wrong_side_turn     :1;
-        uint8_t     force_center    :1;
+        uint8_t     force_center        :1;
     };
     uint8_t     all__;
 } hbridge_flags_t;
