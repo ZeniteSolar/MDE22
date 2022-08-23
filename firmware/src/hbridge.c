@@ -122,8 +122,11 @@ void hbridge_task(void)
         str_whl_position = 165;
     }
 
-    // Check sensor pot difference: pilot - tail
-    tail_diff = str_whl_position - measurements.position_avg;    // Check sensor pot difference: pilot - tail
+    // Determine potentiometer sensors difference: pilot - tail
+    tail_diff = str_whl_position - measurements.position_avg;
+
+    // Set duty cycle coefficient
+    // duty_coeff = 0.4 * (1 + 1 * tail_diff_old/270);
     duty_coeff = 0.5;
 
 #ifdef VERBOSE_ON_HBRIDGE
@@ -158,8 +161,12 @@ void hbridge_task(void)
     }
 #endif
 
+    // Check if tail_diff is above tolarance in both directions
+    // Check if rotation limit has been achieved
+    // Activate bridge pwm accordingly to tail_diff
+    // if tail_diff is not decresing after bridge pwm activated, wrong side turn is detected 
     if (tail_diff > TAIL_TOLERANCE){
-        if (measurements.position_avg < 260) {
+        if (measurements.position_avg < 270) {
             hbridge_set_pwm(HBRIDGE_SIDE_A, 0);
             hbridge_set_pwm(HBRIDGE_SIDE_B, duty_coeff);
             hbridge_flags.side_B_switch_on = 1;
@@ -170,8 +177,8 @@ void hbridge_task(void)
             usart_send_string("TURNING TO THE WRONG SIDE!\n");
             error_flags.wrong_side_turn = 1;
         }
-    } else if (tail_diff < TAIL_TOLERANCE){
-        if (measurements.position_avg > 10) {
+    } else if (tail_diff < -TAIL_TOLERANCE){
+        if (measurements.position_avg > 0) {
             hbridge_set_pwm(HBRIDGE_SIDE_A, duty_coeff);
             hbridge_set_pwm(HBRIDGE_SIDE_B, 0);
             hbridge_flags.side_B_switch_on = 0;
@@ -189,7 +196,7 @@ void hbridge_task(void)
         hbridge_flags.side_B_switch_on = 0;
         hbridge_flags.side_A_switch_on = 0;
     }
-   tail_diff_old = tail_diff;
+    tail_diff_old = tail_diff;
 }
 
 
