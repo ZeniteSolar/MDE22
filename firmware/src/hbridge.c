@@ -126,24 +126,28 @@ void hbridge_task(void)
     tail_diff = str_whl_position - measurements.position_avg;
 
     // Set duty cycle coefficient
-    // duty_coeff = 0.4 * (1 + 1 * tail_diff_old/270);
-    duty_coeff = 0.5;
+    //duty_coeff = 0.4 * (1 + tail_diff_old/270);
+    duty_coeff = 0.2;
 
 #ifdef VERBOSE_ON_HBRIDGE
     if(hbridge_verbose_clk_div++ >= HBRIDGE_VERBOSE_CLK_DIV){
 
-        VERBOSE_MSG_HBRIDGE(usart_send_uint16(tail_diff_old));
-        VERBOSE_MSG_HBRIDGE(usart_send_string(" :tail_diff_old\n"));
-
         if (tail_diff > TAIL_TOLERANCE){
-            VERBOSE_MSG_HBRIDGE(usart_send_string("Vira ESTIBORDO\t"));
+            VERBOSE_MSG_HBRIDGE(usart_send_string("BORESTE\t"));
         } else if (tail_diff < -TAIL_TOLERANCE) { 
-            VERBOSE_MSG_HBRIDGE(usart_send_string("Vira BOMBORDO\t"));
+            VERBOSE_MSG_HBRIDGE(usart_send_string("BOMBORDO\t"));
         } else {
-            VERBOSE_MSG_HBRIDGE(usart_send_string("Motor parado.\t"));
+            VERBOSE_MSG_HBRIDGE(usart_send_string("Parado\t"));
         }
         VERBOSE_MSG_HBRIDGE(usart_send_string("Side Switching: "));
         VERBOSE_MSG_HBRIDGE(usart_send_uint8(hbridge_flags.all__));
+
+        VERBOSE_MSG_HBRIDGE(usart_send_string("\tDuty coeff: "));
+        VERBOSE_MSG_HBRIDGE(usart_send_uint32(duty_coeff));
+        
+        VERBOSE_MSG_HBRIDGE(usart_send_string("\t Taildiff Old: "));
+        VERBOSE_MSG_HBRIDGE(usart_send_uint16(tail_diff_old));
+
         VERBOSE_MSG_HBRIDGE(usart_send_char('\n'));
         hbridge_verbose_clk_div = 0;
     }
@@ -196,7 +200,11 @@ void hbridge_task(void)
         hbridge_flags.side_B_switch_on = 0;
         hbridge_flags.side_A_switch_on = 0;
     }
+    
     tail_diff_old = tail_diff;
+    if (tail_diff_old < tail_diff){
+        tail_diff_old = tail_diff;
+    }
 }
 
 
