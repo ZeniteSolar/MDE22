@@ -3,6 +3,7 @@
 volatile float duty_coeff;
 volatile int tail_diff;
 volatile int tail_diff_old;
+volatile int duty_msg;
 volatile uint32_t hbridge_testing_clk_div;
 volatile uint32_t hbridge_verbose_clk_div;
 volatile uint16_t str_whl_position;
@@ -124,29 +125,38 @@ void hbridge_task(void)
 
     // Determine potentiometer sensors difference: pilot - tail
     tail_diff = str_whl_position - measurements.position_avg;
-
+    
     // Set duty cycle coefficient
-    //duty_coeff = 0.4 * (1 + tail_diff_old/270);
-    duty_coeff = 0.2;
+    if(tail_diff_old < 0){
+        tail_diff_old = -tail_diff_old;
+        duty_coeff = 0.4 + 0.6*(tail_diff_old * 0.0037037);
+        tail_diff_old = -tail_diff_old;    
+    } else if (tail_diff_old == 0) {
+        duty_coeff = 0;
+    } else { 
+        duty_coeff = 0.4 + 0.6*(tail_diff_old * 0.0037037);
+    }
+
+    duty_msg = round(duty_coeff*1000);
 
 #ifdef VERBOSE_ON_HBRIDGE
     if(hbridge_verbose_clk_div++ >= HBRIDGE_VERBOSE_CLK_DIV){
 
         if (tail_diff > TAIL_TOLERANCE){
-            VERBOSE_MSG_HBRIDGE(usart_send_string("BORESTE\t"));
+            VERBOSE_MSG_HBRIDGE(usart_send_string("BORESTE \t"));
         } else if (tail_diff < -TAIL_TOLERANCE) { 
             VERBOSE_MSG_HBRIDGE(usart_send_string("BOMBORDO\t"));
         } else {
-            VERBOSE_MSG_HBRIDGE(usart_send_string("Parado\t"));
+            VERBOSE_MSG_HBRIDGE(usart_send_string("Parado  \t"));
         }
         VERBOSE_MSG_HBRIDGE(usart_send_string("Side Switching: "));
         VERBOSE_MSG_HBRIDGE(usart_send_uint8(hbridge_flags.all__));
 
         VERBOSE_MSG_HBRIDGE(usart_send_string("\tDuty coeff: "));
-        VERBOSE_MSG_HBRIDGE(usart_send_uint32(duty_coeff));
+        VERBOSE_MSG_HBRIDGE(usart_send_int16(duty_msg));
         
         VERBOSE_MSG_HBRIDGE(usart_send_string("\t Taildiff Old: "));
-        VERBOSE_MSG_HBRIDGE(usart_send_uint16(tail_diff_old));
+        VERBOSE_MSG_HBRIDGE(usart_send_int16(tail_diff_old));
 
         VERBOSE_MSG_HBRIDGE(usart_send_char('\n'));
         hbridge_verbose_clk_div = 0;
@@ -175,12 +185,18 @@ void hbridge_task(void)
             hbridge_set_pwm(HBRIDGE_SIDE_B, duty_coeff);
             hbridge_flags.side_B_switch_on = 1;
             hbridge_flags.side_A_switch_on = 0;
+            
         }
         else if(tail_diff_old > tail_diff){
            // clr_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN);
             usart_send_string("TURNING TO THE WRONG SIDE!\n");
             error_flags.wrong_side_turn = 1;
         }
+        
+        if (tail_diff_old < tail_diff){
+            tail_diff_old = tail_diff;
+        }
+
     } else if (tail_diff < -TAIL_TOLERANCE){
         if (measurements.position_avg > 0) {
             hbridge_set_pwm(HBRIDGE_SIDE_A, duty_coeff);
@@ -193,6 +209,11 @@ void hbridge_task(void)
             usart_send_string("TURNING TO THE WRONG SIDE!\n");
             error_flags.wrong_side_turn = 1;
         }
+
+        if (tail_diff_old > tail_diff){
+            tail_diff_old = tail_diff;
+        }
+
     } else {
         tail_diff_old = 0;
         hbridge_set_pwm(HBRIDGE_SIDE_A, 0);
@@ -200,11 +221,7 @@ void hbridge_task(void)
         hbridge_flags.side_B_switch_on = 0;
         hbridge_flags.side_A_switch_on = 0;
     }
-    
-    tail_diff_old = tail_diff;
-    if (tail_diff_old < tail_diff){
-        tail_diff_old = tail_diff;
-    }
+
 }
 
 
