@@ -175,22 +175,26 @@ void hbridge_task(void)
     }
 #endif
 
-    // Check if tail_diff is above tolarance in both directions
+    // Check if tail_diff is above tolarance in each direction
+    // Check if close to rotation limit
+    //       if so, if tail_diff is not decreasing after bridge pwm activated, wrong side turn is detected 
     // Check if rotation limit has been achieved
     // Activate bridge pwm accordingly to tail_diff
-    // if tail_diff is not decresing after bridge pwm activated, wrong side turn is detected 
     if (tail_diff > TAIL_TOLERANCE){
-        if (measurements.position_avg < 270) {
+        if (measurements.position_avg > 268){
+            if(tail_diff_old > tail_diff){
+                // clr_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN);
+                usart_send_string("TURNING TO THE WRONG SIDE!\n");
+                error_flags.wrong_side_turn = 1;
+            }
+        }
+
+        if (measurements.position_avg < 270){
             hbridge_set_pwm(HBRIDGE_SIDE_A, 0);
             hbridge_set_pwm(HBRIDGE_SIDE_B, duty_coeff);
             hbridge_flags.side_B_switch_on = 1;
             hbridge_flags.side_A_switch_on = 0;
             
-        }
-        else if(tail_diff_old > tail_diff){
-           // clr_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN);
-            usart_send_string("TURNING TO THE WRONG SIDE!\n");
-            error_flags.wrong_side_turn = 1;
         }
         
         if (tail_diff_old < tail_diff){
@@ -198,16 +202,19 @@ void hbridge_task(void)
         }
 
     } else if (tail_diff < -TAIL_TOLERANCE){
+        if (measurements.position_avg < 2) {
+            if(tail_diff_old < tail_diff) {
+                // clr_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN);
+                usart_send_string("TURNING TO THE WRONG SIDE!\n");
+                error_flags.wrong_side_turn = 1;
+            }
+        }
+
         if (measurements.position_avg > 0) {
             hbridge_set_pwm(HBRIDGE_SIDE_A, duty_coeff);
             hbridge_set_pwm(HBRIDGE_SIDE_B, 0);
             hbridge_flags.side_B_switch_on = 0;
             hbridge_flags.side_A_switch_on = 1;
-        }
-        else if(tail_diff_old < tail_diff){
-            // clr_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN);
-            usart_send_string("TURNING TO THE WRONG SIDE!\n");
-            error_flags.wrong_side_turn = 1;
         }
 
         if (tail_diff_old > tail_diff){
