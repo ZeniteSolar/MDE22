@@ -42,4 +42,11 @@ void check_can(void);
 extern uint32_t can_app_send_state_clk_div;
 extern uint32_t can_app_send_adc_clk_div;
 
+typedef union can_app_flags{
+    struct {
+        uint8_t     no_mic_response    :1;
+    };
+    uint8_t     all__;
+} can_app_flags_t;
+
 #endif /* ifndef CAN_APP_H */
