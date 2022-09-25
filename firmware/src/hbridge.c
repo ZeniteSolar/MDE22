@@ -9,6 +9,7 @@ volatile uint32_t hbridge_verbose_clk_div;
 volatile uint16_t str_whl_position;
 volatile uint8_t hbridge_led_clk_div;
 volatile hbridge_flags_t hbridge_flags;
+volatile can_app_flags_t can_app_flags;
 
 void hbridge_init(void)
 {   
@@ -17,7 +18,7 @@ void hbridge_init(void)
             | (0<< WGM01) | (1<<WGM00);              
 
     // fOCnxPCPWM = (fclk_IO)/(N x 510), N being the prescaler
-    // Prescaler 010 = 8 -> 3921.5 Hz  
+    // Prescaler 010 = 8 -> 3921.5 Hz               // Used IC operates up to 25kHz, this timer presents minimum prescaler of either 1 or 8 
     TCCR0B = (0<<WGM02) | (0<<CS02) | (1<<CS01) | (0<<CS00);                           
 
     // Sets the OC0A and OC0B duty cycle, remenber Timer/Counter0 is 8bits
@@ -104,11 +105,17 @@ void hbridge_task(void)
         set_state_error();
     }
 
-    // Safeguard for steering wheel angle
-    // force_center flag is set to 0 on check_can by receiving MIC19 message
-    if(str_whl_position > 270) {
+    // Safeguard for no_mic_response and steering wheel angle
+    // If mic responds and str_whl_angle < 270, hbridge if fine
+    if(can_app_flags.no_mic_response == 1) {
         hbridge_flags.force_center = 1;
-        usart_send_string("Invalid str wheel angle, value > 270.\n");
+    } else {
+        if(str_whl_position > 270) {
+            hbridge_flags.force_center = 1;
+            usart_send_string("Invalid str wheel angle, value > 270.\n");
+        } else {
+            hbridge_flags.force_center = 0;
+        }
     }
 
     // Enable for operation
@@ -129,12 +136,12 @@ void hbridge_task(void)
     // Set duty cycle coefficient
     if(tail_diff_old < 0){
         tail_diff_old = -tail_diff_old;
-        duty_coeff = 0.4 + 0.6*(tail_diff_old * 0.0037037);
+        duty_coeff = 0.2 + 0.8*(tail_diff_old * 0.0037037);
         tail_diff_old = -tail_diff_old;    
     } else if (tail_diff_old == 0) {
         duty_coeff = 0;
     } else { 
-        duty_coeff = 0.4 + 0.6*(tail_diff_old * 0.0037037);
+        duty_coeff = 0.4 + 0.3*(tail_diff_old * 0.0037037); // 270
     }
 
     duty_msg = round(duty_coeff*1000);
