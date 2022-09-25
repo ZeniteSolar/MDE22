@@ -22,7 +22,7 @@
 #define VERBOSE_ON_ADC
 #define VERBOSE_ON_INIT
 #define VERBOSE_ON_ERROR
-#define VERBOSE_ON_HBRIDGE
+//#define VERBOSE_ON_HBRIDGE
 
 // MODULES ACTIVATION
 #define USART_ON
@@ -57,9 +57,9 @@
 #define HBRIDGE_PWM_PIN1                    PD6
 #define HBRIDGE_PWM_PIN2                    PD5   
 #define HBRIDGE_ENABLE_PIN                  PD2
-#define HBRIDGE_VERBOSE_CLK_DIV             50
+#define HBRIDGE_VERBOSE_CLK_DIV             10
 #define HBRIDG_SIDE_SWITCH_CLK_DIV          3000
-#define TAIL_TOLERANCE                  2
+#define TAIL_TOLERANCE                  7
 #endif // HBRIDGE_ON
 
 //#### LED PINS ####
