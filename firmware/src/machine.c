@@ -173,7 +173,7 @@ inline void task_running(void)
 {
 #ifdef USART_ON
 
-    if(led_clk_div++ >= 50){
+    if(led_clk_div++ >= 10){
         
         usart_send_string("Tail Posit: ");
         usart_send_uint16(measurements.position_avg);
