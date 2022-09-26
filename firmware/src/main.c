@@ -43,6 +43,7 @@ void init(void)
         VERBOSE_MSG_INIT(usart_send_string(" OK!\n"));
     #else
         VERBOSE_MSG_INIT(usart_send_string("CAN... OFF!\n"));
+        clr_bit(LED2_PORT, LED2);
     #endif
 
     #ifdef WATCHDOG_ON
