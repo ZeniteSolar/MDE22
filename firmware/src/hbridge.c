@@ -4,10 +4,10 @@ volatile float duty_coeff;
 volatile int tail_diff;
 volatile int tail_diff_old;
 volatile int duty_msg;
-volatile uint32_t hbridge_testing_clk_div;
 volatile uint32_t hbridge_verbose_clk_div;
 volatile uint16_t str_whl_position;
 volatile uint8_t hbridge_led_clk_div;
+volatile uint8_t hbridge_led_clk_var;
 volatile hbridge_flags_t hbridge_flags;
 volatile can_app_flags_t can_app_flags;
 
@@ -105,9 +105,9 @@ void hbridge_task(void)
         set_state_error();
     }
 
-    // Safeguard for no_mic_response and steering wheel angle
+    // Safeguard for no_mic and steering wheel angle
     // If mic responds and str_whl_angle < 270, hbridge if fine
-    if(can_app_flags.no_mic_response == 1) {
+    if(can_app_flags.no_mic == 1) {
         hbridge_flags.force_center = 1;
     } else {
         if(str_whl_position > 270) {
@@ -135,9 +135,7 @@ void hbridge_task(void)
     
     // Set duty cycle coefficient
     if(tail_diff_old < 0){
-        tail_diff_old = -tail_diff_old;
-        duty_coeff = 0.2 + 0.8*(tail_diff_old * 0.0037037);
-        tail_diff_old = -tail_diff_old;    
+        duty_coeff = 0.4 + 0.3*(tail_diff_old * -0.0037037);
     } else if (tail_diff_old == 0) {
         duty_coeff = 0;
     } else { 
@@ -150,11 +148,11 @@ void hbridge_task(void)
     if(hbridge_verbose_clk_div++ >= HBRIDGE_VERBOSE_CLK_DIV){
 
         if (tail_diff > TAIL_TOLERANCE){
-            VERBOSE_MSG_HBRIDGE(usart_send_string("BORESTE \t"));
+            VERBOSE_MSG_HBRIDGE(usart_send_string("BORESTE \t\t"));
         } else if (tail_diff < -TAIL_TOLERANCE) { 
-            VERBOSE_MSG_HBRIDGE(usart_send_string("BOMBORDO\t"));
+            VERBOSE_MSG_HBRIDGE(usart_send_string("BOMBORDO\t\t"));
         } else {
-            VERBOSE_MSG_HBRIDGE(usart_send_string("Parado  \t"));
+            VERBOSE_MSG_HBRIDGE(usart_send_string("Parado  \t\t"));
         }
         VERBOSE_MSG_HBRIDGE(usart_send_string("Side Switching: "));
         VERBOSE_MSG_HBRIDGE(usart_send_uint8(hbridge_flags.all__));
@@ -171,14 +169,16 @@ void hbridge_task(void)
 #endif
 
 #ifdef LED_ON
-    if (hbridge_led_clk_div++ >= 3){
+    // Led 1 displays whether force_center is set (slow means set)    
+    if (hbridge_flags.force_center == 1){
+        hbridge_led_clk_var = 60;
+    } else {
+        hbridge_led_clk_var = 15;
+    }
+    
+    if (hbridge_led_clk_div++ >= hbridge_led_clk_var){
         cpl_bit(LED1_PORT, LED1);
         hbridge_led_clk_div = 0;
-        /*usart_send_char('\n');
-        usart_send_uint16(tail_diff_old);
-        usart_send_char('\t');
-        usart_send_uint16(tail_diff);
-        usart_send_char('\n');*/
     }
 #endif
 

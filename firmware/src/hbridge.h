@@ -45,6 +45,7 @@ extern volatile uint32_t hbridge_verbose_clk_div;
 extern volatile uint32_t hbridge_side_switch_clk_div;
 extern volatile uint16_t str_whl_position;
 extern volatile uint8_t hbridge_led_clk_div;
+extern volatile uint8_t hbridge_led_clk_var;
 
 //Equation
 void hbridge_init(void);
