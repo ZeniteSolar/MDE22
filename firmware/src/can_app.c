@@ -128,7 +128,7 @@ inline void can_app_extractor_mic19_mde(can_t *msg)
     if(msg->data[CAN_MSG_MIC19_MDE_SIGNATURE_BYTE] == CAN_SIGNATURE_MIC19){
         HIGH_LOW(str_whl_position, msg->data[CAN_MSG_MIC19_MDE_POSITION_H_BYTE], msg->data[CAN_MSG_MIC19_MDE_POSITION_L_BYTE]);
         can_app_checks_without_mic19_msg = 0;
-        can_app_flags.no_mic_response = 0;
+        can_app_flags.no_mic = 0;
     } else {
         // ERROR!!
     }
@@ -183,7 +183,7 @@ inline void check_can(void)
         usart_send_string("Too many cycles without MIC19 messages.\n");
 #endif
         can_app_checks_without_mic19_msg = 0;
-        can_app_flags.no_mic_response = 1;
+        can_app_flags.no_mic = 1;
     }
     
     if(can_check_message()){

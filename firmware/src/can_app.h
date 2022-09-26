@@ -44,7 +44,7 @@ extern uint32_t can_app_send_adc_clk_div;
 
 typedef union can_app_flags{
     struct {
-        uint8_t     no_mic_response    :1;
+        uint8_t     no_mic    :1;   //ToDo?: expand flags for no_mic_mde, no_mic_state
     };
     uint8_t     all__;
 } can_app_flags_t;
