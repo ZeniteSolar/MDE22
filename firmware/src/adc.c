@@ -84,7 +84,7 @@ ISR(ADC_vect)
 {
     cli(); 
     static const float batvoltage_coeff =   0.0182138188113f;
-    static const float position_coeff =     0.0030405405405f; //;
+    static const float position_coeff =     0.0028828828828f //0.0030405405405f; //;
     static const float batcurrent_coeff =   0.0236309077269f; // 0,63A/2666 
         // VIS = (IL / 8,5A)V (R = 1kOhm) <>  {[0,111V/sqrt(2)] / 0,63A}^(-1) = kIS = 8,02 A
 
