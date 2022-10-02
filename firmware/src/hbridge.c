@@ -114,7 +114,7 @@ void hbridge_task(void)
     if(can_app_flags.no_mic == 1) {
         hbridge_flags.force_center = 1;
     } else {
-        if(str_whl_position > 270) {
+        if(str_whl_position > 256) {
             hbridge_flags.force_center = 1;
             usart_send_string("Invalid str wheel angle, value > 270.\n");
         } else {
@@ -139,11 +139,11 @@ void hbridge_task(void)
     
     // Set duty cycle coefficient
     if(tail_diff_old < 0){
-        duty_coeff = 0.2 + 0.3*(tail_diff_old * -0.0037037);
+        duty_coeff = 0.2 + 0.3*(tail_diff_old * -0.00390625);
     } else if (tail_diff_old == 0) {
         duty_coeff = 0;
     } else { 
-        duty_coeff = 0.2 + 0.3*(tail_diff_old * 0.0037037); // 270
+        duty_coeff = 0.2 + 0.3*(tail_diff_old * 0.00390625); // 270
     }
 
     duty_msg = round(duty_coeff*1000);
@@ -175,7 +175,7 @@ void hbridge_task(void)
 #ifdef LED_ON
     // Led 1 displays whether force_center is set (slow means set)    
     if (hbridge_flags.force_center == 1){
-        hbridge_led_clk_var = 60;
+        hbridge_led_clk_var = 90;
     } else {
         hbridge_led_clk_var = 15;
     }
@@ -200,7 +200,7 @@ void hbridge_task(void)
             }
         }*/
 
-        if (measurements.position_avg < 260){
+        if (measurements.position_avg < 246){
             hbridge_set_pwm(HBRIDGE_SIDE_A, 0);
             hbridge_set_pwm(HBRIDGE_SIDE_B, duty_coeff);
             hbridge_flags.side_B_switch_on = 1;
