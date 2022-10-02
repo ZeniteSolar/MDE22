@@ -99,10 +99,14 @@ uint8_t hbridge_set_pwm(uint8_t side, float duty)
  */
 void hbridge_task(void)
 {
+    usart_send_char ('\n');
+    usart_send_uint16(measurements.position_avg);
+    usart_send_char ('\n');
+    
     // Check for errors 
     if (measurements.position_avg > 270){
-        error_flags.invalid_tail = 1;
-        set_state_error();
+        //error_flags.invalid_tail = 1;
+        //set_state_error();
     }
 
     // Safeguard for no_mic and steering wheel angle
@@ -135,11 +139,11 @@ void hbridge_task(void)
     
     // Set duty cycle coefficient
     if(tail_diff_old < 0){
-        duty_coeff = 0.4 + 0.3*(tail_diff_old * -0.0037037);
+        duty_coeff = 0.2 + 0.3*(tail_diff_old * -0.0037037);
     } else if (tail_diff_old == 0) {
         duty_coeff = 0;
     } else { 
-        duty_coeff = 0.4 + 0.3*(tail_diff_old * 0.0037037); // 270
+        duty_coeff = 0.2 + 0.3*(tail_diff_old * 0.0037037); // 270
     }
 
     duty_msg = round(duty_coeff*1000);
@@ -188,15 +192,15 @@ void hbridge_task(void)
     // Check if rotation limit has been achieved
     // Activate bridge pwm accordingly to tail_diff
     if (tail_diff > TAIL_TOLERANCE){
-        if (measurements.position_avg > 268){
+        /*if (measurements.position_avg > 270){
             if(tail_diff_old > tail_diff){
                 // clr_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN);
                 usart_send_string("TURNING TO THE WRONG SIDE!\n");
                 error_flags.wrong_side_turn = 1;
             }
-        }
+        }*/
 
-        if (measurements.position_avg < 270){
+        if (measurements.position_avg < 260){
             hbridge_set_pwm(HBRIDGE_SIDE_A, 0);
             hbridge_set_pwm(HBRIDGE_SIDE_B, duty_coeff);
             hbridge_flags.side_B_switch_on = 1;
@@ -209,15 +213,15 @@ void hbridge_task(void)
         }
 
     } else if (tail_diff < -TAIL_TOLERANCE){
-        if (measurements.position_avg < 2) {
+        /*if (measurements.position_avg < 2) {
             if(tail_diff_old < tail_diff) {
                 // clr_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN);
                 usart_send_string("TURNING TO THE WRONG SIDE!\n");
                 error_flags.wrong_side_turn = 1;
             }
-        }
+        }*/
 
-        if (measurements.position_avg > 0) {
+        if (measurements.position_avg > 10) {
             hbridge_set_pwm(HBRIDGE_SIDE_A, duty_coeff);
             hbridge_set_pwm(HBRIDGE_SIDE_B, 0);
             hbridge_flags.side_B_switch_on = 0;
