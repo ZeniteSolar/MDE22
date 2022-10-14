@@ -186,7 +186,7 @@ inline void task_running(void)
         usart_send_char('\t');
         usart_send_string("BatCurr: ");
         usart_send_uint16(measurements.batcurrent_avg);
-        usart_send_char('\t');
+        usart_send_char('\n');
 
         led_clk_div = 0;
     }

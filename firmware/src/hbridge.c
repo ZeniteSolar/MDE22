@@ -99,9 +99,6 @@ uint8_t hbridge_set_pwm(uint8_t side, float duty)
  */
 void hbridge_task(void)
 {
-    usart_send_char ('\n');
-    usart_send_uint16(measurements.position_avg);
-    usart_send_char ('\n');
     
     // Check for errors 
     if (measurements.position_avg > 270){
@@ -114,8 +111,8 @@ void hbridge_task(void)
     if(can_app_flags.no_mic == 1) {
         hbridge_flags.force_center = 1;
     } else {
-        if(str_whl_position > 256) {
-            hbridge_flags.force_center = 1;
+        if(str_whl_position > 255) {
+            //hbridge_flags.force_center = 1;
             usart_send_string("Invalid str wheel angle, value > 270.\n");
         } else {
             hbridge_flags.force_center = 0;
@@ -130,8 +127,7 @@ void hbridge_task(void)
 
 // Operation
     if(hbridge_flags.force_center == 1){
-        usart_send_string("Tail shall be centered.\n");
-        str_whl_position = 165;
+        str_whl_position = 158;
     }
 
     // Determine potentiometer sensors difference: pilot - tail
@@ -139,11 +135,11 @@ void hbridge_task(void)
     
     // Set duty cycle coefficient
     if(tail_diff_old < 0){
-        duty_coeff = 0.2 + 0.3*(tail_diff_old * -0.00390625);
+        duty_coeff = 0.5 + 0.5*(tail_diff_old * -0.00390625);
     } else if (tail_diff_old == 0) {
         duty_coeff = 0;
     } else { 
-        duty_coeff = 0.2 + 0.3*(tail_diff_old * 0.00390625); // 270
+        duty_coeff = 0.5 + 0.5*(tail_diff_old * 0.00390625); // 270
     }
 
     duty_msg = round(duty_coeff*1000);
@@ -167,6 +163,10 @@ void hbridge_task(void)
         VERBOSE_MSG_HBRIDGE(usart_send_string("\t Taildiff Old: "));
         VERBOSE_MSG_HBRIDGE(usart_send_int16(tail_diff_old));
 
+        if (hbridge_flags.force_center == 1) {
+        VERBOSE_MSG_HBRIDGE(usart_send_char('\t'));
+        VERBOSE_MSG_HBRIDGE(usart_send_string("Tail shall be centered.\n"));
+        }
         VERBOSE_MSG_HBRIDGE(usart_send_char('\n'));
         hbridge_verbose_clk_div = 0;
     }
