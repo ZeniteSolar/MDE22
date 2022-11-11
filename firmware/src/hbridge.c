@@ -176,14 +176,14 @@ void hbridge_task(void)
 }
 
 //TODO: Calculate constants
-#define PERIOD 0.0009960853844391542f
-#define D_MIN -0.3
-#define D_MAX 0.3
+#define PERIOD 0.0019439999999999998
+
+#define D_MAX 100
 
 float PI(float r, float y){
     // PI CONFIGURATIONS:
-    const float Kp = 0.001;         // analog series proportional gain
-    const float Ti = 0.001;         // analog series integration period
+    const float Kp = 2.5;         // analog series proportional gain
+    const float Ti = 0.5;         // analog series integration period
     const float Ts = PERIOD;        // digital sampling period
 
     // INTERNAL CONSTANTS COMPUTATION:
@@ -203,19 +203,56 @@ float PI(float r, float y){
     u += + a1*e1 + a0*e0;
 
     // Anti windup
-    if(u < D_MIN)           u = D_MIN;
+    if(u < -D_MAX)           u = -D_MAX;
     else if(u > D_MAX)      u = D_MAX;
 
     return u;
 }
 
+#define STR_MAX_ANGLE 100.0f
+#define STR_MIN_ANGLE -100.0f
+#define D_MIN 0.20f
+
 void hbridge_control(float position)
 {
     float dt;
-    dt = PI(str_whl_position, position);
+    float position_setpoint = str_whl_position -130;
+    position -= 130;
 
-    hbridge_set_pwm(HBRIDGE_SIDE_A, dt < 0 ? dt : 0);
-    hbridge_set_pwm(HBRIDGE_SIDE_B, dt > 0 ? dt : 0);
+    if (position_setpoint > STR_MAX_ANGLE) position_setpoint = STR_MAX_ANGLE;
+    if (position_setpoint < STR_MIN_ANGLE) position_setpoint = STR_MIN_ANGLE;
+
+    dt = PI(position_setpoint, position);
+    dt = dt/100;
+    static uint16_t send_clk;
+
+    if (++send_clk >= 50){
+        send_clk = 0;
+        
+        usart_send_float(position_setpoint);
+        usart_send_string(",");
+        usart_send_float(position);
+        usart_send_string(",");
+        usart_send_float(dt*100);
+        usart_send_char(',');
+        usart_send_float(batvoltage);
+        usart_send_char(',');
+        usart_send_float(batcurrent);
+        usart_send_char('\n');
+    }
+
+    if (fabs(dt) < D_MIN)
+        dt = 0;
+
+    if (dt < 0){
+        hbridge_set_pwm(HBRIDGE_SIDE_A, -dt);
+        hbridge_set_pwm(HBRIDGE_SIDE_B, 0);   
+    } else{
+        hbridge_set_pwm(HBRIDGE_SIDE_A, 0);
+        hbridge_set_pwm(HBRIDGE_SIDE_B, dt);
+    }
+
+
 }
 
 EMPTY_INTERRUPT(TIMER0_COMPA_vect);

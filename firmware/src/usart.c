@@ -224,3 +224,22 @@ inline void usart_init(uint16_t ubrr, uint8_t rx, uint8_t tx)
     UCSR0B = ((rx&1)<<RXEN0) | ((tx&1)<<TXEN0);
 }
 
+
+/**
+ * @brief sends a float number in ascii trough serial.
+ */
+inline void usart_send_float(float num)
+{
+    #define LEN     7               // length of the string w/ sign, dot ('.') and null terminator
+    #define PREC    3               // precision: digits before dot. 
+
+    char str[LEN];
+
+    dtostrf(num, LEN, PREC, str);
+
+    usart_send_string(str);
+    
+    #undef LEN
+    #undef PREC
+}
+

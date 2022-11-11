@@ -173,20 +173,20 @@ inline void task_running(void)
 {
 #ifdef USART_ON
 
-    if(led_clk_div++ >= 10){
+    if(led_clk_div++ >= 30){
         
-        usart_send_string("Tail Posit: ");
-        usart_send_uint16(measurements.position_avg);
-        usart_send_char('\t');
-        usart_send_string("Pilot Posit: ");
-        usart_send_uint16(str_whl_position);
-        usart_send_char('\t');
-        usart_send_string("BatV: ");
-        usart_send_uint16(measurements.batvoltage_avg);
-        usart_send_char('\t');
-        usart_send_string("BatCurr: ");
-        usart_send_uint16(measurements.batcurrent_avg);
-        usart_send_char('\n');
+        // usart_send_string("Tail Posit: ");
+        // usart_send_uint16(measurements.position_avg);
+        // usart_send_char('\t');
+        // usart_send_string("Pilot Posit: ");
+        // usart_send_uint16(str_whl_position);
+        // usart_send_char('\t');
+        // usart_send_string("BatV: ");
+        // usart_send_uint16(measurements.batvoltage_avg);
+        // usart_send_char('\t');
+        // usart_send_string("BatCurr: ");
+        // usart_send_uint16(measurements.batcurrent_avg);
+        // usart_send_char('\n');
 
         led_clk_div = 0;
     }
