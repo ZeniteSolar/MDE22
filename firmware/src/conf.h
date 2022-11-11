@@ -59,7 +59,8 @@
 #define HBRIDGE_ENABLE_PIN                  PD2
 #define HBRIDGE_VERBOSE_CLK_DIV             50
 #define HBRIDG_SIDE_SWITCH_CLK_DIV          3000
-#define TAIL_TOLERANCE                  7
+#define TAIL_TOLERANCE                      7
+#define H_MAX_RANGE                         1/255
 #endif // HBRIDGE_ON
 
 //#### LED PINS ####
