@@ -140,7 +140,7 @@ inline void print_error_flags(void)
 inline void task_initializing(void)
 {
 #ifdef LED_ON
-    set_bit(LED1_PORT, LED1);
+    set_bit(LED2_PORT, LED2);
 #endif
 
     set_machine_initial_state();
@@ -156,7 +156,7 @@ inline void task_idle(void)
 {
 #ifdef LED_ON
     if(led_clk_div++ >= 30){
-        cpl_bit(LED1_PORT, LED1);
+        cpl_bit(LED2_PORT, LED2);
         led_clk_div = 0;
     }
 #endif
@@ -201,8 +201,8 @@ inline void task_error(void)
 {
 #ifdef LED_ON
     if(led_clk_div++ >= 5){
-        cpl_bit(LED1_PORT, LED1);
-        set_bit(LED1_PORT, LED1);
+        cpl_bit(LED2_PORT, LED2);
+        set_bit(LED2_PORT, LED2);
         led_clk_div = 0;
     }
 #endif
