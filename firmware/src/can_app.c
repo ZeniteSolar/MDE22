@@ -72,6 +72,7 @@ inline void can_app_send_state(void)
 #ifdef VERBOSE_MSG_CAN_APP
     VERBOSE_MSG_CAN_APP(can_app_print_msg(&msg));
 #endif
+
 }
 
 inline void can_app_send_steeringbat_measurements(void)
@@ -96,6 +97,10 @@ inline void can_app_send_steeringbat_measurements(void)
     can_send_message(&msg);
 #ifdef VERBOSE_MSG_CAN_APP
     VERBOSE_MSG_CAN_APP(can_app_print_msg(&msg));
+#endif
+
+#ifdef LED_ON
+    cpl_bit(LED2_PORT, LED2);
 #endif
 }
 
