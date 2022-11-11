@@ -350,7 +350,7 @@ inline void machine_run(void)
                 break;
             case STATE_ERROR:
                 task_error();
-
+                break;
             case STATE_RESET:
             default:
                 task_reset();

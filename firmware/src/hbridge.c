@@ -5,11 +5,11 @@ volatile int tail_diff;
 volatile int tail_diff_old;
 volatile int duty_msg;
 volatile uint32_t hbridge_verbose_clk_div;
-volatile uint8_t str_whl_position;
 volatile uint8_t hbridge_led_clk_div;
 volatile uint8_t hbridge_led_clk_var;
 volatile hbridge_flags_t hbridge_flags;
-volatile can_app_flags_t can_app_flags;
+
+float PI(float r, float y);
 
 void hbridge_init(void)
 {   
@@ -130,19 +130,6 @@ void hbridge_task(void)
         str_whl_position = 158;
     }
 
-    // Determine potentiometer sensors difference: pilot - tail
-    tail_diff = str_whl_position - measurements.position_avg;
-
-    // Set duty cycle coefficient
-    if(tail_diff_old < 0){
-        duty_coeff = 0.5 + 0.5*(tail_diff_old * -H_MAX_RANGE);
-    } else if (tail_diff_old == 0) {
-        duty_coeff = 0;
-    } else { 
-        duty_coeff = 0.5 + 0.5*(tail_diff_old * H_MAX_RANGE);
-    }
-
-    duty_msg = round(duty_coeff*1000);
 
 #ifdef VERBOSE_ON_HBRIDGE
     if(hbridge_verbose_clk_div++ >= HBRIDGE_VERBOSE_CLK_DIV){
@@ -186,63 +173,50 @@ void hbridge_task(void)
     }
 #endif
 
-    // Check if tail_diff is above tolarance in each direction
-    // **DISABLED** Check if close to rotation limit
-    //       **DISABLED** if so, if tail_diff is not decreasing after bridge pwm activated, wrong side turn is detected 
-    // Check if rotation limit has been achieved
-    // Activate bridge pwm accordingly to tail_diff
-    if (tail_diff > TAIL_TOLERANCE){
-        /*if (measurements.position_avg > 270){
-            if(tail_diff_old > tail_diff){
-                // clr_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN);
-                usart_send_string("TURNING TO THE WRONG SIDE!\n");
-                error_flags.wrong_side_turn = 1;
-            }
-        }*/
-
-        if (measurements.position_avg < 246){
-            hbridge_set_pwm(HBRIDGE_SIDE_A, 0);
-            hbridge_set_pwm(HBRIDGE_SIDE_B, duty_coeff);
-            hbridge_flags.side_B_switch_on = 1;
-            hbridge_flags.side_A_switch_on = 0;
-            
-        }
-        
-        if (tail_diff_old < tail_diff){
-            tail_diff_old = tail_diff;
-        }
-
-    } else if (tail_diff < -TAIL_TOLERANCE){
-        /*if (measurements.position_avg < 2) {
-            if(tail_diff_old < tail_diff) {
-                // if (!(tail_diff_old > tail_diff)) would also signal stuck motor...
-                // clr_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN);
-                usart_send_string("TURNING TO THE WRONG SIDE!\n");
-                error_flags.wrong_side_turn = 1;
-            }
-        }*/
-
-        if (measurements.position_avg > 10) {
-            hbridge_set_pwm(HBRIDGE_SIDE_A, duty_coeff);
-            hbridge_set_pwm(HBRIDGE_SIDE_B, 0);
-            hbridge_flags.side_B_switch_on = 0;
-            hbridge_flags.side_A_switch_on = 1;
-        }
-
-        if (tail_diff_old > tail_diff){
-            tail_diff_old = tail_diff;
-        }
-
-    } else {
-        tail_diff_old = 0;
-        hbridge_set_pwm(HBRIDGE_SIDE_A, 0);
-        hbridge_set_pwm(HBRIDGE_SIDE_B, 0);
-        hbridge_flags.side_B_switch_on = 0;
-        hbridge_flags.side_A_switch_on = 0;
-    }
-
 }
 
+//TODO: Calculate constants
+#define PERIOD 0.0009960853844391542f
+#define D_MIN -0.3
+#define D_MAX 0.3
+
+float PI(float r, float y){
+    // PI CONFIGURATIONS:
+    const float Kp = 0.001;         // analog series proportional gain
+    const float Ti = 0.001;         // analog series integration period
+    const float Ts = PERIOD;        // digital sampling period
+
+    // INTERNAL CONSTANTS COMPUTATION:
+    const float a0 = -Kp;           // IIR coefficient for old sample
+    const float a1 = Kp*(1+Ts/Ti);  // IIR coefficient for new sample
+
+    // CONTROLLER STATIC VARIABLES
+    static float e0 = 0;            // old error
+    static float e1 = 0;            // new error
+    static float u = 0;             // control action
+
+    // Compute error:
+    e0 = e1;
+    e1 = r -y;
+
+    // Compute control action:
+    u += + a1*e1 + a0*e0;
+
+    // Anti windup
+    if(u < D_MIN)           u = D_MIN;
+    else if(u > D_MAX)      u = D_MAX;
+
+    return u;
+}
+
+void hbridge_control(float position)
+{
+    float dt;
+    dt = PI(str_whl_position, position);
+
+    hbridge_set_pwm(HBRIDGE_SIDE_A, dt < 0 ? dt : 0);
+    hbridge_set_pwm(HBRIDGE_SIDE_B, dt > 0 ? dt : 0);
+}
 
 EMPTY_INTERRUPT(TIMER0_COMPA_vect);
 EMPTY_INTERRUPT(TIMER0_COMPB_vect);

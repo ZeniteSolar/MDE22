@@ -6,7 +6,7 @@ uint16_t can_app_checks_without_mic19_msg;
 uint32_t can_app_send_state_clk_div;
 uint32_t can_app_send_adc_clk_div;
 volatile uint8_t str_whl_position;
-volatile hbridge_flags_t hbridge_flags;
+
 
 /**
  * @brief Prints a can message via usart

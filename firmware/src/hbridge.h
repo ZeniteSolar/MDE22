@@ -37,21 +37,23 @@
 #include "conf.h"
 #include "machine.h"
 #include "usart.h"
+#include "can_app.h"
 
 extern volatile float duty_coeff;
 extern volatile int tail_diff;
 extern volatile int tail_diff_old;
 extern volatile uint32_t hbridge_verbose_clk_div;
 extern volatile uint32_t hbridge_side_switch_clk_div;
-extern volatile uint8_t str_whl_position;
 extern volatile uint8_t hbridge_led_clk_div;
 extern volatile uint8_t hbridge_led_clk_var;
+
 
 //Equation
 void hbridge_init(void);
 void hbridge_toggle_side(void);
 uint8_t hbridge_set_pwm(uint8_t side, float duty);
 void hbridge_task(void);
+void hbridge_control(float position);
 
 typedef union hbridge_flags{
     struct{

@@ -100,6 +100,7 @@ ISR(ADC_vect)
 
         case ADC2:                       
             position = adc * position_coeff;
+            hbridge_control(position);
             break;
 
         case ADC3:

@@ -115,6 +115,7 @@ extern volatile measurements_t measurements;
 extern volatile uint8_t machine_clk;
 extern volatile uint8_t machine_clk_divider;
 extern volatile uint8_t total_errors;           // Contagem de ERROS
+extern volatile uint8_t str_whl_position;
 
 // other variables
 extern volatile uint8_t led_clk_div;
