@@ -135,7 +135,7 @@ void hbridge_task(void)
 
     // Set duty cycle coefficient
     if(tail_diff_old < 0){
-        duty_coeff = 0.5 + 0.5*(tail_diff_old * H_MAX_RANGE);
+        duty_coeff = 0.5 + 0.5*(tail_diff_old * -H_MAX_RANGE);
     } else if (tail_diff_old == 0) {
         duty_coeff = 0;
     } else { 
