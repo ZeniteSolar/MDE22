@@ -83,8 +83,8 @@
 
 #ifdef CAN_ON
 #define SPI_ON
-#define CAN_APP_SEND_STATE_FREQ     40//36000     //<! state msg frequency in Hz
-#define CAN_APP_SEND_ADC_FREQ       4//6000      //<! adc msg frequency in Hz
+#define CAN_APP_SEND_STATE_FREQ     100//36000     //<! state msg frequency in Hz
+#define CAN_APP_SEND_ADC_FREQ       10//6000      //<! adc msg frequency in Hz
 
 // CANBUS DEFINITONS
 // ----------------------------------------------------------------------------
