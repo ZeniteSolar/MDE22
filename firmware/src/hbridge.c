@@ -132,7 +132,7 @@ void hbridge_task(void)
 
     // Determine potentiometer sensors difference: pilot - tail
     tail_diff = str_whl_position - measurements.position_avg;
-    
+
     // Set duty cycle coefficient
     if(tail_diff_old < 0){
         duty_coeff = 0.5 + 0.5*(tail_diff_old * -0.00390625);
@@ -173,7 +173,7 @@ void hbridge_task(void)
 #endif
 
 #ifdef LED_ON
-    // Led 1 displays whether force_center is set (slow means set)    
+    // Led 1 displays whether force_center is set (slow means that it's set)    
     if (hbridge_flags.force_center == 1){
         hbridge_led_clk_var = 90;
     } else {
@@ -187,8 +187,8 @@ void hbridge_task(void)
 #endif
 
     // Check if tail_diff is above tolarance in each direction
-    // Check if close to rotation limit
-    //       if so, if tail_diff is not decreasing after bridge pwm activated, wrong side turn is detected 
+    // **DISABLED** Check if close to rotation limit
+    //       **DISABLED** if so, if tail_diff is not decreasing after bridge pwm activated, wrong side turn is detected 
     // Check if rotation limit has been achieved
     // Activate bridge pwm accordingly to tail_diff
     if (tail_diff > TAIL_TOLERANCE){
@@ -215,6 +215,7 @@ void hbridge_task(void)
     } else if (tail_diff < -TAIL_TOLERANCE){
         /*if (measurements.position_avg < 2) {
             if(tail_diff_old < tail_diff) {
+                // if (!(tail_diff_old > tail_diff)) would also signal stuck motor...
                 // clr_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN);
                 usart_send_string("TURNING TO THE WRONG SIDE!\n");
                 error_flags.wrong_side_turn = 1;
