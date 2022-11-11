@@ -5,7 +5,7 @@ volatile int tail_diff;
 volatile int tail_diff_old;
 volatile int duty_msg;
 volatile uint32_t hbridge_verbose_clk_div;
-volatile uint16_t str_whl_position;
+volatile uint8_t str_whl_position;
 volatile uint8_t hbridge_led_clk_div;
 volatile uint8_t hbridge_led_clk_var;
 volatile hbridge_flags_t hbridge_flags;
@@ -101,7 +101,7 @@ void hbridge_task(void)
 {
     
     // Check for errors 
-    if (measurements.position_avg > 270){
+    if (measurements.position_avg > 254){
         //error_flags.invalid_tail = 1;
         //set_state_error();
     }
@@ -111,7 +111,7 @@ void hbridge_task(void)
     if(can_app_flags.no_mic == 1) {
         hbridge_flags.force_center = 1;
     } else {
-        if(str_whl_position > 255) {
+        if(str_whl_position > 254) {
             //hbridge_flags.force_center = 1;
             usart_send_string("Invalid str wheel angle, value > 270.\n");
         } else {
