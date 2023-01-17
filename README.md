@@ -1,4 +1,4 @@
-# Direção Elétrica para Embarcação Solar
+# Electric Steering for Solar Boat
 
 Instituto Federal de Educação, Ciência e Tecnologia de Santa Catarina - Campus Florianópolis
 
@@ -18,13 +18,13 @@ Student:
 
 # Summary
 
-1. [Introdução](#introdução)
-2. [Concepção](#concepção)
+1. [Introduction](#introduction)
+2. [Conception](#conception)
 3. [Design](#design)
-4. [Implementação](#implementação)
-5. [Operação](#operação)
-6. [Considerações Finais](#considerações)
-7. [Referências](#referências)
+4. [Implementation](#implementation)
+5. [Operation](#operation)
+6. [Considerations](#considerations)
+7. [References](#references)
 
 # Introduction
 
