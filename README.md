@@ -2,21 +2,21 @@
 
 Instituto Federal de Educação, Ciência e Tecnologia de Santa Catarina - Campus Florianópolis
 
-Departamento Acadêmico de Eletrônica 
+Electronics Academic Department
 
-Curso de Engenharia Eletrônica
+Degree in Electronics Engineering
 
-Unidade Curricular: Projeto Integrador III
+Course: Integrative Project III
 
-Professores:
+Professors:
 
-* Robinson Pizzio e Daniel Lohmann
+* Robinson Pizzio and Daniel Lohmann
 
-Aluno:
+Student:
 
 * Gabriel Ayres Rodrigues
 
-# Sumário
+# Summary
 
 1. [Introdução](#introdução)
 2. [Concepção](#concepção)
@@ -26,282 +26,292 @@ Aluno:
 6. [Considerações Finais](#considerações)
 7. [Referências](#referências)
 
-# Introdução
+# Introduction
 
-Esse módulo tem como objetivo controlar a direção da rabeta da embarcação Guarapuvu II, da equipe Zênite Solar do IFSC.
+This module aims to control the direction of the tail of the Guarapuvu II vessel, belonging to the IFSC Zênite Solar team.
 
-É inspirado pelo sistema atualmente implementado, desenvolvido por Cesar Dias Parente. Os arquivos do projeto podem ser encontrados [aqui](https://github.com/ZeniteSolar/MDE18/tree/main).
+It is inspired by the currently implemented system, developed by Cesar Dias Parente. The project files can be found [here](https://github.com/ZeniteSolar/MDE18/tree/main).
 
-A embarcação da equipe Zênite é operada em competições de barcos solares, onde são exigidas alta performance e robustez. A equipe obteve êxito em diversos anos de competição, a direção elétrica contribuindo para isso especialmente em provas de manobras como o Slalom (Ziguezague).
+The Zênite team vessel is operated in solar boat competitions, where high performance and robustness are required. The team has achieved success in several years of competition, the management eagerly looking forward to it in maneuvers such as the Slalom (Zigzag).
 
-O sistema eletrônico atual foi danificado após a competição em março de 2022, o que é um motivador para sua atualização. 
+The current electronic system was damaged after the competition in March 2022, which is a motivator for its upgrade.
 
-# Concepção
+# Conception
 
-Pensando em um sistema de direção, a escolha de utilizar uma direção elétrica pode trazer maior responsividade mesmo tendo uma fração do peso de um sistema mecânico. Além disso, sistemas mecânicos podem pedir esforço físco do motorista e uma necessidade maior de manutenção. Por essas razões a direção elétrica é vantajosa no sistema da embarcação.
+Thinking about a steering system, choosing to use an electric steering can bring greater responsiveness even though it has a fraction of the weight of a mechanical system. In addition, mechanical systems can require physical effort from the driver and a greater need for maintenance. For these reasons electric steering is advantageous in the vessel system.
 
-Abaixo está o diagrama representando um sistema de direção elétrica e suas partes. 
+Below is the diagram representing an electric steering system and its parts.
 ![Diagrama concepção](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/cb3b7e7deb8563f8dec3147824b006344d2aa883/Imagens/Diagrama%20de%20blocos%20da%20dire%C3%A7%C3%A3o%20el%C3%A9trica.PNG)
 
-Levando em contas os elementos acima, os seguintes problemas devem ser confrontados:
-- Sistemas eletrônicos em veículos devem possuir alta robustez devido às vibrações ao qual são expostos. No caso da embarcação em alta velocidade, especialmente para operações marítimas, os impactos são um grande problema (além da oxidação dos circuitos).
-- Como o veículo alvo é utilizado em competições cujo foco, e portanto o desafio, está na geração e consumo de energia, a solução deve ser tão eficiente quando possível para garantir o sucesso da equipe.
-- Um ambiente competitivo entre veículos requer alta performance dessa direção, não apenas para alcançar a vitória mas garantir a segurança de todos. Portanto, a funcionalidade deve ser atendida tão bem quanto os outros parâmetros.
+Taking into account the above elements, the following problems must be confronted:
+- Electronic systems in vehicles must have high robustness due to the vibrations to which they are exposed. In the case of high speed vessels, especially for marine operations, impacts are a big problem (besides oxidation of the circuits).
+- As the target vehicle is used in competitions whose focus, and therefore the challenge, is on energy generation and consumption, the solution must be as efficient as possible to ensure the success of the team.
+- A competitive environment between vehicles requires high performance from this driver, not only to achieve victory but to ensure everyone's safety. Therefore, the functionality must be met as well as the other parameters.
 
-Para implementar o todo é preciso definir os requisitos das partes, e as possíveis propostas para satisfazê-los.
+To implement the whole, it is necessary to define the requirements of the parts, and the possible proposals to satisfy them.
 
-* ## Sensores
+* ## Sensors
 
-Existem algumas opções para os sensors de rotação como: indutivo, óptico, sensor de efeito Hall, potênciometro de rotação, encoder. A alternativa mais econômica e de simples implementação é um potênciometro linear comum, atualmente utilizados no sistema da equipe Zênite.
+There are some options for rotation sensors such as: inductive, optical, Hall effect sensor, rotation potentiometer, encoder. The most economical and simple-to-implement alternative is a common linear potentiometer, currently used in the Zênite team system.
 
-Os tipos mais utilizados para sensores de direção (no sentido steering) no mercado são os seguintes: resistivos, encoders, e os de tecnologia GMR ([Giant magnetoresistance](https://en.wikipedia.org/wiki/Giant_magnetoresistance)). (veja as empresas consideradas em [Referências](#referências))
+The most used types for steering sensors on the market are the following: resistive, encoders, and those with GMR technology ([Giant magnetoresistance](https://en.wikipedia.org/wiki/Giant_magnetoresistance)). (see the companies considered in [References](#references))
 
-Sensores desse nível são tecnologia de ponta e portanto estão fora de questão, de qualquer forma vale observar que o sensor resistivo permanece sendo utilizado (até mesmo em veículos comuns, como o [sensor de posição borboleta](https://www.dpk.com.br/como-funciona-o-sensor-de-posicao-da-borboleta/)). 
+Sensors of this level are state-of-the-art and therefore out of the question, however it is worth noting that the resistive sensor is still being used (even in common vehicles, such as the [sensor de posição borboleta](https://www.dpk.com.br/como-funciona-o-sensor-de-posicao-da-borboleta/)).
 
-Para um contraste entre os líderes: sensores resistivos têm desvantagem pelo desgaste e possível mal contato, os GMR podem sofrer interferência em ambientes com forte campo magnético, e os encoders (por serem digitais) apresentam um desafio na troca Precisão X Complexidade (preço). 
+For a contrast between the leaders: resistive sensors have a disadvantage due to wear and possible poor contact, GMR can suffer interference in environments with a strong magnetic field, and encoders (because they are digital) present a challenge in the trade-off Precision X Complexity (price).
 
-Buscando o equilíbrio entre robustez, facilidade de implementação e preço, o sensor resistivo se destaca.
+Seeking the balance between robustness, ease of implementation and price, the resistive sensor stands out.
  
-* ## Controlador
+* ## Controller
 
-A rede CAN implementada elimina a necessidade de cabeamento, com o próprio sinal, entre popa e proa. Isso garante redução de ruído na leitura dos sensores e aproveita o cabeamento CAN ja existente, compactando o sistema. 
+The implemented CAN network eliminates the need for cabling, with its own signal, between the stern and the bow. This ensures noise reduction in sensor readings and takes advantage of existing CAN cabling, compacting the system.
 
-Além disso, a comunicação pela rede possibilita o envio de dados pelo módulo e o controle da direção utilizando mensagens de outros módulos. Dessa forma, fica aberto o leque para futuras implementações que podem incluir: 
+In addition, communication over the network makes it possible for the module to send data and control the direction using messages from other modules. In this way, the range is open for future implementations that may include:
 
-    Mensagens e/ou sensores de redundância 
-    Modo de baixo consumo - Ativado pelo módulo de processamento de dados
-    Direção remota
+	Redundancy messages and/or sensors
+	Low Power Mode - Enabled by the Data Processing Module
+	remote steering
     
 
 
-Um microcontrolador de linha comercial será o suficiente para garantir a execução das tarefas e tempo de resposta desejados. Além de portas PWM e entradas do ADC, seria interessante um microcontrolador com interface CAN como o STM32F103xx ou equivalentes. No entanto, essa alternativa supera o preço de CI's transceiver e interface CAN, além disso sua programação é mais trabalhosa.
+A commercial line microcontroller will be enough to guarantee the execution of the desired tasks and response time. In addition to PWM ports and ADC inputs, a microcontroller with a CAN interface like the STM32F103xx or equivalent would be interesting. However, this alternative exceeds the price of IC's transceiver and CAN interface, in addition its programming is more laborious.
 
-Pela facilidade de programação e preço, é proposto o [ATmega328P](https://br.mouser.com/ProductDetail/Microchip-Technology-Atmel/ATMEGA328P-PU?qs=K8BHR703ZXguOQv3sKbWcg%3D%3D). Para a conexão com a rede can, os CI's mais comum e de preço acessível são o transceiver 
-[MCP2551](https://br.mouser.com/datasheet/2/268/20001667G-1115479.pdf) e o circuito de interface CAN/SPI [MCP2515](https://br.mouser.com/datasheet/2/268/MCP2515_Family_Data_Sheet_DS20001801K-2303489.pdf).
+Due to its ease of programming and price, the [ATmega328P](https://br.mouser.com/ProductDetail/Microchip-Technology-Atmel/ATMEGA328P-PU?qs=K8BHR703ZXguOQv3sKbWcg%3D%3D) is proposed. For the connection to the CAN network, the most common and affordable IC's are the transceiver
+[MCP2551](https://br.mouser.com/datasheet/2/268/20001667G-1115479.pdf) and the CAN/SPI interface circuit [MCP2515](https://br.mouser.com/datasheet/ 2/268/MCP2515_Family_Data_Sheet_DS20001801K-2303489.pdf).
 
-O controlador que não está em foco é necessário. A função de leitura do potenciômetro do volante será desempenhada por outro módulo já presente na proa: [MIC19](https://github.com/ZeniteSolar/MIC19)
-
-* ## Potência
-
-O motor DC brushed é acionado por uma ponte H, atualmente alimentada por uma bateria de 12V. O circuito atual é implementado por dois integrados meia-ponte [BTS7960](https://pdf1.alldatasheet.com/datasheet-pdf/view/152657/INFINEON/BTS7960.html). 
-
-Esse componnete foi descontinuado, e a melhor alternativa encontrada foi o [FAN7093](https://www.mouser.com/datasheet/2/149/FAN7093-76982.pdf). Como o atual já está em mãos e esse projeto tem como foco integração e telemetria, foi utilizado o mesmo circuito integrado.
+The controller that does not have focus is required. The steering wheel potentiometer reading function will be performed by another module already present in the bow: [MIC19](https://github.com/ZeniteSolar/MIC19)
 
 
-* ## Medidas e Feedback
+* ## Power Circuit
 
-É essencial fornecer à rede CAN dados sobre o consumo do sistema, por ser um sistema de potência alimentado por bateria. Portanto é proposto um sensor de corrente para cada braço da ponte H. 
+The brushed DC motor is driven by an H bridge, currently powered by a 12V battery. The current circuit is implemented by two half-bridge integrated [BTS7960](https://pdf1.alldatasheet.com/datasheet-pdf/view/152657/INFINEON/BTS7960.html).
 
-Convenientemente, o circuito integrado meia-ponte BTS7960 possui um pino de saída para sensoriamento de corrente — uma fonte de corrente é conectada à saída, e a corrnte IS é proporcional à corrente na carga IL de acordo com o resistor de medida RIS.
+This component was discontinued, and the best alternative found was [FAN7093](https://www.mouser.com/datasheet/2/149/FAN7093-76982.pdf). As the current one is already in hand and this project is focused on integration and telemetry, the same integrated circuit was used.
 
-Alternativamente, poderia ser usado um circuito como o [INA240](https://www.ti.com/lit/ds/symlink/ina240.pdf?ts=1649772128538), sensor de corrente bidirecional ultrapreciso com rejeição de PWM. Da mesma família de CI's, o INA826 será utilizado para medida de tensão da bateria (tensão na ponteH).
 
-Essas medidas devem constribuir para o feedback, que também terá o dado de posição da rabeta. Levar esses dados à um display garante que o piloto tenha conhecimento sobre o estado do sistema e sobre o consumo que sua pilotagem está provocando.
+* ## Measurements and Feedback
+
+It is essential to provide the CAN network with data on system consumption, as it is a battery-powered power system. Therefore, a current sensor is proposed for each arm of the H-bridge.
+
+Conveniently, the BTS7960 half-bridge integrated circuit has an output pin for current sensing — a current source is connected to the output, and the current IS is proportional to the load current IL according to the measuring resistor RIS.
+
+Alternatively, a circuit like the [INA240](https://www.ti.com/lit/ds/symlink/ina240.pdf?ts=1649772128538) ultra-precise bidirectional current sensor with PWM rejection could be used. From the same family of IC's, the INA826 will be used to measure battery voltage (Hbridge voltage).
+
+These measurements should contribute to the feedback, which will also have the tail position data. Bringing this data to a display ensures that the pilot is aware of the state of the system and the consumption that his riding is causing.
 
 # Design
 
-O módulo foi desenvolvido com o software Kicad, o projeto está na pasta hardware desse git e seu esquemático completo pode ser visualizado [aqui](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/main/hardware/PDF/steeringmodule.pdf). Abaixo está o esquemático geral:
+The module was developed with Kicad software, the project is in the hardware folder of this git and its complete schematic can be viewed [here](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/main/hardware/ PDF/steeringmodule.pdf). Below is the general schematic:
 
-![Esquemático geral](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/a6de4a60345ccac29f99505179099171639378f8/Imagens/steeringmodule_esquema.PNG)
+![General Schematic](https://github.com/ayresgit/Modulo-Direcao-Eletrica/blob/a6de4a60345ccac29f99505179099171639378f8/Imagens/steeringmodule_esquema.PNG)
 
-Os componentes escolhidos a partir da análise na concepção são os seguintes: Potênciometros Lineares, Atmega328P, BTS7960, MCP2515, MCP2551 (ou MCP2561), e INA826. 
+The components chosen from the design analysis are the following: Linear Potentiometers, Atmega328P, BTS7960, MCP2515, MCP2551 (or MCP2561), and INA826.
 
-Para estar de acordo com os módulos do sistema da embarcação, também serão necessários os seguintes componentes: 
+To conform to the vessel's system modules, the following components will also be required:
 
-    2 conectores fêmea RJ45, 
-    2 borne fêmea 2EDGRC 2 vias (robusto e prático, alternativa é usar terminal block), 
-    socket estampado 28 pinos par ao atmega328p, 
-    diodos zenner para proteção dos ADC do microcontrolador, 
-    2 cristais osciladores
+	2 female RJ45 connectors,
+	2 2-way 2EDGRC female terminal (robust and practical, alternative is to use terminal block),
+	28-pin stamped socket for the atmega328p,
+	zener diodes to protect the microcontroller's ADC,
+	2 oscillator crystals
 
-O software Kicad possui uma função para exportação de lista completa de materiais (BOM - Bill Of Materials). Pode ser encontrada na pasta hardware, neste [link](https://github.com/ZeniteSolar/MDE22/blob/f59e0732b5ff4f93045a860adb85f9820dcc4e83/hardware/steeringmodule.csv). 
+The Kicad software has a function to export a complete list of materials (BOM - Bill Of Materials). It can be found in the hardware folder, at this [link](https://github.com/ZeniteSolar/MDE22/blob/f59e0732b5ff4f93045a860adb85f9820dcc4e83/hardware/steeringmodule.csv).
 
-Abaixo está a previsão em 3D do resultado final. Como será explicado na etapa de implementação, a PCB foi confeccionada com a ajuda de uma fresadora da instituição. 
+Below is the 3D preview of the final result. As will be explained in the implementation stage, the PCB was made with the help of a milling machine from the institution.
 
-| Frente | Trás |
+| Front | Back |
 | -----  | ----- |
 |<img src="https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/pcb%20front.PNG" width ="325" height="460">|<img src="https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/pcb%20back.PNG" width="325" height="460">|
 
 
-Vale notar que este repositório possui uma branch exclusiva para uma placa encomendada, cujo layout foi aprimorado e a silkscreen foi propriamente desenhada para auxiliar na etapa de Implementação e possíveis reparos. Essa placa não foi utilizada durante o projeto pela data de entrega da mesma. 
+It is worth noting that this repository has an exclusive branch for an ordered board, whose layout was improved and the silkscreen was properly designed to assist in the Implementation stage and possible repairs. This board was not used during the project due to its delivery date.
 
-| Encomendada Frente | Encomendada Trás |
+| Ordered Front | Ordered Back |
 | -----  | ----- |
 |<img src="https://github.com/ZeniteSolar/MDE22/blob/a99deb80abc7bee7c553f9edaa48115d4b41ed4c/Imagens/Encomendada%20Frente.jpg" width ="325" height="530">|<img src="https://github.com/ZeniteSolar/MDE22/blob/a99deb80abc7bee7c553f9edaa48115d4b41ed4c/Imagens/Encomendada%20Tr%C3%A1s.jpg" width="325" height="530">|
 
-# Implementação
+# Implementation
 
-### Confecção da PCB
+### PCB manufacturing
 
-A PCB foi confeccionada pela fresadora CNC do DAELN, operada pelos técnicos do departamento, o resultado é mostrado abaixo. Como a placa confeccionada não apresentou o espaçamento mínimo desejado para a malha de potência, uma retificadeira foi usada para excluir as trilhas indesejadas — é imporante lembrar que esse tipo de ferramenta pede o uso de EPI.
+The PCB was made by DAELN's CNC milling machine, operated by the department's technicians, the result is shown below. As the manufactured PCB did not have the desired minimum spacing for the power grid, a grinder was used to exclude unwanted tracks — it is important to remember that this type of tool requires the use of PPE.
 
-| Ajustes com a dremel | EPI |
+| Dremel Adjustments | PPE |
 | --- | --- |
 |<img src="https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Ajustes%20com%20a%20dremel.jpg" width="250" height="315">|<img src="https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Use%20%C3%B3culos%20de%20prote%C3%A7%C3%A3o.jpg" width="250" height="315">
 
-A placa foi estanhada para proteger o circuito contra oxidação, e as vias foram feitas com fios de cabo de rede, cortados no tamanho adequado e então soldados.
+The board was tinned to protect the circuit against oxidation, and the pathways were made with wires from network cable, cut to size and then soldered.
 
-Da ordem dos componentes, a solda foi feita da seguinte forma: SMD, CI, Through-hole sendo os conectores os últimos (para evitar esforço físico na placa). 
+From the order of the components, the soldering was done as follows: SMD, CI, Through-hole connectors being the last ones (to avoid physical stress on the board).
 
-Após o trabalho na placa, foi alcançada a conclusão de que os CI da ponte H devem preceber os SMD. Essa troca é interessante pois o modelo precisa ser soldado com calor, no caso com auxílio de soprador térmico. A placa soldada pode ser vista na figura.
+After work on the board, the conclusion was reached that the H-bridge ICs must accommodate the SMD. This change is interesting because the model needs to be welded with heat, in this case with the aid of a heat gun. The soldered PCB can be seen in the figure.
 
-| Frente | Trás |
+| Front | Back |
 |:-----:|:-----:|
 |<img src="https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/PCB%20soldada%20frente.jpg" width="200" height="325">|<img src="https://github.com/ZeniteSolar/MDE22/blob/3640950bb22653374b23fce8999609d81420ede7/Imagens/PCB%20soldada%20tr%C3%A1s.jpg" width="200" height="325">|
 
-Finalizados os processos de preparação, é dado início à programação do microcontrolador, que é feita na linguagem C. As bibiotecas utilizadas e código fonte podem ser encontradas na pasta firmware desse repositório. 
+Once the preparation processes are finished, the microcontroller programming begins, which is done in the C language. The libraries used and the source code can be found in the firmware folder of this repository.
 
-# Operação
+# Operation
 
-A etapa de operação fica dividida entre duas partes: Programação e testes de bancada. Dado início na lógica básica, como quais periféricos do microcontrolador são utilizados, estas etapas se desenvolvem em conjunto.
+The operation stage is divided into two parts: Programming and bench tests. Starting with the basic logic, such as which microcontroller peripherals are used, these steps develop together.
 
-#### Programação
+#### Programming
 
-Durante todo o processo foi utilizado como referência o datasheet da microchip para o atmega328p, que se encontra nas [Referências](#referências) desse trabalho.
+Throughout the process, the microchip datasheet for the atmega328p was used as a reference, which can be found in the [References](#references) of this work.
 
-Na configuração em si dos periféricos, começando pelo ADC, foi encontrado um dilema sobre qual orientação dos potenciômetros do sistema. Como o sistema está em upgrade foi descartada a configuração atual. Fica então definido que o código desenvolvido pressupõe as seguintes relações:
+In the configuration of the peripherals, starting with the ADC, a dilemma was found about the orientation of the system potentiometers. As the system is being upgraded, the current configuration was discarded. It is then defined that the developed code presupposes the following relationships:
 
-| Potenciômetro | Posição da Rabeta |
+| Potentiometer | Tail position |
 | ------------- | ------------------- |
-| Valor máximo  | limite de estibordo |
-| Valor médio   | centrada  |
-| Valor mínimo  | limite de bombordo |
+| Maximum value | starboard boundary |
+| Average value | centered |
+| Minimum value | port limit |
 
 - ADC
 
-O ADC é utilizado com 10 bits, com 3 canais: Sensor de tensão, sensor de corrente e potenciômetro. A escala máxima do potenciômetro fica definida para 270, como se a medida fosse feita diretamente para graus de rotação. 
+The mechanical system that couples the DC motor to the rotation reading potentiometer has a limit close to 270°. The ability to maneuver over 90° to either side has proven useful in the past.
+With that in mind, and considering that extreme precision is not required in controlling this angle, the 8-bit ADC is sufficient for all three channels:
 
-Essa questão de escala é configurada pelos coeficientes em adc.c, basta operar algumas medidas com coeficiente unitário e então fazer o cálculo
+- voltage sensor
+- current sensor
+- Rotation sensor
 
-$$ coeficiente = {ValorDesejado \over ValorObtido} $$
+The one of the measures is configured by the coefficients in adc.c, just operate some measures with unitary coefficients and then do the calculation.
+
+$$ coefficient = {DesiredValue \over ObtainedValue} $$
     
-É interessante fazer esse teste com o valor de fundo de escala, pois o "Valor Desejado" é naturalmente conhecido.
+It is interesting to do this test with the full scale value, as the "Desired Value" is naturally known.
 
-- Rede CAN
 
-Do trabalho com a biblioteca CAN: a rede CAN é implemtada a partir de ID's, tendo identificação dos módulos no barramento e de suas mensagens. Para gerar esses ID's a equipe Zênite desenvolveu um script que gera esses valores para o módulo em desenvolvimento.
 
-Esse caminho também trás segurança, garantindo que não haverão ID's iguais e reduzindo possíveis confusões causadas por erro humando e/ou desenvolvimento paralelo. Tudo isso pode ser encontrado no repositório [CAN_IDS](https://github.com/ZeniteSolar/CAN_IDS).
+- CAN network
 
-Tendo os ID's gerados para o módulo e suas mensagens, é preciso alterar o can_filter.h para incluir os ID's de quem se deseja escutar (no caso esse projeto precisa escutar o [MIC19](https://github.com/ZeniteSolar/MIC19)), e criar as funções de extração e envio de mensagens em can_app.c/h.
+Working with the CAN library: the CAN network is implemented from ID's, identifying the modules on the bus and their messages. To generate these IDs, the Zênite team developed a script that generates these values ​​for the module under development.
+
+This path also brings security, ensuring that there will be no equal identities and equality possible confusions caused by human error and/or parallel development. All of these can be found in the [CAN_IDS](https://github.com/ZeniteSolar/CAN_IDS) repository.
+
+Having the ID's generated for the module and its messages, it is necessary to change the can_filter.h to include the ID's of who you want to listen to (in this case, this project needs to listen to [MIC19](https://github.com/ZeniteSolar/MIC19 )), and create the request and message sending functions in can_app.c/h.
 
 - PWM
 
-Alguns pontos chave para a operação do PWM: Timer escolhido, prescaler (frequência desejada), definição do duty cycle (nesse caso implementado pela função set_pwm em hbridge.c). 
+Some key points for PWM operation: Chosen timer, prescaler (desired frequency), duty cycle definition (in this case implemented by the set_pwm function in hbridge.c).
 
-Por um erro na etapa de Design, as saídas PWM estão conectadas nos pinos com o timer básico do ATmega328P, o Timer/Counter 0. O Modo de operação do timer deve ser o de phase correct PWM (que garante maior sincronismo em relação ao Fast PWM). Como descrtio no datasheet a frequência pode ser calculada da seguinte forma: 
+Due to an error in the Design stage, the PWM outputs are connected to the ATmega328P's basic timer pins, Timer/Counter 0. The timer's operating mode must be phase correct PWM (which guarantees greater synchronization in relation to Fast PWM). As described in the datasheet, the frequency can be calculated as follows:
 
 $$ fOCnxPWM = {fclkI/O \over {N * 510}} $$
 
-    fOCnxPWM é a frequência do PWM nas portas OCnx (no caso OC0A e OC0B, em PD5 e PD6)
-    fclkI/O é a frequência de clock do cristal oscilador (16MHz)
-    N é o prescaler configurado
+	fOCnxPWM is the PWM frequency on the OCnx ports (in the case of OC0A and OC0B, in PD5 and PD6)
+	fclkI/O is the crystal oscillator clock frequency (16MHz)
+	N is the configured prescaler
 
-Esse timer possui menos bits e menor funcionalidade em comparação aos outros dois. Para a aplicação o único impacto foi a utilização de uma frequência inferior ao desejado (~3921.5Hz). Isso acontece pela falta de opções de prescaler no Timer/Counter0: 
+This timer has fewer bits and less functionality compared to the other two. For the application, the only impact was the use of a lower frequency than desired (~3921.5Hz). This happens due to the lack of prescaler options in Timer/Counter0:
     
-    prescaler = 1, fPWM =  31.37kHz (supera os limites do CI half-bridge)
-    prescaler = 8 --> 3.92kHz       (utilizado)
+	prescaler = 1, fPWM = 31.37kHz (exceeds half-bridge IC limits)
+	prescaler = 8 --> 3.92kHz (used)
 
 
-#### Testes no Circuito
+#### Circuit Tests
 
-Os testes em bancada foram feitos com o auxílio de fontes de tensão variada, nos laboratórios do IFSC câmpus Florianópolis.
+The bench tests were carried out with the aid of different voltage sources, in the laboratories of the IFSC campus Florianópolis.
 
 <p align="center">
   <img src="https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Fontes%20de%20bancada%203A.jpg" width="520" height="340">
 
-Foram efetuados os testes do ADC e da rede CAN, esses resultados foram visualizados no computador pela comunicação serial conectando um arduino ao barramento Usart da placa.
+The ADC and CAN network tests were carried out, these results were displayed on the computer by serial communication connecting an arduino to the board's Usort bus.
 
-No caso do PWM é necessário o uso de osciloscópio, portanto são deixadas as figuras para alguns dos testes executados com o auxílio de um reostato.
+In the case of PWM, it is necessary to use an oscilloscope, so the figures for some of the tests carried out with the aid of a rheostat are left.
 
-| Duty Cycle 40% Sinal | Duty Cycle 40% Valores |
+| Duty Cycle 40% Signal | Duty Cycle 40% Values |
 | ------ | ------ |
 |![Duty Cycle 40% signal](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2040%25%20Signal.jpg)|![Duty Cycle 40% values](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2040%25%20Values.jpg)|
 
-| Duty Cycle 80% | Duty Cycle 80% Valores |
+| Duty Cycle 80% | Duty Cycle 80% Values |
 | ------ | ------ |
 |![Duty Cycle 80% signal](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2080%25%20Signal.jpg)|![Duty Cycle 80% values](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2080%25%20Signal.jpg)|
 
-Para testar o circuito com alta corrente foi reduzida a resistência no reostato e mantido o duty cycle:
+To test the circuit with high current, the resistance in the rheostat was reduced and the duty cycle was maintained:
 | Duty Cycle 80% 3A  | Duty Cycle 80% Valores |
 | ------ | ------ |
 |![Duty 80% Signal (3A)](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2080%25%20Signal%20-%20Low%20resistance,%203A.jpg)|![Duty 80% Values (3A)](https://github.com/ZeniteSolar/MDE22/blob/cb7a627db1aa043f71257f563c45120e6a33601b/Imagens/Duty%20Cycle%2080%25%20Values%20-%20Low%20resistance,%203A.jpg)|
 
-Esses resultados foram satisfatórios, tendo em vista que o circuito não estava acumulando calor, o PWM estava de acordo com o desejado a partir da configuração, e os valores de acordo com o datasheet.
+These results were satisfactory, considering that the circuit was not accumulating heat, the PWM was in accordance with what was desired from the configuration, and the values ​​according to the datasheet.
 
-#### Testes com Motor
+#### Tests with Engine
 
-O próximo passo é o teste com o motor. A montagem do teste em bancada é feita na embarcação, com fontes de bancada, placas e conexões necessárias.
+The next step is the engine test. Bench test setup is done on the vessel, with bench supplies, boards and necessary connections.
 
 <p align="center">
   <img src="https://github.com/ZeniteSolar/MDE22/blob/8283bc81c4a9d4ee74052ef4564bf314acc439f0/Imagens/Testes%20com%20Motor.jpg" width="420" height="250">
 
-Durante o teste com motor foram implementadas lógicas de operação ao PWM da ponte H:
+During the motor test, operating logics were implemented to the PWM of the H-bridge:
 
-    Ponte H ativada pela diferença entre os potenciômetros
-    Começo centrado                                        
-    Centro forçado caso não haja comunicação                
-    Proteção contra lado invertido
+	H bridge activated by the difference between the potentiometers
+	centered start
+	Forced center if there is no communication
+	Reverse side protection
 
-A última lógica foi julgada interessante considerando que o próprio sistema é montado/desmontado para viagens e testes na água. É possível que haja um erro de conexão que, sem essa proteção, poderia fazer com que um giro contínuo de 360° danificasse o sistema.
+The last logic was considered interesting considering that the system itself is assembled/disassembled for trips and tests in the water. It is possible that there is a connection error that, without this protection, could cause a continuous 360° rotation to damage the system.
 
-A parte mecânica pode ser vista na figura abaixo. O eixo da transmissão é acoplado na correia pelo disco, e o motor DC da direção controla a correia.
-No topo desse pode ser visto o potenciômetro utilizado para medida de rotação.
+The mechanical part can be seen in the figure below. The transmission shaft is coupled to the belt by the disc, and the DC steering motor controls the belt.
+At the top of this can be seen the potentiometer used to measure rotation.
 
 <p align="center">
   <img src="https://github.com/ZeniteSolar/MDE22/blob/8283bc81c4a9d4ee74052ef4564bf314acc439f0/Imagens/Motor%20e%20correia.jpg" width="340" height="250">
 
-Os testes com motor foram um sucesso utilizando as fontes de bancada, o vídeo do funcionamento está na pasta Imagens. Devido ao tamanho do arquivo o github não pode executá-lo, portanto precisa ser baixado. Uma alternativa é utilizar este [link do drive](https://drive.google.com/file/d/12XCSZ1QREOxFkqlZAvMiaMpx_ZMUlxNi/view?usp=sharing).
+The engine tests were a success using the bench sources, the operation video is in the Images folder. Due to the file size github cannot run it so it needs to be downloaded. An alternative is to use this [drive link](https://drive.google.com/file/d/12XCSZ1QREOxFkqlZAvMiaMpx_ZMUlxNi/view?usp=sharing).
 
-Quando o sistema foi testado com bateria ele deixou de funcionar, o diagnóstico aponta para a queima de um dos CI half-bridge.
+During the test powered by the 12V battery, the system stopped working. The lack of capacitance for the input voltage caused a failure in one of the half-bridge ICs, after replacing the IC and correcting the values ​​in the schematic the system is safe and operational.
 
-# Considerações
+# Considerations
 
-Todos os periféricos do microcontrolador estão funcionais. Todas medidas elétricas, que eram um dos principais objetivos, apresentaram precisão satisfatória. 
+All microcontroller peripherals are functional. All electrical measurements, which were one of the main objectives, showed satisfactory accuracy.
 
-A lógica essencial do funcionamento está completa, existem algumas travas de segurança, porém não o suficiente, e por fim o motor pode ser movimentado.
+The essential logic of operation is complete, there are safety locks and finally the engine can be moved.
 
-Performance dos componentes: maioria satisfatória, exceção ponte H e suas proteções internas que não ativaram no teste com bateria.
+Component performance: satisfactory.
 
-Confecção da placa: resultado ruim, fabricação ocasionou mais trabalho e comprometeu a robustez do sistema. Para atender corretamente o objetivo de um sistema mais robusto deve ser utilizada a placa encomendada.
+Plate manufacturing: poor result, manufacturing caused more work and compromised the robustness of the system. To correctly meet the objective of a more robust system, the PCB ordered must be used.
 
-Abaixo podemos ver o sistema montado com um suporte experimental — devido às dimensões da placa, é preciso ser fabricado um suporte dedicado à mesma. 
+Below we can see the system assembled with an experimental support — due to the dimensions of the board, a support dedicated to it needs to be manufactured.
 
-Ao lado é mostrada o módulo fonte principal ([MFP19](https://github.com/ZeniteSolar/MFP19)) que converte a tensão no banco de baterias e fornece os 18V da rede CAN. Os futuros suportes do barco devem seguir este modelo feito com impressão 3D.
+On the side, the main source module ([MFP19](https://github.com/ZeniteSolar/MFP19)) is shown, which converts the voltage in the battery bank and supplies 18V from the CAN network. Future boat supports are expected to follow this 3D-printed model.
 
-| Sistema Montado | Exemplo de suporte |
+| Assembled System | Support Example |
 | --- | --- |
 |<img src="https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/Sistema%20Montado.jpg" width="250" height="360">|<img src="https://github.com/ZeniteSolar/MDE22/blob/70da552cb5a2f2a8a49e6934afd4cba5a5405d8f/Imagens/Exemplo%20de%20suporte.jpg" width="250" height="360">|
 
-Para efeito de comparação, aqui estão as imagens do sistema anterior. 
+For comparison, here are screenshots of the previous system.
 
-| Sistema Antigo | Ponte H |
+| Previous System | H Bridge |
 | --- | --- |
 |<img src="https://github.com/ZeniteSolar/MDE22/blob/8283bc81c4a9d4ee74052ef4564bf314acc439f0/Imagens/Montagem%20do%20sistema%20antigo.jpg" width="250" height="280">|<img src="https://github.com/ZeniteSolar/MDE22/blob/8283bc81c4a9d4ee74052ef4564bf314acc439f0/Imagens/Montagem%20antiga%20PonteH.jpg" width="280" height="210">|
 
-#### Próximos Passos
+#### Next steps
 
-Alguns dos próximo passos para esse módulo e futuras atualizações:
+Some of the next steps for this module and future updates:
 
-- Sistema alimentado por bateria
-- PWM responsivo aos movimentos do piloto (e testes com piloto)
-- Projeto da Ponte H ou escolha de um CI não descontinuado
-- Mensagens e/ou sensores de redundância 
-- Modo de baixo consumo - Ativado pelo módulo de processamento de dados
-- *Direção remota
+- PWM responsive to pilot movements
+- H-Bridge design or choice of non-discontinued IC
+- Redundancy messages and/or sensors
+- Low power mode - Activated by data processing module
+- *Remote steering
 
 
-*O sucesso dessa etapa criaria espaço para ainda outra atualização: O barco autônomo.
+*The success of this step would make room for yet another update: The Autonomous Boat.
 
-# Referências
+# References
 
 Datasheet ATmega328P:
 [Microchip, Atmel ATmega328P](https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf)
 
-Pesquisa por sensores de steering no mercado:
+Steering sensor market research:
 [Bosch](https://www.bosch-motorsport.com/content/downloads/Raceparts/en-GB/120530059.html),
 [CUI Inc](https://www.cuidevices.com/catalog/motion/rotary-encoders),
 [TT Electronics](https://www.ttelectronics.com/products/categories/steering-sensors/search-results/)
+
+
+
 
 
 
