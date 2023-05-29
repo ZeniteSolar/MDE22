@@ -55,6 +55,7 @@ uint8_t hbridge_set_pwm(uint8_t side, float duty);
 void hbridge_task(void);
 void hbridge_control(float position);
 
+
 typedef union hbridge_flags{
     struct{
         uint8_t     side_A_switch_on    :1;

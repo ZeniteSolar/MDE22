@@ -178,7 +178,7 @@ void hbridge_task(void)
 //TODO: Calculate constants
 #define PERIOD 0.0019439999999999998
 
-#define D_MAX 100
+#define D_MAX 80
 
 float PI(float r, float y){
     // PI CONFIGURATIONS:
@@ -210,8 +210,8 @@ float PI(float r, float y){
 }
 
 #define STR_MAX_ANGLE 100.0f
-#define STR_MIN_ANGLE -100.0f
-#define D_MIN 0.20f
+#define STR_MIN_ANGLE -120.0f
+#define D_MIN 0.25f
 
 void hbridge_control(float position)
 {
