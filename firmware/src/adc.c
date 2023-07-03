@@ -84,7 +84,8 @@ ISR(ADC_vect)
 {
     cli(); 
     static const float batvoltage_coeff =   0.0182138188113f;
-    static const float position_coeff =     0.0028716216215f; //0.0030405405405f; //;
+    //static const float position_coeff =     0.28716216215f; //0.0030405405405f; //;
+    static const float position_coeff =     0.28763901f; //0.0030405405405f; //;
     // ToDo: Fix this mess
     static const float batcurrent_coeff =   0.0236309077269f; // 0,63A/2666  
         // VIS = (IL / 8,5A)V (R = 1kOhm) <>  {[0,111V/sqrt(2)] / 0,63A}^(-1) = kIS = 8,02 A
@@ -100,11 +101,12 @@ ISR(ADC_vect)
 
         case ADC2:                       
             position = adc * position_coeff;
-            hbridge_control(100 * position);
+            hbridge_control(position);
             break;
 
         case ADC3:
             batcurrent = adc * batcurrent_coeff;
+			
         default:
             channel = ADC1 -1;             // recycle
 

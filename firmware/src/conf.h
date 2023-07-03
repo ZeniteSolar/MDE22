@@ -8,7 +8,7 @@
  */
 
 #ifndef CONF_H
-
+#define CONF_H
 #ifndef F_CPU
 #define F_CPU 16000000UL    //define a frequencia do microcontrolador - 16MHz
 #endif /* ifndef F_CPU */
@@ -21,7 +21,7 @@
 #define VERBOSE_ON_MACHINE
 #define VERBOSE_ON_ADC
 #define VERBOSE_ON_INIT
-#define VERBOSE_ON_ERROR
+//#define VERBOSE_ON_ERROR
 //#define VERBOSE_ON_HBRIDGE
 
 // MODULES ACTIVATION
@@ -41,10 +41,10 @@
 
 // The machine frequency may not be superior of ADC_FREQUENCY/ADC_AVG_SIZE_10
 #ifdef MACHINE_ON
-#define MACHINE_TIMER_FREQUENCY             300           //<! machine timer frequency in Hz
-#define MACHINE_TIMER_PRESCALER             1024          //<! machine timer prescaler
-#define MACHINE_FREQUENCY                   100           //<! machine frequency in Hz
-#define MACHINE_CLK_DIVIDER_VALUE           (MACHINE_TIMER_FREQUENCY)/(MACHINE_FREQUENCY)  //<! machine_run clock divider
+// The machine frequency may not be superior of ADC_FREQUENCY/ADC_AVG_SIZE_10
+#define MACHINE_TIMER_FREQUENCY 120UL  //<! machine timer frequency in Hz
+#define MACHINE_TIMER_PRESCALER 1024UL //<! machine timer prescaler
+#define MACHINE_FREQUENCY MACHINE_TIMER_FREQUENCY
 #endif // MACHINE_ON              (MACHINE_TIMER_FREQUENCY)/(MACHINE_CLK_DIVIDER_VALUE)
 
 #ifdef  HBRIDGE_ON
@@ -84,8 +84,8 @@
 
 #ifdef CAN_ON
 #define SPI_ON
-#define CAN_APP_SEND_STATE_FREQ     100//36000     //<! state msg frequency in Hz
-#define CAN_APP_SEND_ADC_FREQ       10//6000      //<! adc msg frequency in Hz
+#define CAN_APP_SEND_STATE_FREQ     (MACHINE_TIMER_FREQUENCY / CAN_MSG_MDE22_STATE_FREQUENCY)
+#define CAN_APP_SEND_ADC_FREQ       (MACHINE_TIMER_FREQUENCY / CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_FREQUENCY)
 
 // CANBUS DEFINITONS
 // ----------------------------------------------------------------------------

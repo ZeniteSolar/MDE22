@@ -16,7 +16,6 @@ void machine_init(void)
 {
 	clr_bit(PRR, PRTIM2); // Activates clock
 
-	// MODE 2 -> CTC with TOP on OCR1
 	TCCR2A = (1 << WGM21) | (0 << WGM20)	  // mode 2
 			 | (0 << COM2B1) | (0 << COM2B0)  // do nothing
 			 | (0 << COM2A1) | (0 << COM2A0); // do nothing
@@ -215,7 +214,7 @@ inline void task_error(void)
 	if (error_flags.no_canbus)
 		VERBOSE_MSG_ERROR(usart_send_string("\t - No canbus communication with MIC19!\n"));
 	if (error_flags.invalid_tail)
-		VERBOSE_MSG_ERROR(usart_send_string("\t - Invalid tail angle, position unacceptable!\n"));
+		{}///VERBOSE_MSG_ERROR(usart_send_string("\t - Invalid tail angle, position unacceptable!\n"));
 	if (!error_flags.all)
 		VERBOSE_MSG_ERROR(usart_send_string("\t - Oh no, it was some unknown error.\n"));
 
@@ -375,16 +374,5 @@ inline void machine_run(void)
  */
 ISR(TIMER2_COMPA_vect)
 {
-	if (++machine_clk_divider == MACHINE_CLK_DIVIDER_VALUE)
-	{
-		machine_clk_divider = 0;
-		machine_clk = 1;
-
-		/*if(machine_clk){
-			for(;;){
-				//pwm_reset();
-				VERBOSE_MSG_ERROR(if(machine_clk) usart_send_string("\nERROR: CLOCK CONFLICT!!!\n"));
-			}
-		}*/
-	}
+	machine_clk = 1;
 }

@@ -53,7 +53,7 @@ void hbridge_init(void);
 void hbridge_toggle_side(void);
 uint8_t hbridge_set_pwm(uint8_t side, float duty);
 void hbridge_task(void);
-void hbridge_control(float position);
+void hbridge_control(float angle);
 
 
 typedef union hbridge_flags{

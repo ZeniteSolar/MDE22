@@ -113,7 +113,7 @@ void hbridge_task(void)
     } else {
         if(str_whl_position > 254) {
             //hbridge_flags.force_center = 1;
-            usart_send_string("Invalid str wheel angle, value > 270.\n");
+            //usart_send_string("Invalid str wheel angle, value > 270.\n");
         } else {
             hbridge_flags.force_center = 0;
         }
@@ -142,7 +142,7 @@ void hbridge_task(void)
             VERBOSE_MSG_HBRIDGE(usart_send_string("Parado  \t\t"));
         }
         VERBOSE_MSG_HBRIDGE(usart_send_string("Side Switching: "));
-        VERBOSE_MSG_HBRIDGE(usart_send_uint8(hbridge_flags.all__));
+        VERBOSE_MSG_HBRIDGE(usart_send_uint8(hbridge_flags.all__));usart_send_string
 
         VERBOSE_MSG_HBRIDGE(usart_send_string("\tDuty coeff: "));
         VERBOSE_MSG_HBRIDGE(usart_send_int16(duty_msg));
@@ -209,20 +209,20 @@ float PI(float r, float y){
     return u;
 }
 
-#define STR_MAX_ANGLE 100.0f
-#define STR_MIN_ANGLE -120.0f
+#define STR_MAX_ANGLE 900.0f
+#define STR_MIN_ANGLE -900.0f
 #define D_MIN 0.25f
 
-void hbridge_control(float position)
+void hbridge_control(float angle)
 {
     float dt;
-    float position_setpoint = str_whl_position -130;
-    position -= 130;
+    float position_setpoint = str_whl_position - 135;
+    angle -= 135;
 
     if (position_setpoint > STR_MAX_ANGLE) position_setpoint = STR_MAX_ANGLE;
     if (position_setpoint < STR_MIN_ANGLE) position_setpoint = STR_MIN_ANGLE;
 
-    dt = PI(position_setpoint, position);
+    dt = PI(position_setpoint, angle);
     dt = dt/100;
     static uint16_t send_clk;
 
@@ -231,7 +231,7 @@ void hbridge_control(float position)
         
         usart_send_float(position_setpoint);
         usart_send_string(",");
-        usart_send_float(position);
+        usart_send_float(angle);
         usart_send_string(",");
         usart_send_float(dt*100);
         usart_send_char(',');
