@@ -83,10 +83,10 @@ uint8_t hbridge_set_pwm(uint8_t side, float duty)
         duty = 0;
     }
     if (side == HBRIDGE_SIDE_A){
-        OCR0A = (int)(0xff * (1 - duty));
+        OCR0A = (int)(0xff * (1 - duty));  // 51 ~ 255
         return HBRIDGE_OK;
     }else if (side == HBRIDGE_SIDE_B){
-        OCR0B = (int)(0xff * duty);
+        OCR0B = (int)(0xff * duty);  // 0 ~ 204
         return HBRIDGE_OK;
     }else{
         return HBRIDGE_ERROR;
@@ -118,6 +118,7 @@ void hbridge_task(void)
             hbridge_flags.force_center = 0;
         }
     }
+    hbridge_flags.force_center = (can_app_flags.no_mic == 1);
 
     // Enable for operation
     if(!tst_bit(HBRIDGE_PORT, HBRIDGE_ENABLE_PIN)) {
@@ -209,21 +210,26 @@ float PI(float r, float y){
     return u;
 }
 
-#define STR_MAX_ANGLE 900.0f
-#define STR_MIN_ANGLE -900.0f
+#define STR_MAX_ANGLE 135.0f
+#define STR_MIN_ANGLE -135.0f
 #define D_MIN 0.25f
 
-void hbridge_control(float angle)
+void hbridge_control(float angle) // 0 - 294.54
 {
+
+    // str_whl_position  // 0 ~ 270.26
     float dt;
-    float position_setpoint = str_whl_position - 135;
-    angle -= 135;
+    float position_setpoint = str_whl_position - 135; // 0 ~ 135.26 
+    angle -= 135;  // 0 - 159.54
 
-    if (position_setpoint > STR_MAX_ANGLE) position_setpoint = STR_MAX_ANGLE;
-    if (position_setpoint < STR_MIN_ANGLE) position_setpoint = STR_MIN_ANGLE;
+    if (position_setpoint > STR_MAX_ANGLE) position_setpoint = STR_MAX_ANGLE; // STR_MAX_ANGLE should be +135
+    if (position_setpoint < STR_MIN_ANGLE) position_setpoint = STR_MIN_ANGLE; // STR_MIN_ANGLE should be -135
 
-    dt = PI(position_setpoint, angle);
-    dt = dt/100;
+    if (angle > STR_MAX_ANGLE) angle = STR_MAX_ANGLE; // STR_MAX_ANGLE should be +135
+    if (angle < STR_MIN_ANGLE) angle = STR_MIN_ANGLE; // STR_MIN_ANGLE should be -135
+
+    dt = PI(position_setpoint, angle);  // -80° ~ +80°
+    dt = dt/100;  // -0.8 ~ +0.8
     static uint16_t send_clk;
 
     if (++send_clk >= 50){
@@ -241,13 +247,13 @@ void hbridge_control(float angle)
         usart_send_char('\n');
     }
 
-    if (fabs(dt) < D_MIN)
+    if (fabs(dt) < D_MIN)  // [-0.8 ~ +0.8] -> {[-0.8 ~ -0.25] U [0] U [0.25 ~ 0.8]}
         dt = 0;
 
-    if (dt < 0){
+    if (dt < 0){  // [-0.8 ~ -0.25]
         hbridge_set_pwm(HBRIDGE_SIDE_A, -dt);
-        hbridge_set_pwm(HBRIDGE_SIDE_B, 0);   
-    } else{
+        hbridge_set_pwm(HBRIDGE_SIDE_B, 0);
+    } else{  // [0] U [0.25 ~ 0.8]
         hbridge_set_pwm(HBRIDGE_SIDE_A, 0);
         hbridge_set_pwm(HBRIDGE_SIDE_B, dt);
     }
