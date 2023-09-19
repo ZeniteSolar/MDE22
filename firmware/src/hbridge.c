@@ -44,33 +44,6 @@ void hbridge_init(void)
 }
 
 /**
- * @brief PROTOTYPE. This function exchanges hbridge's switching side 
- * while keeping current flow direction. 
- */
-void hbridge_toggle_side(void)
-{
-    if(hbridge_flags.curr_path_low_high == 0){
-
-        // which side is switching?
-            // make this side higher switch on (set_pwm(...,1))
-        // make the other side switch 
-
-        // Set system flag about this state
-        hbridge_flags.curr_path_low_high = 1;
-    } else {
-
-        // which side is switching?
-            // make this side higher switch on (set_pwm(...,1))
-        // make the other side switch 
-
-        // Set system flag about this state
-
-        hbridge_flags.curr_path_low_high = 0;
-    }
-
-}
-
-/**
  * @brief Sets pwm duty cycle value on OCR identified by 'side'
  * 
  * @param side : Identify switching side (OCR0A or OCR0B)
@@ -178,29 +151,18 @@ void hbridge_task(void)
 //TODO: Calculate constants
 #define PERIOD 0.0019439999999999998
 
-#define D_MAX 80
+#define D_MAX 93
 
 float PI(float r, float y){
     // PI CONFIGURATIONS:
     const float Kp = 2.5;         // analog series proportional gain
-    const float Ti = 0.5;         // analog series integration period
-    const float Ts = PERIOD;        // digital sampling period
-
-    // INTERNAL CONSTANTS COMPUTATION:
-    const float a0 = -Kp;           // IIR coefficient for old sample
-    const float a1 = Kp*(1+Ts/Ti);  // IIR coefficient for new sample
-
-    // CONTROLLER STATIC VARIABLES
-    static float e0 = 0;            // old error
-    static float e1 = 0;            // new error
-    static float u = 0;             // control action
 
     // Compute error:
-    e0 = e1;
-    e1 = r -y;
+    float e1 = r -y;
+	float u;
 
     // Compute control action:
-    u += + a1*e1 + a0*e0;
+    u = Kp * e1;
 
     // Anti windup
     if(u < -D_MAX)           u = -D_MAX;
