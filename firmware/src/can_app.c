@@ -5,7 +5,7 @@ volatile can_app_flags_t can_app_flags;
 uint16_t can_app_checks_without_mic19_msg;
 uint32_t can_app_send_state_clk_div;
 uint32_t can_app_send_adc_clk_div;
-volatile float str_whl_position;
+volatile float str_whl_position;  // 0 ~ 270.26
 
 
 
@@ -88,7 +88,7 @@ inline void can_app_send_steeringbat_measurements(void)
     msg.data[CAN_MSG_GENERIC_STATE_SIGNATURE_BYTE] = CAN_SIGNATURE_SELF;
     msg.data[CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_BATVOLTAGE_L_BYTE] =    LOW(measurements.batvoltage_avg);
     msg.data[CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_BATVOLTAGE_H_BYTE] =    HIGH(measurements.batvoltage_avg);
-    msg.data[CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_POSITION_L_BYTE] =      LOW(measurements.position_avg);
+    msg.data[CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_POSITION_L_BYTE] =      LOW(measurements.position_avg);  // 0 a 29454
     msg.data[CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_POSITION_H_BYTE] =      HIGH(measurements.position_avg);
     msg.data[CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_BATCURRENT_L_BYTE] =    LOW(measurements.batcurrent_avg);
     msg.data[CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_BATCURRENT_H_BYTE] =    HIGH(measurements.batcurrent_avg);
@@ -137,7 +137,7 @@ inline void can_app_extractor_mic19_mde(can_t *msg)
         HIGH_LOW(str_whl_tmp, msg->data[CAN_MSG_MIC19_MDE_POSITION_H_BYTE], msg->data[CAN_MSG_MIC19_MDE_POSITION_L_BYTE]);
         can_app_checks_without_mic19_msg = 0;
         can_app_flags.no_mic = 0;
-		str_whl_position = str_whl_coeff * str_whl_tmp;
+		str_whl_position = str_whl_coeff * str_whl_tmp; // 0 ~ 270.26
     } else {
         // ERROR!!
     }

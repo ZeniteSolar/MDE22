@@ -284,18 +284,20 @@ void print_infos(void)
 inline void compute_measurements(void)
 {
 	measurements.batvoltage_avg_sum += 100 * batvoltage;
-	measurements.position_avg_sum += 100 * position;
+	measurements.position_avg_sum += 100 * position;  // sum of [0 ~ 29454], up to 626268683541319 sums
 	measurements.batcurrent_avg_sum += 100 * batcurrent;
 
-	measurements.batvoltage_avg_sum_count++;
 	measurements.position_avg_sum_count++;
 	measurements.batcurrent_avg_sum_count++;
+	if (measurements.batvoltage_avg_sum_count++ > ULONG_MAX -1) {
+		average_measurements()
+	}
 }
 
 inline void average_measurements(void)
 {
 	measurements.batvoltage_avg = measurements.batvoltage_avg_sum / measurements.batvoltage_avg_sum_count;
-	measurements.position_avg = measurements.position_avg_sum / measurements.position_avg_sum_count;
+	measurements.position_avg = measurements.position_avg_sum / measurements.position_avg_sum_count; // 0 ~ 29454
 	measurements.batcurrent_avg = measurements.batcurrent_avg_sum / measurements.batcurrent_avg_sum_count;
 }
 
