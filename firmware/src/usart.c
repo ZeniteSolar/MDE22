@@ -227,13 +227,16 @@ inline void usart_init(uint16_t ubrr, uint8_t rx, uint8_t tx)
 
 /**
  * @brief sends a float number in ascii trough serial.
+ * @note Be aware that big numbers could cause a buffer overflow and override all memory after the buffer
  */
 inline void usart_send_float(float num)
 {
-    #define LEN     7               // length of the string w/ sign, dot ('.') and null terminator
+    // Be aware that big numbers could cause a buffer overflow and reset
+    #define LEN     8               // length of the string w/ sign, dot ('.') and null terminator
     #define PREC    3               // precision: digits before dot. 
 
-    char str[LEN];
+    char str[LEN + 1];
+    str[LEN] = '\0';
 
     dtostrf(num, LEN, PREC, str);
 

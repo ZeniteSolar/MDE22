@@ -178,33 +178,33 @@ float PI(float r, float y){
 void hbridge_control(float angle)
 {
     float dt;
-    float position_setpoint = str_whl_position - 135;
-    angle -= 135;
+    float position_setpoint = str_whl_position - 135.0f;
+    angle -= 135.0f;
 
     if (position_setpoint > STR_MAX_ANGLE) position_setpoint = STR_MAX_ANGLE;
     if (position_setpoint < STR_MIN_ANGLE) position_setpoint = STR_MIN_ANGLE;
 
     dt = PI(position_setpoint, angle);
-    dt = dt/100;
+    dt = dt/100.0f;
     static uint16_t send_clk;
 
     if (++send_clk >= 50){
         send_clk = 0;
-        
-        usart_send_float(position_setpoint);
-        usart_send_string(",");
-        usart_send_float(angle);
-        usart_send_string(",");
-        usart_send_float(dt*100);
-        usart_send_char(',');
-        usart_send_float(batvoltage);
-        usart_send_char(',');
-        usart_send_float(batcurrent);
-        usart_send_char('\n');
+
+        // usart_send_float(position_setpoint);
+        // usart_send_string(",");
+        // usart_send_float(angle);
+        // usart_send_string(",");
+        // usart_send_float(dt*99);
+        // usart_send_char(',');
+        // usart_send_float(batvoltage);
+        // usart_send_char(',');
+        // usart_send_float(batcurrent);
+        // usart_send_char('\n');
     }
 
     if (fabs(dt) < D_MIN)
-        dt = 0;
+        dt = 0.0f;
 
     if (dt < 0){
         hbridge_set_pwm(HBRIDGE_SIDE_A, -dt);
@@ -213,8 +213,6 @@ void hbridge_control(float angle)
         hbridge_set_pwm(HBRIDGE_SIDE_A, 0);
         hbridge_set_pwm(HBRIDGE_SIDE_B, dt);
     }
-
-
 }
 
 EMPTY_INTERRUPT(TIMER0_COMPA_vect);

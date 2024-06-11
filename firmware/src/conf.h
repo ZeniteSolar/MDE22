@@ -21,6 +21,7 @@
 #define VERBOSE_ON_MACHINE
 #define VERBOSE_ON_ADC
 #define VERBOSE_ON_INIT
+#define PRINT_INFOS
 //#define VERBOSE_ON_ERROR
 //#define VERBOSE_ON_HBRIDGE
 

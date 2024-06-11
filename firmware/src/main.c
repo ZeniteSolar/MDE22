@@ -131,8 +131,9 @@ int main(void)
         #endif
 
 		#ifdef SLEEP_ON
-            sleep_mode();
+            //sleep_mode();
 		#endif
+
 	}
 }
 

@@ -266,7 +266,7 @@ void print_infos(void)
 		usart_send_float(measurements.batvoltage_avg);
 		break;
 	case 1:
-		usart_send_string("\tail position: ");
+		usart_send_string("\ntail position: ");
 		usart_send_float(measurements.position_avg);
 		break;
 	case 2:
