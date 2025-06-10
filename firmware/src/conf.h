@@ -35,6 +35,7 @@
 #define LED_ON
 #define WATCHDOG_ON
 //#define SLEEP_ON
+// #define PRINT_INFOS
 
 #define CAN_SIGNATURE_SELF                  CAN_SIGNATURE_MDE22
 
