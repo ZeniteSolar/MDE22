@@ -1,5 +1,5 @@
 #include "hbridge.h"
-
+#include "math.h"
 volatile float duty_coeff;
 volatile int tail_diff;
 volatile int tail_diff_old;
