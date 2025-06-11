@@ -9,6 +9,8 @@
 
 #ifndef CONF_H
 #define CONF_H
+#include "../lib/log2.h"
+
 #ifndef F_CPU
 #define F_CPU 16000000UL    //define a frequencia do microcontrolador - 16MHz
 #endif /* ifndef F_CPU */
@@ -40,14 +42,37 @@
 #define CAN_SIGNATURE_SELF                  CAN_SIGNATURE_MDE22
 
 
+#ifdef ADC_ON
+// ADC CONFIGURATION
+// note that changing ADC_FREQUENCY may cause problems with avg_sum_samples
+// #define ADC_8BITS
+#define ADC_FREQUENCY                       10000 // 20000
+#define ADC_TIMER_PRESCALER                 64
+#define ADC_TOP_CTC                         F_CPU/(ADC_TIMER_PRESCALER * 2UL * ADC_FREQUENCY) -1
 
-// The machine frequency may not be superior of ADC_FREQUENCY/ADC_AVG_SIZE_10
+#if ADC_TOP_CTC >= 256
+    #error "Value for ADC timer top is greater than 8 bits"
+#elif ADC_TOP_CTC < 2
+    #error "Value for ADC timer top is too low, increase the prescaler"
+#endif
+#endif //ADC_ON
+
+
+
+
 #ifdef MACHINE_ON
-// The machine frequency may not be superior of ADC_FREQUENCY/ADC_AVG_SIZE_10
-#define MACHINE_TIMER_FREQUENCY 120UL  //<! machine timer frequency in Hz
-#define MACHINE_TIMER_PRESCALER 1024UL //<! machine timer prescaler
-#define MACHINE_FREQUENCY MACHINE_TIMER_FREQUENCY
-#endif // MACHINE_ON              (MACHINE_TIMER_FREQUENCY)/(MACHINE_CLK_DIVIDER_VALUE)
+// ----> Cbuf used + not a power module ---> no need for even numbers between ADC and Machine frequencies
+// no need for clk divider 
+#define MACHINE_FREQUENCY                   100           //<! machine timer frequency in Hz
+#define MACHINE_TIMER_PRESCALER             1024          //<! machine timer prescaler
+#define MACHINE_TOP_CTC                     F_CPU/(MACHINE_TIMER_PRESCALER * 2UL * MACHINE_FREQUENCY) -1
+#if MACHINE_TOP_CTC >= 256
+    #error "Value for Machine timer top is greater than 8 bits"
+#elif MACHINE_TOP_CTC < 2
+    #error "Value for Machine timer top is too low, increase the prescaler"
+#endif
+
+#endif // MACHINE_ON
 
 #ifdef  HBRIDGE_ON
 //#define HBRIDGE_TIMER_FREQUENCY             0
@@ -76,7 +101,6 @@
 #define     LED2_PIN                    PINB
 #define     LED2_DDR                    DDRB
 #define     LED2                        PB2
-
 #else
 #define     cpl_led()
 #define     set_led()
@@ -86,8 +110,16 @@
 
 #ifdef CAN_ON
 #define SPI_ON
-#define CAN_APP_SEND_STATE_FREQ     (MACHINE_TIMER_FREQUENCY / CAN_MSG_MDE22_STATE_FREQUENCY)
-#define CAN_APP_SEND_ADC_FREQ       (MACHINE_TIMER_FREQUENCY / CAN_MSG_MDE22_STEERINGBAT_MEASUREMENTS_FREQUENCY)
+#define CAN_APP_SEND_STATE_FREQ     10//36000     //<! state msg frequency in Hz
+#define CAN_APP_SEND_ADC_FREQ       50//6000      //<! adc msg frequency in Hz
+#if MACHINE_FREQUENCY % CAN_APP_SEND_STATE_FREQ != 0
+    #warning "CAN_APP_SEND_STATE_FREQ doesn't have a multiple equal to MACHINE_FREQUENCY, this frequency will be truncated"
+#endif
+
+#if MACHINE_FREQUENCY % CAN_APP_SEND_ADC_FREQ != 0
+    #warning "CAN_APP_SEND_ADC_FREQ doesn't have a multiple equal to MACHINE_FREQUENCY, this frequency will be truncated"
+#endif
+
 
 // CANBUS DEFINITONS
 // ----------------------------------------------------------------------------
