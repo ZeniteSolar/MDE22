@@ -27,21 +27,33 @@ void adc_init(void)
             | (0 << ADLAR);                         // ADC left adjusted -> using all 10 bits
 #endif
 
-    ADMUX = (ADMUX & 0xF8) | ADC1;
-
-    ADCSRA  =   (1 << ADATE)                        // ADC Auto Trigger Enable
-            | (1 << ADIE)                           // ADC Interrupt Enable
-            | (1 << ADEN)                           // ADC Enable
-            | (1 << ADSC)                           // Do the first Start of Conversion
-            | (1 << ADPS2)                          // ADC Prescaller  001 = 2, 010 = 4 ... 111= 128
-            | (1 << ADPS1)                      
-            | (0 << ADPS0);
-
     ADCSRB  =   (1 << ADTS2)                        // Auto-trigger source: timer1 Compare Match B
             | (0 << ADTS1)
             | (1 << ADTS0);
 
-    // TIMER configurations
+    ADMUX = (ADMUX & 0xF8) | ADC1;
+
+    ADCSRA  =   (1 << ADATE)    // ADC Auto Trigger Enable
+          | (1 << ADIE)     // ADC Interrupt Enable
+          | (1 << ADEN)     // ADC Enable
+          | (1 << ADSC)     // Do the first Start of Conversion 
+#if ADC_TIMER_PRESCALER == 1
+          | (0 << ADPS2) | (0 << ADPS1) | (1 << ADPS0)  // Prescaler N=1
+#elif ADC_TIMER_PRESCALER == 8
+          | (0 << ADPS2) | (1 << ADPS1) | (0 << ADPS0)  // Prescaler N=8
+#elif ADC_TIMER_PRESCALER == 64
+          | (0 << ADPS2) | (1 << ADPS1) | (1 << ADPS0)  // Prescaler N=64
+#elif ADC_TIMER_PRESCALER == 256
+          | (1 << ADPS2) | (0 << ADPS1) | (0 << ADPS0)  // Prescaler N=1256
+#elif ADC_TIMER_PRESCALER == 1024
+          | (1 << ADPS2) | (0 << ADPS1) | (1 << ADPS0)  // Prescaler N=1024
+#else
+          | (1 << ADPS1) | (1 << ADPS0)  // Default to N=8 if no valid prescaler is set
+#endif
+;
+    
+    
+            // TIMER configurations
     clr_bit(PRR, PRTIM1);                          // Activates clock to timer1 (timer0 is used by application PWM)
     // MODE 2 -> CTC with TOP on OCR1
     TCCR1A  =   (0 << WGM11) | (1 << WGM10)         // mode ctc
@@ -50,24 +62,11 @@ void adc_init(void)
             | (0 << WGM11) | (0 << WGM10)       // mode ctc
             | (0 << COM1B1) | (0 << COM1B0) 
             | (0 << CS12) | (1 << CS11) | (1 << CS10) // Prescaler N=64
-            | (0 << ICNC1) | (0 << ICES1);
-/*
-#if ADC_TIMER_PRESCALER ==     1
-                (0 << CS12) | (0 << CS11) | (1 << CS10) // Prescaler N=1
-#elif ADC_TIMER_PRESCALER ==   8
-                (0 << CS12) | (1 << CS11) | (0 << CS10) // Prescaler N=8
-#elif ADC_TIMER_PRESCALER ==   64
-                (0 << CS12) | (1 << CS11) | (1 << CS10) // Prescaler N=32
-#elif ADC_TIMER_PRESCALER ==   256
-                (1 << CS12) | (0 << CS11) | (0 << CS10) // Prescaler N=64
-#elif ADC_TIMER_PRESCALER ==   1024
-                (1 << CS12) | (0 << CS11) | (1 << CS10) // Prescaler N=128
-#else
-                0
-#endif*/
+            | (0 << ICNC1) | (0 << ICES1);    
 
+    
     TCNT1 = 0;              // Disable read/write direct access to the timer counter
-    OCR1B = 82;             // OCR1B = TOP = fcpu/(N*2*f) -1
+    OCR1B = ADC_TOP_CTC;             // OCR1B = TOP = fcpu/(N*2*f) -1
 
     TIMSK1 |=   (1 << OCIE1B);        // Ativa a interrupcao na igualdade de comparação
 
@@ -86,7 +85,7 @@ ISR(ADC_vect)
     static const float batvoltage_coeff =   0.0182138188113f;
     //static const float position_coeff =     0.28716216215f; //0.0030405405405f; //;
     static const float position_coeff =     0.28763901f; //0.0030405405405f; //;
-    // ToDo: Fix this mess
+    // TODO: Fix this mess
     static const float batcurrent_coeff =   0.0236309077269f; // 0,63A/2666  
         // VIS = (IL / 8,5A)V (R = 1kOhm) <>  {[0,111V/sqrt(2)] / 0,63A}^(-1) = kIS = 8,02 A
 
