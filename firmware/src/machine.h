@@ -19,9 +19,19 @@
 
 #include "conf.h"
 
-// Equations for mode 2 (CTC with TOP OCR2A)
-// Note the resolution. For example.. at 150hz, ICR1 = PWM_TOP = 159, so it
-#define MACHINE_TIMER_TOP (uint8_t)(((F_CPU) / ((MACHINE_TIMER_PRESCALER) * (MACHINE_TIMER_FREQUENCY))) - 1)
+
+// PRINT INFOS CONSTANTS
+#define PRINT_INFOS_TIME        0.2 // seconds for half a period 
+#define PRINT_INFOS_CLK_DIV     PRINT_INFOS_TIME * MACHINE_FREQUENCY
+
+// LED CONSTANTS
+#define IDLE_LED_TIME           1 // half a period...time that the LED stays on
+#define IDLE_LED_CLK_DIV        IDLE_LED_TIME * 2 * MACHINE_FREQUENCY //  
+#define RUNNING_LED_TIME        0.25 // half a period...time that the LED stays on
+#define RUNNING_LED_CLK_DIV     RUNNING_LED_TIME * 2 * MACHINE_FREQUENCY //  
+#define ERROR_LED_TIME          0.05 // half a period...time that the LED stays on
+#define ERROR_LED_CLK_DIV       ERROR_LED_TIME * 2 * MACHINE_FREQUENCY //  
+
 
 #ifdef ADC_ON
 #include "adc.h"
