@@ -27,6 +27,7 @@ void can_app_send_steeringbat_measurements(void);
 void can_app_msg_extractors_switch(can_t *msg);
 void can_app_extractor_mic19_state(can_t *msg);
 void can_app_extractor_mic19_mde(can_t *msg);
+void can_app_extractor_mic19_pumps(can_t *msg);
 void check_can(void);
 
 #ifdef CAN_ON
@@ -49,6 +50,7 @@ typedef union {
 extern uint32_t can_app_send_state_clk_div;
 extern uint32_t can_app_send_adc_clk_div;
 extern volatile can_app_flags_t can_app_flags;
+extern uint8_t sense_select;
 
 
 
