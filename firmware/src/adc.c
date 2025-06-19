@@ -1,6 +1,7 @@
 #include "adc.h"
 
 volatile float batvoltage, position, batcurrent;
+volatile uint16_t adc_verbose_clk_div = 0;
 
 volatile uint8_t print_adc;
 
@@ -100,15 +101,23 @@ ISR(ADC_vect)
 
         case ADC2:                       
             position = adc * position_coeff;
+            
+            if(adc_verbose_clk_div++ >= ADC_VERBOSE_CLK_DIV){
+                adc_verbose_clk_div = 0;
+                VERBOSE_MSG_ADC(usart_send_string("\tposition adc:"));
+                VERBOSE_MSG_ADC(usart_send_uint16(adc));
+            }
+
             hbridge_control(position);
             break;
 
         case ADC3:
             batcurrent = adc * batcurrent_coeff;
-			
+            __attribute__((fallthrough)); // Explicitly calling shared code instead of falling through
+        
         default:
-            channel = ADC1 -1;             // recycle
-
+            channel = ADC1 -1;
+			
             print_adc = 1;
 #ifdef DEBUG_ON
             set_bit(PORTD, LED1);

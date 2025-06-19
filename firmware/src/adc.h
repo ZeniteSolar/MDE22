@@ -22,9 +22,12 @@
 
 typedef enum adc_channels{ADC1 = 1, ADC2, ADC3} adc_channels_t;                           //*< the adc_channel type
 extern volatile uint8_t print_adc;
+extern volatile uint16_t adc_verbose_clk_div;
 
 extern volatile float batvoltage, position, batcurrent;
 
 void adc_init(void);
+
+#define ADC_VERBOSE_CLK_DIV 100
 
 #endif /* ifndef _ADC_H_ */
