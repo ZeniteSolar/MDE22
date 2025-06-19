@@ -8,6 +8,7 @@ volatile uint8_t machine_clk;
 volatile uint8_t machine_clk_divider;
 volatile uint8_t total_errors; // Contagem de ERROS
 volatile uint8_t led_clk_div;
+volatile uint16_t print_clk_div;
 
 /**
  * @brief
@@ -182,22 +183,21 @@ inline void task_error(void) {
   VERBOSE_MSG_ERROR(usart_send_uint16(error_flags.all));
   VERBOSE_MSG_ERROR(usart_send_char('\n'));
 
-  if (error_flags.no_canbus)
-    ;
-  VERBOSE_MSG_ERROR(
-      usart_send_string("\t - No canbus communication with MIC19!\n"));
-//   if (error_flags.invalid_tail) {
-    // VERBOSE_MSG_ERROR(usart_send_string("\t - Invalid tail angle, position
-    // out of expected boundaries!\n"));
-//   }
-  if (!error_flags.all)
+  if (error_flags.no_canbus) {
+    VERBOSE_MSG_ERROR(
+        usart_send_string("\t - No canbus communication with MIC19!\n"));
+  };
+  //   if (error_flags.invalid_tail) {
+  // VERBOSE_MSG_ERROR(usart_send_string("\t - Invalid tail angle, position
+  // out of expected boundaries!\n"));
+  //   }
+  if (!error_flags.all) {
     VERBOSE_MSG_ERROR(
         usart_send_string("\t - Oh no, it was some unknown error.\n"));
-
-  VERBOSE_MSG_ERROR(usart_send_string("The error level is: "));
-  VERBOSE_MSG_ERROR(usart_send_uint16(total_errors));
-  VERBOSE_MSG_ERROR(usart_send_char('\n'));
-
+    VERBOSE_MSG_ERROR(usart_send_string("The error level is: "));
+    VERBOSE_MSG_ERROR(usart_send_uint16(total_errors));
+    VERBOSE_MSG_ERROR(usart_send_char('\n'));
+  }
   if (total_errors < 2) {
     VERBOSE_MSG_ERROR(usart_send_string("I will reset the machine state.\n"));
   } else {
@@ -229,25 +229,15 @@ inline void task_reset(void) {
 
 void print_infos(void) {
 #ifdef PRINT_INFOS
-  static uint8_t i = 0;
 
-  switch (i++) {
-  case 0:
+  if (print_clk_div++ >= PRINT_INFOS_CLK_DIV) {
+    print_clk_div = 0;
     usart_send_string("\nBATV: ");
     usart_send_float(measurements.batvoltage_avg);
-    break;
-  case 1:
     usart_send_string("\tTail_pos: ");
     usart_send_float(measurements.position_avg);
-    break;
-  case 2:
     usart_send_string("\tBATCURR: ");
     usart_send_float(measurements.batcurrent_avg);
-    break;
-  default:
-    // VERBOSE_MSG_MACHINE(usart_send_char('\n'));
-    i = 0;
-    break;
   }
 #endif
 }

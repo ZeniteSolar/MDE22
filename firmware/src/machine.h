@@ -21,7 +21,7 @@
 
 
 // PRINT INFOS CONSTANTS
-#define PRINT_INFOS_TIME        0.2 // seconds for half a period 
+#define PRINT_INFOS_TIME        1 // seconds for half a period 
 #define PRINT_INFOS_CLK_DIV     PRINT_INFOS_TIME * MACHINE_FREQUENCY
 
 // LED CONSTANTS
@@ -77,7 +77,7 @@ typedef struct measurements{
     uint16_t    batvoltage_avg;       
     uint16_t    batvoltage_avg_sum_count;
     uint64_t    batvoltage_avg_sum;   
-    uint8_t    position_avg;       
+    uint8_t     position_avg;       
     uint16_t    position_avg_sum_count;
     uint64_t    position_avg_sum;   
     uint16_t    batcurrent_avg;       
@@ -129,5 +129,6 @@ extern volatile float str_whl_position;
 
 // other variables
 extern volatile uint8_t led_clk_div;
+extern volatile uint16_t print_clk_div;
 
 #endif /* ifndef MACHINE_H */
