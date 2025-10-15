@@ -262,16 +262,16 @@ void print_infos(void)
 	switch (i++)
 	{
 	case 0:
-		// usart_send_string("\nBATV: ");
-		// usart_send_float(measurements.batvoltage_avg);
+		usart_send_string("\nBATV: ");
+		usart_send_float(measurements.batvoltage_avg);
 		break;
 	case 1:
-		// usart_send_string("\tTail_pos: ");
-		// usart_send_float(measurements.position_avg);
+		usart_send_string("\tTail_pos: ");
+		usart_send_float(measurements.position_avg);
 		break;
 	case 2:
-		// usart_send_string("\tBATCURR: ");
-		// usart_send_float(measurements.batcurrent_avg);
+		usart_send_string("\tBATCURR: ");
+		usart_send_float(measurements.batcurrent_avg);
 		break;
 	default:
 		// VERBOSE_MSG_MACHINE(usart_send_char('\n'));
